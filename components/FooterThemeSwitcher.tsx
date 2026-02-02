@@ -87,7 +87,7 @@ export default function FooterThemeSwitcher({ currentTheme }: FooterThemeSwitche
 
           {/* Ligne 2 : Disclaimer */}
           <div className="text-gray-500 text-xs text-center">
-            Imagens ilustrativas (demo) • Fotos de Unsplash
+            Marca e imagens ilustrativas (demo)
           </div>
         </div>
       </div>

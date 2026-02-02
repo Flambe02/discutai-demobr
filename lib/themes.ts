@@ -1,9 +1,17 @@
+import { logos } from './logos';
+
 export type ThemeId = 'cabeleireiro' | 'restaurante' | 'imobiliaria' | 'dentista' | 'generico';
 
 export interface Theme {
   id: ThemeId;
   brandName: string;
   tagline: string;
+  branding: {
+    monogram: string;
+    logoMarkSvg: string;
+    logoMonoSvg: string;
+    logoAlt: string;
+  };
   accentColor: string;
   gradientSecondary: string;
   address: string;
@@ -31,8 +39,14 @@ export interface Theme {
 export const themes: Record<ThemeId, Theme> = {
   cabeleireiro: {
     id: 'cabeleireiro',
-    brandName: 'Salão Beleza Pura',
-    tagline: 'Seu cabelo merece o melhor',
+    brandName: 'Studio BelaForma',
+    tagline: 'Cortes, cor e cuidado premium',
+    branding: {
+      monogram: 'SB',
+      logoMarkSvg: logos.cabeleireiro.mark,
+      logoMonoSvg: logos.cabeleireiro.mono,
+      logoAlt: 'Logo Studio BelaForma',
+    },
     accentColor: '#EC4899',
     gradientSecondary: '#8B5CF6',
     address: 'Rua das Flores, 123 - Centro, São Paulo - SP',
@@ -63,7 +77,7 @@ export const themes: Record<ThemeId, Theme> = {
       'Café e Wi-Fi grátis',
       'Estacionamento conveniado'
     ],
-    whyText: 'Com mais de 15 anos de experiência, nosso salão oferece serviços de alta qualidade com profissionais especializados. Utilizamos apenas produtos premium e garantimos sua satisfação. Nosso assistente virtual está disponível 24h para agendamentos e dúvidas.',
+    whyText: 'Com mais de 15 anos de experiência, nosso studio oferece serviços de alta qualidade com profissionais especializados. Utilizamos apenas produtos premium e garantimos sua satisfação. Nosso assistente virtual está disponível 24h para agendamentos e dúvidas.',
     botExamples: [
       'Quero agendar um corte para amanhã',
       'Quanto custa uma coloração completa?',
@@ -74,7 +88,7 @@ export const themes: Record<ThemeId, Theme> = {
     ],
     botTitle: 'Assistente Virtual',
     botSubtitle: 'Agende seu horário ou tire suas dúvidas',
-    botGreeting: 'Olá! Sou o assistente do Salão Beleza Pura. Posso ajudar a agendar seu horário, informar preços ou esclarecer qualquer dúvida. Como posso te ajudar hoje?',
+    botGreeting: 'Olá! Sou o assistente do Studio BelaForma. Posso ajudar a agendar seu horário, informar preços ou esclarecer qualquer dúvida. Como posso te ajudar hoje?',
     images: {
       hero: {
         src: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1200&q=80',
@@ -98,8 +112,14 @@ export const themes: Record<ThemeId, Theme> = {
   },
   restaurante: {
     id: 'restaurante',
-    brandName: 'Restaurante Sabor & Arte',
-    tagline: 'Gastronomia que encanta',
+    brandName: 'Bistrô Vila Nova',
+    tagline: 'Sabor, clima e boa mesa',
+    branding: {
+      monogram: 'BV',
+      logoMarkSvg: logos.restaurante.mark,
+      logoMonoSvg: logos.restaurante.mono,
+      logoAlt: 'Logo Bistrô Vila Nova',
+    },
     accentColor: '#F59E0B',
     gradientSecondary: '#EF4444',
     address: 'Av. Paulista, 1500 - Bela Vista, São Paulo - SP',
@@ -130,7 +150,7 @@ export const themes: Record<ThemeId, Theme> = {
       'Área kids aos domingos',
       'Estacionamento com manobrista'
     ],
-    whyText: 'Premiado pela crítica especializada, nosso restaurante combina técnica, ingredientes frescos e criatividade. Nossa equipe está pronta para proporcionar uma experiência única. Use nosso assistente para reservas, consultar o menu ou pedir delivery.',
+    whyText: 'Premiado pela crítica especializada, nosso bistrô combina técnica, ingredientes frescos e criatividade. Nossa equipe está pronta para proporcionar uma experiência única. Use nosso assistente para reservas, consultar o menu ou pedir delivery.',
     botExamples: [
       'Quero reservar mesa para 4 pessoas hoje à noite',
       'Qual o prato do dia?',
@@ -141,7 +161,7 @@ export const themes: Record<ThemeId, Theme> = {
     ],
     botTitle: 'Assistente de Reservas',
     botSubtitle: 'Reservas, cardápio e delivery',
-    botGreeting: 'Bem-vindo ao Sabor & Arte! Posso ajudar com reservas, informações sobre nosso cardápio, opções de delivery ou qualquer dúvida. O que você gostaria de saber?',
+    botGreeting: 'Bem-vindo ao Bistrô Vila Nova! Posso ajudar com reservas, informações sobre nosso cardápio, opções de delivery ou qualquer dúvida. O que você gostaria de saber?',
     images: {
       hero: {
         src: '/images/themes/restaurante/hero.webp',
@@ -165,8 +185,14 @@ export const themes: Record<ThemeId, Theme> = {
   },
   imobiliaria: {
     id: 'imobiliaria',
-    brandName: 'Imóveis Prime',
-    tagline: 'Seu lar dos sonhos está aqui',
+    brandName: 'NovaChave Imóveis',
+    tagline: 'Encontre seu lugar ideal',
+    branding: {
+      monogram: 'NI',
+      logoMarkSvg: logos.imobiliaria.mark,
+      logoMonoSvg: logos.imobiliaria.mono,
+      logoAlt: 'Logo NovaChave Imóveis',
+    },
     accentColor: '#3B82F6',
     gradientSecondary: '#06B6D4',
     address: 'Rua dos Empresários, 456 - Itaim Bibi, São Paulo - SP',
@@ -208,7 +234,7 @@ export const themes: Record<ThemeId, Theme> = {
     ],
     botTitle: 'Assistente Imobiliário',
     botSubtitle: 'Encontre seu imóvel ideal',
-    botGreeting: 'Olá! Sou o assistente da Imóveis Prime. Posso ajudar você a encontrar imóveis para compra ou locação, agendar visitas, simular financiamento e muito mais. O que você procura?',
+    botGreeting: 'Olá! Sou o assistente da NovaChave Imóveis. Posso ajudar você a encontrar imóveis para compra ou locação, agendar visitas, simular financiamento e muito mais. O que você procura?',
     images: {
       hero: {
         src: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80',
@@ -232,8 +258,14 @@ export const themes: Record<ThemeId, Theme> = {
   },
   dentista: {
     id: 'dentista',
-    brandName: 'Clínica OdontoVida',
-    tagline: 'Seu sorriso é nossa prioridade',
+    brandName: 'Clínica Sorriso Prime',
+    tagline: 'Odontologia moderna e acolhedora',
+    branding: {
+      monogram: 'SP',
+      logoMarkSvg: logos.dentista.mark,
+      logoMonoSvg: logos.dentista.mono,
+      logoAlt: 'Logo Clínica Sorriso Prime',
+    },
     accentColor: '#10B981',
     gradientSecondary: '#06B6D4',
     address: 'Av. Brigadeiro Faria Lima, 2000 - Pinheiros, São Paulo - SP',
@@ -273,9 +305,9 @@ export const themes: Record<ThemeId, Theme> = {
       'Quero fazer uma avaliação ortodôntica',
       'Posso parcelar o tratamento?'
     ],
-    botTitle: 'Assistente OdontoVida',
+    botTitle: 'Assistente Sorriso Prime',
     botSubtitle: 'Agendamentos e informações',
-    botGreeting: 'Olá! Sou o assistente da Clínica OdontoVida. Posso agendar consultas, informar sobre tratamentos, convênios e valores. Como posso ajudar com seu sorriso hoje?',
+    botGreeting: 'Olá! Sou o assistente da Clínica Sorriso Prime. Posso agendar consultas, informar sobre tratamentos, convênios e valores. Como posso ajudar com seu sorriso hoje?',
     images: {
       hero: {
         src: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=1200&q=80',
@@ -299,8 +331,14 @@ export const themes: Record<ThemeId, Theme> = {
   },
   generico: {
     id: 'generico',
-    brandName: 'Empresa Modelo',
-    tagline: 'Soluções que transformam',
+    brandName: 'Nexa Soluções',
+    tagline: 'Atendimento rápido. Resultado real.',
+    branding: {
+      monogram: 'NS',
+      logoMarkSvg: logos.generico.mark,
+      logoMonoSvg: logos.generico.mono,
+      logoAlt: 'Logo Nexa Soluções',
+    },
     accentColor: '#6366F1',
     gradientSecondary: '#8B5CF6',
     address: 'Rua Exemplo, 789 - Centro, São Paulo - SP',
@@ -342,7 +380,7 @@ export const themes: Record<ThemeId, Theme> = {
     ],
     botTitle: 'Assistente Virtual',
     botSubtitle: 'Tire suas dúvidas e solicite orçamentos',
-    botGreeting: 'Olá! Bem-vindo à Empresa Modelo. Posso ajudar com informações sobre nossos serviços, orçamentos ou conectar você com nossa equipe. Como posso te ajudar?',
+    botGreeting: 'Olá! Bem-vindo à Nexa Soluções. Posso ajudar com informações sobre nossos serviços, orçamentos ou conectar você com nossa equipe. Como posso te ajudar?',
     images: {
       hero: {
         src: '/images/themes/generico/hero.webp',

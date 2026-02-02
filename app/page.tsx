@@ -7,6 +7,7 @@ import Gallery from '@/components/Gallery';
 import BotWidget from '@/components/BotWidget';
 import DiscutAIWidget from '@/components/DiscutAIWidget';
 import FooterThemeSwitcher from '@/components/FooterThemeSwitcher';
+import BrandLogo from '@/components/BrandLogo';
 import { ThemeId } from '@/lib/themes';
 import {
   getThemeFromQuery,
@@ -53,10 +54,15 @@ function HomeContent() {
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             {/* Logo et brand */}
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full flex items-center justify-center text-2xl"
+              <div
+                className="w-12 h-12 rounded-full flex items-center justify-center p-2.5"
                 style={{ background: `linear-gradient(135deg, ${theme.accentColor}, ${theme.gradientSecondary})` }}
               >
-                {theme.brandName.charAt(0)}
+                <BrandLogo
+                  themeId={currentThemeId}
+                  variant="mono"
+                  className="w-full h-full text-white"
+                />
               </div>
               <div>
                 <h1 className="text-xl font-bold text-white">{theme.brandName}</h1>
