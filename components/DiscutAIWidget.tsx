@@ -12,10 +12,10 @@ const getWidgetConfig = (themeId: string) => {
   const configs = {
     restaurante: {
       assistantWorkspaceId: "87ab9a2d-8d18-45bd-b349-145f59254096",
-      assistantName: "Assistente Restaurante",
+      assistantName: "TRPC Test",
       themeColor: "#F59E0B",
       position: "bottom-right",
-      welcomeMessage: "Bem-vindo ao Restaurante Sabor & Arte! Como posso ajudar com reservas ou cardápio?",
+      welcomeMessage: "Bom dia, como posso ajudar hoje?",
       showAvatar: true,
       width: 350,
       height: 500,
@@ -23,10 +23,10 @@ const getWidgetConfig = (themeId: string) => {
     },
     generico: {
       assistantWorkspaceId: "87ab9a2d-8d18-45bd-b349-145f59254096",
-      assistantName: "Assistente Empresa Modelo",
+      assistantName: "TRPC Test",
       themeColor: "#6366F1",
       position: "bottom-right",
-      welcomeMessage: "Olá! Bem-vindo à Empresa Modelo. Como posso ajudar você hoje?",
+      welcomeMessage: "Bom dia, como posso ajudar hoje?",
       showAvatar: true,
       width: 350,
       height: 500,
