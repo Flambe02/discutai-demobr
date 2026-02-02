@@ -36,8 +36,8 @@ function HomeContent() {
   // Fonction pour ouvrir le bot/widget
   const openBot = () => {
     // Cette fonction sera appelée par le CTA pour ouvrir le bot
-    if (currentThemeId === 'generico') {
-      // Pour le thème generico, chercher et cliquer sur le bouton DiscutAI
+    if (currentThemeId === 'generico' || currentThemeId === 'lucy') {
+      // Pour les thèmes generico et lucy, chercher et cliquer sur le bouton DiscutAI
       // Essayer plusieurs sélecteurs possibles pour le widget DiscutAI
       const discutaiButton =
         document.querySelector('[id*="discutai"][role="button"]') as HTMLButtonElement ||
@@ -271,10 +271,10 @@ function HomeContent() {
         </div>
       </section>
 
-      {/* Bot Widget - Afficher WhatsApp pour restaurant, DiscutAI pour generico, BotWidget pour les autres */}
+      {/* Bot Widget - Afficher WhatsApp pour restaurant, DiscutAI pour generico/lucy, BotWidget pour les autres */}
       {currentThemeId === 'restaurante' ? (
         <WhatsAppWidget theme={theme} phoneNumber="+5511973953946" />
-      ) : currentThemeId === 'generico' ? (
+      ) : currentThemeId === 'generico' || currentThemeId === 'lucy' ? (
         <DiscutAIWidget theme={theme} />
       ) : (
         <BotWidget theme={theme} />

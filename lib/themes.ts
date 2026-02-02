@@ -1,4 +1,4 @@
-export type ThemeId = 'cabeleireiro' | 'restaurante' | 'imobiliaria' | 'dentista' | 'generico';
+export type ThemeId = 'cabeleireiro' | 'restaurante' | 'imobiliaria' | 'dentista' | 'generico' | 'lucy';
 
 export interface Theme {
   id: ThemeId;
@@ -387,15 +387,91 @@ export const themes: Record<ThemeId, Theme> = {
         }
       ]
     }
+  },
+  lucy: {
+    id: 'lucy',
+    brandName: 'Lucy Marketing',
+    tagline: 'Marketing Digital que Transforma',
+    branding: {
+      monogram: 'LM',
+      logoAlt: 'Logo Lucy Marketing',
+    },
+    accentColor: '#FF6B9D',
+    gradientSecondary: '#C94277',
+    address: 'Av. Paulista, 1234 - Bela Vista, São Paulo - SP',
+    hours: 'Seg-Sex: 9h às 18h',
+    phone: '(11) 3456-7890',
+    whatsapp: '+5511987654321',
+    email: 'contato@lucymarketing.com.br',
+    heroTitle: 'Transforme sua presença digital',
+    heroSubtitle: 'Criação de conteúdo, gestão de redes sociais e estratégias de marketing que geram resultados reais para seu negócio.',
+    ctaPrimaryLabel: 'Começar agora',
+    kpis: [
+      'Planos a partir de R$ 99/mês',
+      'Gestão completa de redes',
+      'Criação de conteúdo profissional',
+      'Análise de performance',
+      'Suporte especializado'
+    ],
+    services: [
+      'Criação de posts e stories',
+      'Planejamento de calendário editorial',
+      'Gestão de redes sociais',
+      'Anúncios pagos (Facebook, Instagram, Google)',
+      'Relatórios de performance',
+      'Estratégia de conteúdo',
+      'Design gráfico e identidade visual',
+      'Copywriting profissional'
+    ],
+    infos: [
+      'Plataforma self-service disponível',
+      'Serviço gerenciado com equipe criativa',
+      'Otimização para conversão',
+      'Atendimento personalizado',
+      'Sem fidelidade - cancele quando quiser'
+    ],
+    whyText: 'Com mais de 5 anos de experiência em marketing digital, ajudamos pequenas e médias empresas a crescerem online. Nossa plataforma combina tecnologia com expertise criativo para entregar resultados mensuráveis. Do self-service à gestão completa, temos a solução ideal para sua empresa.',
+    botExamples: [
+      'Quais planos vocês oferecem?',
+      'Como funciona a criação de conteúdo?',
+      'Vocês fazem gestão de Instagram?',
+      'Quanto custa anúncios no Facebook?',
+      'Preciso de ajuda com minha estratégia digital',
+      'Como agendar uma demonstração?'
+    ],
+    botTitle: 'Assistente Lucy',
+    botSubtitle: 'Marketing digital sob medida',
+    botGreeting: 'Olá! Sou a assistente da Lucy Marketing. Posso te ajudar a escolher o melhor plano, tirar dúvidas sobre nossos serviços ou agendar uma conversa com nossa equipe. Como posso ajudar?',
+    images: {
+      hero: {
+        src: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&q=80',
+        alt: 'Equipe de marketing trabalhando com análise de dados e estratégia digital'
+      },
+      gallery: [
+        {
+          src: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&q=80',
+          alt: 'Equipe colaborativa trabalhando em estratégia de marketing'
+        },
+        {
+          src: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&q=80',
+          alt: 'Profissionais analisando métricas de performance digital'
+        },
+        {
+          src: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80',
+          alt: 'Reunião de planejamento de campanha de marketing'
+        }
+      ]
+    }
   }
 };
 
-export const themeIds: ThemeId[] = ['cabeleireiro', 'restaurante', 'imobiliaria', 'dentista', 'generico'];
+export const themeIds: ThemeId[] = ['cabeleireiro', 'restaurante', 'imobiliaria', 'dentista', 'generico', 'lucy'];
 
 export const themeLabels: Record<ThemeId, string> = {
   cabeleireiro: 'Cabeleireiro',
   restaurante: 'Restaurante',
   imobiliaria: 'Imobiliária',
   dentista: 'Dentista',
-  generico: 'Genérico'
+  generico: 'Genérico',
+  lucy: 'Lucy Marketing'
 };

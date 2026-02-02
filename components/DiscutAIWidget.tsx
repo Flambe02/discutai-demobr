@@ -34,6 +34,18 @@ const getWidgetConfig = (themeId: string) => {
       height: 500,
       baseUrl: "https://v2.discutai.com",
     },
+    lucy: {
+      assistantWorkspaceId: "87ab9a2d-8d18-45bd-b349-145f59254096",
+      assistantName: "TRPC Test",
+      apiKey: "discutai_5a75e24f7d924e1b8ec34414e6cbb0be",
+      themeColor: "#FF6B9D",
+      position: "bottom-right",
+      welcomeMessage: "Olá! Como posso ajudar com seu marketing digital?",
+      showAvatar: true,
+      width: 350,
+      height: 500,
+      baseUrl: "https://v2.discutai.com",
+    },
   };
 
   return configs[themeId as keyof typeof configs];
