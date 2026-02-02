@@ -6,6 +6,7 @@ import Hero from '@/components/Hero';
 import Gallery from '@/components/Gallery';
 import BotWidget from '@/components/BotWidget';
 import DiscutAIWidget from '@/components/DiscutAIWidget';
+import WhatsAppWidget from '@/components/WhatsAppWidget';
 import FooterThemeSwitcher from '@/components/FooterThemeSwitcher';
 import BrandLogo from '@/components/BrandLogo';
 import { ThemeId } from '@/lib/themes';
@@ -245,8 +246,10 @@ function HomeContent() {
         </div>
       </section>
 
-      {/* Bot Widget - Afficher BotWidget ou DiscutAI selon le thème */}
-      {(currentThemeId === 'restaurante' || currentThemeId === 'generico') ? (
+      {/* Bot Widget - Afficher WhatsApp pour restaurant, DiscutAI pour generico, BotWidget pour les autres */}
+      {currentThemeId === 'restaurante' ? (
+        <WhatsAppWidget theme={theme} phoneNumber="+5511973953946" />
+      ) : currentThemeId === 'generico' ? (
         <DiscutAIWidget theme={theme} />
       ) : (
         <BotWidget theme={theme} />
