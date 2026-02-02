@@ -38,7 +38,7 @@ export default function FooterThemeSwitcher({ currentTheme }: FooterThemeSwitche
   };
 
   return (
-    <footer className="fixed bottom-0 left-0 right-0 bg-gray-900/95 backdrop-blur-sm border-t border-gray-800 py-4 z-40">
+    <footer className="relative bg-gray-900/95 backdrop-blur-sm border-t border-gray-800 py-4 mt-12">
       <div className="container mx-auto px-4">
         <div className="flex flex-col items-center gap-3">
           {/* Ligne 1 : Sélecteur de thème */}

@@ -46,7 +46,7 @@ function HomeContent() {
   };
 
   return (
-    <div className="min-h-screen pb-24">
+    <div className="min-h-screen">
       {/* Header Sticky */}
       <header className="sticky top-0 z-30 bg-gray-900/95 backdrop-blur-sm border-b border-gray-800 shadow-lg">
         <div className="container mx-auto px-4 py-4">
