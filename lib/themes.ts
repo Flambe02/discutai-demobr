@@ -1,5 +1,3 @@
-import { logos } from './logos';
-
 export type ThemeId = 'cabeleireiro' | 'restaurante' | 'imobiliaria' | 'dentista' | 'generico';
 
 export interface Theme {
@@ -8,8 +6,6 @@ export interface Theme {
   tagline: string;
   branding: {
     monogram: string;
-    logoMarkSvg: string;
-    logoMonoSvg: string;
     logoAlt: string;
   };
   accentColor: string;
@@ -43,8 +39,6 @@ export const themes: Record<ThemeId, Theme> = {
     tagline: 'Cortes, cor e cuidado premium',
     branding: {
       monogram: 'SB',
-      logoMarkSvg: logos.cabeleireiro.mark,
-      logoMonoSvg: logos.cabeleireiro.mono,
       logoAlt: 'Logo Studio BelaForma',
     },
     accentColor: '#EC4899',
@@ -116,8 +110,6 @@ export const themes: Record<ThemeId, Theme> = {
     tagline: 'Sabor, clima e boa mesa',
     branding: {
       monogram: 'BV',
-      logoMarkSvg: logos.restaurante.mark,
-      logoMonoSvg: logos.restaurante.mono,
       logoAlt: 'Logo Bistrô Vila Nova',
     },
     accentColor: '#F59E0B',
@@ -189,8 +181,6 @@ export const themes: Record<ThemeId, Theme> = {
     tagline: 'Encontre seu lugar ideal',
     branding: {
       monogram: 'NI',
-      logoMarkSvg: logos.imobiliaria.mark,
-      logoMonoSvg: logos.imobiliaria.mono,
       logoAlt: 'Logo NovaChave Imóveis',
     },
     accentColor: '#3B82F6',
@@ -262,8 +252,6 @@ export const themes: Record<ThemeId, Theme> = {
     tagline: 'Odontologia moderna e acolhedora',
     branding: {
       monogram: 'SP',
-      logoMarkSvg: logos.dentista.mark,
-      logoMonoSvg: logos.dentista.mono,
       logoAlt: 'Logo Clínica Sorriso Prime',
     },
     accentColor: '#10B981',
@@ -335,8 +323,6 @@ export const themes: Record<ThemeId, Theme> = {
     tagline: 'Atendimento rápido. Resultado real.',
     branding: {
       monogram: 'NS',
-      logoMarkSvg: logos.generico.mark,
-      logoMonoSvg: logos.generico.mono,
       logoAlt: 'Logo Nexa Soluções',
     },
     accentColor: '#6366F1',
