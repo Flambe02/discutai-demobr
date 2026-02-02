@@ -41,31 +41,39 @@ const getWidgetConfig = (themeId: string) => {
 
 export default function DiscutAIWidget({ theme }: DiscutAIWidgetProps) {
   useEffect(() => {
-    console.log('🔄 DiscutAIWidget useEffect - theme:', theme.id);
+    const config = getWidgetConfig(theme.id);
+    if (!config) return;
 
-    // Fonction de nettoyage agressive
-    const cleanupWidget = () => {
-      console.log('🧹 Nettoyage complet du widget DiscutAI');
+    // Configurer le widget
+    window.DiscutAIWidget = { config };
 
+    // Charger le script
+    const script = document.createElement('script');
+    script.id = 'discutai-widget-loader';
+    script.src = 'https://v2.discutai.com/widget/loader.js';
+    script.async = true;
+
+    document.body.appendChild(script);
+
+    // Cleanup quand le composant est démonté
+    return () => {
       // Supprimer le script
       const scriptToRemove = document.getElementById('discutai-widget-loader');
       if (scriptToRemove) {
         scriptToRemove.remove();
-        console.log('  ✓ Script supprimé');
       }
 
-      // Supprimer TOUS les éléments du widget (utiliser querySelectorAll pour tout supprimer)
-      const selectors = [
+      // Supprimer les éléments du widget
+      const widgetSelectors = [
         '[id*="discutai"]',
         '[class*="discutai"]',
         'iframe[src*="discutai"]',
-        '[data-discutai]',
       ];
 
-      selectors.forEach(selector => {
+      widgetSelectors.forEach(selector => {
         const elements = document.querySelectorAll(selector);
         elements.forEach(el => {
-          if (el && el.parentNode) {
+          if (el.parentNode) {
             el.parentNode.removeChild(el);
           }
         });
@@ -74,59 +82,9 @@ export default function DiscutAIWidget({ theme }: DiscutAIWidgetProps) {
       // Nettoyer la config
       if (window.DiscutAIWidget) {
         delete window.DiscutAIWidget;
-        console.log('  ✓ Config nettoyée');
       }
     };
-
-    // Vérifier si ce thème doit avoir le widget DiscutAI
-    if (theme.id !== 'restaurante' && theme.id !== 'generico') {
-      console.log('⚠️ Thème sans DiscutAI - nettoyage seulement');
-      cleanupWidget();
-      return;
-    }
-
-    const config = getWidgetConfig(theme.id);
-    if (!config) {
-      console.log('❌ Pas de config pour ce thème');
-      return;
-    }
-
-    // Nettoyer complètement avant de charger le nouveau widget
-    cleanupWidget();
-
-    // Configurer le widget avant de charger le script
-    console.log('🔧 Configuration DiscutAI Widget:', config);
-    window.DiscutAIWidget = { config };
-
-    // Attendre pour s'assurer que le cleanup est terminé
-    const loadTimeout = setTimeout(() => {
-      console.log('📦 Chargement du script DiscutAI...');
-
-      // Charger le script DiscutAI avec cache-busting pour forcer le rechargement
-      const script = document.createElement('script');
-      script.id = 'discutai-widget-loader';
-      script.src = `https://v2.discutai.com/widget/loader.js?v=${Date.now()}`;
-      script.async = true;
-
-      script.onload = () => {
-        console.log('✅ DiscutAI Widget chargé pour le thème:', theme.id);
-        console.log('📋 Config finale:', window.DiscutAIWidget);
-      };
-
-      script.onerror = () => {
-        console.error('❌ Erreur de chargement du widget DiscutAI');
-      };
-
-      document.body.appendChild(script);
-    }, 300);
-
-    // Cleanup au changement de thème ou démontage du composant
-    return () => {
-      console.log('🔄 Changement de thème - cleanup');
-      clearTimeout(loadTimeout);
-      cleanupWidget();
-    };
-  }, [theme.id]);
+  }, []); // Exécuter seulement au montage/démontage
 
   // Ce composant ne rend rien (le widget est injecté par le script)
   return null;
