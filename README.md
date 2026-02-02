@@ -61,13 +61,14 @@ npm start
 
 ## 🎨 Temas Disponíveis
 
-A landing page inclui 5 temas pré-configurados:
+A landing page inclui 6 temas pré-configurados:
 
 1. **Cabeleireiro** - Salão Beleza Pura
 2. **Restaurante** - Restaurante Sabor & Arte
 3. **Imobiliária** - Imóveis Prime
 4. **Dentista** - Clínica OdontoVida
 5. **Genérico** - Empresa Modelo
+6. **Lucy Marketing** - Agência de Marketing Digital
 
 ### Como usar os temas
 
@@ -81,6 +82,7 @@ http://localhost:3000/?theme=restaurante
 http://localhost:3000/?theme=imobiliaria
 http://localhost:3000/?theme=dentista
 http://localhost:3000/?theme=generico
+http://localhost:3000/?theme=lucy
 ```
 
 #### Via Footer
@@ -417,6 +419,50 @@ useEffect(() => {
 - **TypeScript**: 5.x
 - **Tailwind CSS**: 3.4.17
 - **Deployment**: Vercel (2 remotes: origin, vercel)
+
+---
+
+### 2026-02-02 (Suite) - Ajout du Thème Lucy Marketing
+
+#### 🎯 Objectif
+Créer un nouveau thème inspiré de MyLucy.ai pour représenter une agence de marketing digital.
+
+#### ✅ Implémentation
+
+**Nouveau Thème "Lucy Marketing"**
+- **Secteur**: Agence de marketing digital
+- **Couleur**: #FF6B9D (Rose professionnel)
+- **Services**:
+  - Création de contenu (posts, stories)
+  - Gestion de réseaux sociaux
+  - Publicité payante (Facebook, Instagram, Google)
+  - Stratégie de contenu et calendrier éditorial
+  - Design graphique et copywriting
+  - Analyse de performance
+
+**Configuration**:
+- Widget: DiscutAIWidget (comme generico)
+- Images: Stock professionnel d'Unsplash (équipes marketing, analytics, collaboration)
+- Palette inspirée de MyLucy.ai tout en restant original
+- Intégration complète avec le système de thèmes existant
+
+**Note importante**: Pour respecter les droits d'auteur, ce thème est **inspiré** de MyLucy.ai mais utilise du contenu original et des images de stock libres. Si vous avez l'autorisation d'utiliser les images exactes de MyLucy.ai, vous pouvez les remplacer dans `lib/themes.ts`.
+
+#### 📁 Fichiers Modifiés
+
+| Fichier | Modifications |
+|---------|--------------|
+| `lib/themes.ts` | Ajout du thème 'lucy' avec configuration complète |
+| `components/DiscutAIWidget.tsx` | Ajout config widget pour Lucy |
+| `app/page.tsx` | Mise à jour logique widget pour inclure Lucy |
+| `README.md` | Documentation du nouveau thème |
+
+#### 🔗 Accès au Thème
+
+URL: `?theme=lucy`
+- Exemple: `https://votre-site.vercel.app/?theme=lucy`
+
+**Commit**: `feat: Add Lucy Marketing theme inspired by mylucy.ai`
 
 ---
 
