@@ -87,7 +87,7 @@ export default function FooterThemeSwitcher({ currentTheme }: FooterThemeSwitche
 
           {/* Ligne 2 : Disclaimer */}
           <div className="text-gray-500 text-xs text-center">
-            Marca e imagens ilustrativas (demo)
+            Para TPRC (2026) Demo site - DiscutaiBR
           </div>
         </div>
       </div>
