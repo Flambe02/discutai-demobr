@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import Hero from '@/components/Hero';
 import Gallery from '@/components/Gallery';
 import BotWidget from '@/components/BotWidget';
+import DiscutAIWidget from '@/components/DiscutAIWidget';
 import FooterThemeSwitcher from '@/components/FooterThemeSwitcher';
 import { ThemeId } from '@/lib/themes';
 import {
@@ -238,8 +239,12 @@ function HomeContent() {
         </div>
       </section>
 
-      {/* Bot Widget */}
-      <BotWidget theme={theme} />
+      {/* Bot Widget - Afficher BotWidget ou DiscutAI selon le thème */}
+      {(currentThemeId === 'restaurante' || currentThemeId === 'generico') ? (
+        <DiscutAIWidget theme={theme} />
+      ) : (
+        <BotWidget theme={theme} />
+      )}
 
       {/* Footer Theme Switcher */}
       <FooterThemeSwitcher currentTheme={currentThemeId} />
