@@ -46,32 +46,36 @@ export default function DiscutAIWidget({ theme }: DiscutAIWidgetProps) {
 
     console.log('🔧 Initialisation DiscutAI Widget');
 
-    // Configurer le widget
-    window.DiscutAIWidget = { config };
+    // Attendre un peu pour s'assurer que le cleanup précédent est terminé
+    const initTimer = setTimeout(() => {
+      // Configurer le widget
+      window.DiscutAIWidget = { config };
+      console.log('📋 Config définie:', config);
 
-    // Vérifier si le script existe déjà
-    let script = document.getElementById('discutai-widget-loader') as HTMLScriptElement;
+      // Vérifier si le script existe déjà
+      let script = document.getElementById('discutai-widget-loader') as HTMLScriptElement;
 
-    if (!script) {
-      console.log('📦 Chargement du script DiscutAI');
-      // Charger le script seulement s'il n'existe pas
-      script = document.createElement('script');
-      script.id = 'discutai-widget-loader';
-      script.src = 'https://v2.discutai.com/widget/loader.js';
-      script.async = true;
+      if (!script) {
+        console.log('📦 Chargement du script DiscutAI');
+        // Charger le script seulement s'il n'existe pas
+        script = document.createElement('script');
+        script.id = 'discutai-widget-loader';
+        script.src = 'https://v2.discutai.com/widget/loader.js';
+        script.async = true;
 
-      script.onload = () => {
-        console.log('✅ Script DiscutAI chargé');
-      };
+        script.onload = () => {
+          console.log('✅ Script DiscutAI chargé');
+        };
 
-      script.onerror = () => {
-        console.error('❌ Erreur de chargement du script DiscutAI');
-      };
+        script.onerror = () => {
+          console.error('❌ Erreur de chargement du script DiscutAI');
+        };
 
-      document.body.appendChild(script);
-    } else {
-      console.log('ℹ️ Script DiscutAI déjà présent');
-    }
+        document.body.appendChild(script);
+      } else {
+        console.log('ℹ️ Script DiscutAI déjà présent');
+      }
+    }, 100);
 
     // Cleanup quand le composant est démonté
     return () => {
