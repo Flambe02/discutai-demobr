@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Hero from '@/components/Hero';
 import Gallery from '@/components/Gallery';
@@ -14,7 +14,7 @@ import {
   getTheme,
 } from '@/lib/themeUtils';
 
-export default function Home() {
+function HomeContent() {
   const searchParams = useSearchParams();
   const [currentThemeId, setCurrentThemeId] = useState<ThemeId>('cabeleireiro');
   const [isClient, setIsClient] = useState(false);
@@ -244,5 +244,13 @@ export default function Home() {
       {/* Footer Theme Switcher */}
       <FooterThemeSwitcher currentTheme={currentThemeId} />
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-gray-900" />}>
+      <HomeContent />
+    </Suspense>
   );
 }
