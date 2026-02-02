@@ -1,39 +1,52 @@
 /* Fix pour améliorer la lisibilité du widget DiscutAI */
 
-/* Améliorer le contraste du champ de saisie */
+/* Texte saisi en NOIR pour être bien visible */
 #discutai-widget-container input[type="text"],
 #discutai-widget-container textarea,
-#discutai-widget-container input::placeholder,
-#discutai-widget-container textarea::placeholder {
-  color: #1f2937 !important;
+#discutai-widget-container input,
+#discutai-widget-container textarea {
+  color: #000000 !important;
   opacity: 1 !important;
+  -webkit-text-fill-color: #000000 !important;
 }
 
-/* Placeholder plus visible */
+/* Placeholder en gris moyen */
 #discutai-widget-container input::placeholder,
-#discutai-widget-container textarea::placeholder {
-  color: #6b7280 !important;
-  opacity: 0.8 !important;
-}
-
-/* S'assurer que le texte est lisible */
-#discutai-widget-container {
-  color: #1f2937 !important;
+#discutai-widget-container textarea::placeholder,
+#discutai-widget-container input::-webkit-input-placeholder,
+#discutai-widget-container textarea::-webkit-input-placeholder {
+  color: #9ca3af !important;
+  opacity: 1 !important;
+  -webkit-text-fill-color: #9ca3af !important;
 }
 
 /* Style du champ de saisie */
 #discutai-widget-container input[type="text"],
-#discutai-widget-container textarea {
+#discutai-widget-container textarea,
+#discutai-widget-container input {
   background-color: #ffffff !important;
   border: 1px solid #d1d5db !important;
   border-radius: 0.5rem !important;
   padding: 0.75rem !important;
+  font-size: 14px !important;
 }
 
 /* Focus state */
 #discutai-widget-container input[type="text"]:focus,
-#discutai-widget-container textarea:focus {
+#discutai-widget-container textarea:focus,
+#discutai-widget-container input:focus {
   border-color: #6366f1 !important;
   outline: none !important;
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1) !important;
+  color: #000000 !important;
+}
+
+/* Force le texte noir même pendant la saisie */
+#discutai-widget-container * {
+  color: inherit;
+}
+
+#discutai-widget-container input,
+#discutai-widget-container textarea {
+  color: #000000 !important;
 }
