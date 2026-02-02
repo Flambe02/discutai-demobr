@@ -77,16 +77,34 @@ export default function DiscutAIWidget({ theme }: DiscutAIWidgetProps) {
     return () => {
       console.log('🧹 Cleanup DiscutAI Widget');
 
-      // NE PAS supprimer le script - le laisser en place
-      // Supprimer seulement les éléments du widget
-      const widgetContainer = document.querySelector('[id^="discutai-widget"]');
-      if (widgetContainer && widgetContainer.parentNode) {
-        widgetContainer.parentNode.removeChild(widgetContainer);
+      // Supprimer le script
+      const scriptToRemove = document.getElementById('discutai-widget-loader');
+      if (scriptToRemove) {
+        scriptToRemove.remove();
+        console.log('  ✓ Script supprimé');
       }
+
+      // Supprimer les éléments du widget
+      const widgetSelectors = [
+        '[id^="discutai-widget"]',
+        '[id*="discutai"]',
+        '[class*="discutai"]',
+        'iframe[src*="discutai"]',
+      ];
+
+      widgetSelectors.forEach(selector => {
+        const elements = document.querySelectorAll(selector);
+        elements.forEach(el => {
+          if (el.parentNode && el.id !== 'discutai-widget-loader') {
+            el.parentNode.removeChild(el);
+          }
+        });
+      });
 
       // Nettoyer la config
       if (window.DiscutAIWidget) {
         delete window.DiscutAIWidget;
+        console.log('  ✓ Config nettoyée');
       }
     };
   }, []); // Exécuter seulement au montage/démontage
