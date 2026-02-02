@@ -1,54 +1,68 @@
 /* Fix pour améliorer la lisibilité du widget DiscutAI */
 
-/* Texte saisi en NOIR pour être bien visible */
+/* TEXTE SAISI EN NOIR - Règles ultra-agressives */
+#discutai-widget-container input,
 #discutai-widget-container input[type="text"],
 #discutai-widget-container textarea,
-#discutai-widget-container input,
-#discutai-widget-container textarea {
+[id^="discutai"] input,
+[id^="discutai"] textarea,
+[class*="discutai"] input,
+[class*="discutai"] textarea {
   color: #000000 !important;
   opacity: 1 !important;
   -webkit-text-fill-color: #000000 !important;
+  caret-color: #000000 !important;
 }
 
-/* Placeholder en gris moyen */
+/* Placeholder en gris foncé pour être visible */
 #discutai-widget-container input::placeholder,
 #discutai-widget-container textarea::placeholder,
 #discutai-widget-container input::-webkit-input-placeholder,
-#discutai-widget-container textarea::-webkit-input-placeholder {
-  color: #9ca3af !important;
+#discutai-widget-container textarea::-webkit-input-placeholder,
+[id^="discutai"] input::placeholder,
+[id^="discutai"] textarea::placeholder {
+  color: #6b7280 !important;
   opacity: 1 !important;
-  -webkit-text-fill-color: #9ca3af !important;
+  -webkit-text-fill-color: #6b7280 !important;
 }
 
 /* Style du champ de saisie */
+#discutai-widget-container input,
 #discutai-widget-container input[type="text"],
 #discutai-widget-container textarea,
-#discutai-widget-container input {
+[id^="discutai"] input,
+[id^="discutai"] textarea {
   background-color: #ffffff !important;
   border: 1px solid #d1d5db !important;
   border-radius: 0.5rem !important;
   padding: 0.75rem !important;
-  font-size: 14px !important;
+  font-size: 15px !important;
+  line-height: 1.5 !important;
 }
 
 /* Focus state */
-#discutai-widget-container input[type="text"]:focus,
+#discutai-widget-container input:focus,
 #discutai-widget-container textarea:focus,
-#discutai-widget-container input:focus {
+[id^="discutai"] input:focus,
+[id^="discutai"] textarea:focus {
   border-color: #6366f1 !important;
   outline: none !important;
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1) !important;
   color: #000000 !important;
+  -webkit-text-fill-color: #000000 !important;
 }
 
-/* Force le texte noir même pendant la saisie */
-#discutai-widget-container * {
-  color: inherit;
-}
-
-#discutai-widget-container input,
-#discutai-widget-container textarea {
+/* Force NOIR pour tous les états */
+#discutai-widget-container input:active,
+#discutai-widget-container textarea:active,
+[id^="discutai"] input:active,
+[id^="discutai"] textarea:active,
+#discutai-widget-container input:hover,
+#discutai-widget-container textarea:hover,
+[id^="discutai"] input:hover,
+[id^="discutai"] textarea:hover {
   color: #000000 !important;
+  -webkit-text-fill-color: #000000 !important;
 }
 
 /* Contrôle du z-index pour éviter les chevauchements */
