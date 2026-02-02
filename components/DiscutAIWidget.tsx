@@ -44,40 +44,45 @@ export default function DiscutAIWidget({ theme }: DiscutAIWidgetProps) {
     const config = getWidgetConfig(theme.id);
     if (!config) return;
 
+    console.log('🔧 Initialisation DiscutAI Widget');
+
     // Configurer le widget
     window.DiscutAIWidget = { config };
 
-    // Charger le script
-    const script = document.createElement('script');
-    script.id = 'discutai-widget-loader';
-    script.src = 'https://v2.discutai.com/widget/loader.js';
-    script.async = true;
+    // Vérifier si le script existe déjà
+    let script = document.getElementById('discutai-widget-loader') as HTMLScriptElement;
 
-    document.body.appendChild(script);
+    if (!script) {
+      console.log('📦 Chargement du script DiscutAI');
+      // Charger le script seulement s'il n'existe pas
+      script = document.createElement('script');
+      script.id = 'discutai-widget-loader';
+      script.src = 'https://v2.discutai.com/widget/loader.js';
+      script.async = true;
+
+      script.onload = () => {
+        console.log('✅ Script DiscutAI chargé');
+      };
+
+      script.onerror = () => {
+        console.error('❌ Erreur de chargement du script DiscutAI');
+      };
+
+      document.body.appendChild(script);
+    } else {
+      console.log('ℹ️ Script DiscutAI déjà présent');
+    }
 
     // Cleanup quand le composant est démonté
     return () => {
-      // Supprimer le script
-      const scriptToRemove = document.getElementById('discutai-widget-loader');
-      if (scriptToRemove) {
-        scriptToRemove.remove();
+      console.log('🧹 Cleanup DiscutAI Widget');
+
+      // NE PAS supprimer le script - le laisser en place
+      // Supprimer seulement les éléments du widget
+      const widgetContainer = document.querySelector('[id^="discutai-widget"]');
+      if (widgetContainer && widgetContainer.parentNode) {
+        widgetContainer.parentNode.removeChild(widgetContainer);
       }
-
-      // Supprimer les éléments du widget
-      const widgetSelectors = [
-        '[id*="discutai"]',
-        '[class*="discutai"]',
-        'iframe[src*="discutai"]',
-      ];
-
-      widgetSelectors.forEach(selector => {
-        const elements = document.querySelectorAll(selector);
-        elements.forEach(el => {
-          if (el.parentNode) {
-            el.parentNode.removeChild(el);
-          }
-        });
-      });
 
       // Nettoyer la config
       if (window.DiscutAIWidget) {
