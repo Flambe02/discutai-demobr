@@ -31,21 +31,9 @@ function HomeContent() {
     setCurrentThemeId(resolvedTheme);
   }, [searchParams]);
 
-  // Exposer une fonction globale pour ouvrir le widget (utile pour les boutons CTA)
-  useEffect(() => {
-    (window as any).openChatWidget = openBot;
-    return () => {
-      delete (window as any).openChatWidget;
-    };
-  }, [currentThemeId]);
-
   const theme = getTheme(currentThemeId);
 
-  // Éviter le flash de contenu avant hydration
-  if (!isClient) {
-    return null;
-  }
-
+  // Fonction pour ouvrir le bot/widget
   const openBot = () => {
     // Cette fonction sera appelée par le CTA pour ouvrir le bot
     if (currentThemeId === 'generico') {
@@ -70,6 +58,19 @@ function HomeContent() {
       }
     }
   };
+
+  // Exposer une fonction globale pour ouvrir le widget (utile pour les boutons CTA)
+  useEffect(() => {
+    (window as any).openChatWidget = openBot;
+    return () => {
+      delete (window as any).openChatWidget;
+    };
+  }, [currentThemeId, openBot]);
+
+  // Éviter le flash de contenu avant hydration
+  if (!isClient) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen">
