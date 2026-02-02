@@ -1,0 +1,64 @@
+{
+  "themes": [
+    {
+      "name": "Genérico (PME/Serviços)",
+      "id": "generico",
+      "hero": {
+        "url": "https://images.unsplash.com/photo-1556742111-a301076d9d18?w=1920&q=90",
+        "filename": "hero.webp",
+        "alt": "Proprietário de pequeno negócio usando smartphone na loja",
+        "description": "Ambiente de loja com luz natural quente, proprietário sorridente usando smartphone, foco em tecnologia e atendimento"
+      },
+      "gallery": [
+        {
+          "url": "https://images.unsplash.com/photo-1556745753-b2904692b3cd?w=800&q=90",
+          "filename": "gallery-01.webp",
+          "alt": "Cliente sendo atendido em pequeno comércio",
+          "description": "Interação cliente-vendedor, ambiente acolhedor, luz quente"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=800&q=90",
+          "filename": "gallery-02.webp",
+          "alt": "Espaço de trabalho moderno com laptop e smartphone",
+          "description": "Workspace limpo, laptop, café, smartphone sobre mesa de madeira"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=90",
+          "filename": "gallery-03.webp",
+          "alt": "Terminal de pagamento em uso",
+          "description": "Pagamento por aproximação, mãos realizando transação, ambiente moderno"
+        }
+      ]
+    },
+    {
+      "name": "Restaurante",
+      "id": "restaurante",
+      "hero": {
+        "url": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1920&q=90",
+        "filename": "hero.webp",
+        "alt": "Interior acolhedor de restaurante com mesas preparadas",
+        "description": "Restaurante com iluminação ambiente quente, mesas preparadas, atmosfera convidativa"
+      },
+      "gallery": [
+        {
+          "url": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&q=90",
+          "filename": "gallery-01.webp",
+          "alt": "Hambúrguer gourmet servido com batatas",
+          "description": "Prato principal bem apresentado, foco na comida, cores vibrantes"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=90",
+          "filename": "gallery-02.webp",
+          "alt": "Ambiente interno do restaurante durante serviço",
+          "description": "Salão do restaurante, clientes ao fundo (desfocados), ambiente acolhedor"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800&q=90",
+          "filename": "gallery-03.webp",
+          "alt": "Chef preparando pratos na cozinha",
+          "description": "Cozinha profissional, chef finalizando prato, foco em qualidade"
+        }
+      ]
+    }
+  ]
+}
