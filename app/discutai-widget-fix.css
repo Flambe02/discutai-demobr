@@ -50,3 +50,11 @@
 #discutai-widget-container textarea {
   color: #000000 !important;
 }
+
+/* Contrôle du z-index pour éviter les chevauchements */
+#discutai-widget-container,
+[id^="discutai"],
+[class*="discutai-widget"] {
+  z-index: 50 !important;
+  max-z-index: 50 !important;
+}
