@@ -13,6 +13,7 @@ const getWidgetConfig = (themeId: string) => {
     restaurante: {
       assistantWorkspaceId: "87ab9a2d-8d18-45bd-b349-145f59254096",
       assistantName: "TRPC Test",
+      apiKey: "discutai_5a75e24f7d924e1b8ec34414e6cbb0be",
       themeColor: "#F59E0B",
       position: "bottom-right",
       welcomeMessage: "Bom dia, como posso ajudar hoje?",
@@ -24,6 +25,7 @@ const getWidgetConfig = (themeId: string) => {
     generico: {
       assistantWorkspaceId: "87ab9a2d-8d18-45bd-b349-145f59254096",
       assistantName: "TRPC Test",
+      apiKey: "discutai_5a75e24f7d924e1b8ec34414e6cbb0be",
       themeColor: "#6366F1",
       position: "bottom-right",
       welcomeMessage: "Bom dia, como posso ajudar hoje?",
@@ -156,6 +158,7 @@ declare global {
       config: {
         assistantWorkspaceId: string;
         assistantName: string;
+        apiKey: string;
         themeColor: string;
         position: string;
         welcomeMessage: string;
