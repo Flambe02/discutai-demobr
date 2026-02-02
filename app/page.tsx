@@ -31,6 +31,14 @@ function HomeContent() {
     setCurrentThemeId(resolvedTheme);
   }, [searchParams]);
 
+  // Exposer une fonction globale pour ouvrir le widget (utile pour les boutons CTA)
+  useEffect(() => {
+    (window as any).openChatWidget = openBot;
+    return () => {
+      delete (window as any).openChatWidget;
+    };
+  }, [currentThemeId]);
+
   const theme = getTheme(currentThemeId);
 
   // Éviter le flash de contenu avant hydration
@@ -40,10 +48,26 @@ function HomeContent() {
 
   const openBot = () => {
     // Cette fonction sera appelée par le CTA pour ouvrir le bot
-    // Le BotWidget gère son propre état d'ouverture, on peut simuler un clic
-    const botButton = document.querySelector('[aria-label="Abrir assistente virtual"]') as HTMLButtonElement;
-    if (botButton) {
-      botButton.click();
+    if (currentThemeId === 'generico') {
+      // Pour le thème generico, chercher et cliquer sur le bouton DiscutAI
+      // Essayer plusieurs sélecteurs possibles pour le widget DiscutAI
+      const discutaiButton =
+        document.querySelector('[id*="discutai"][role="button"]') as HTMLButtonElement ||
+        document.querySelector('[class*="discutai"][role="button"]') as HTMLButtonElement ||
+        document.querySelector('iframe[src*="discutai"]')?.previousElementSibling as HTMLButtonElement ||
+        document.querySelector('[id^="discutai"] button') as HTMLButtonElement;
+
+      if (discutaiButton) {
+        discutaiButton.click();
+      } else {
+        console.log('⚠️ Bouton DiscutAI non trouvé - le widget est peut-être encore en chargement');
+      }
+    } else {
+      // Pour les autres thèmes, utiliser le BotWidget standard
+      const botButton = document.querySelector('[aria-label="Abrir assistente virtual"]') as HTMLButtonElement;
+      if (botButton) {
+        botButton.click();
+      }
     }
   };
 

@@ -92,12 +92,12 @@ export default function DiscutAIWidget({ theme }: DiscutAIWidgetProps) {
     console.log('🔧 Configuration DiscutAI Widget:', config);
     window.DiscutAIWidget = { config };
 
-    // Attendre un peu pour s'assurer que la config est bien définie
+    // Attendre un peu pour s'assurer que la config est bien définie et que le cleanup est terminé
     setTimeout(() => {
-      // Charger le script DiscutAI
+      // Charger le script DiscutAI avec cache-busting pour forcer le rechargement
       const script = document.createElement('script');
       script.id = 'discutai-widget-loader';
-      script.src = 'https://v2.discutai.com/widget/loader.js';
+      script.src = `https://v2.discutai.com/widget/loader.js?v=${Date.now()}`;
       script.async = true;
 
       script.onload = () => {
@@ -110,7 +110,7 @@ export default function DiscutAIWidget({ theme }: DiscutAIWidgetProps) {
       };
 
       document.body.appendChild(script);
-    }, 100);
+    }, 200);
 
     // Cleanup au démontage du composant
     return () => {
