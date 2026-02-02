@@ -59,23 +59,28 @@ export default function DiscutAIWidget({ theme }: DiscutAIWidgetProps) {
     }
 
     // Configurer le widget avant de charger le script
+    console.log('🔧 Configuration DiscutAI Widget:', config);
     window.DiscutAIWidget = { config };
 
-    // Charger le script DiscutAI
-    const script = document.createElement('script');
-    script.id = 'discutai-widget-loader';
-    script.src = 'https://v2.discutai.com/widget/loader.js';
-    script.async = true;
+    // Attendre un peu pour s'assurer que la config est bien définie
+    setTimeout(() => {
+      // Charger le script DiscutAI
+      const script = document.createElement('script');
+      script.id = 'discutai-widget-loader';
+      script.src = 'https://v2.discutai.com/widget/loader.js';
+      script.async = true;
 
-    script.onload = () => {
-      console.log('✅ DiscutAI Widget chargé pour le thème:', theme.id);
-    };
+      script.onload = () => {
+        console.log('✅ DiscutAI Widget chargé pour le thème:', theme.id);
+        console.log('📋 Config finale:', window.DiscutAIWidget);
+      };
 
-    script.onerror = () => {
-      console.error('❌ Erreur de chargement du widget DiscutAI');
-    };
+      script.onerror = () => {
+        console.error('❌ Erreur de chargement du widget DiscutAI');
+      };
 
-    document.body.appendChild(script);
+      document.body.appendChild(script);
+    }, 100);
 
     // Cleanup au démontage du composant
     return () => {
