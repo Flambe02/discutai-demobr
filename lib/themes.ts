@@ -30,218 +30,256 @@ export interface Theme {
     hero: { src: string; alt: string };
     gallery: { src: string; alt: string }[];
   };
+  /** Section Événements / Réservation de salle (ex: thème restaurante) */
+  eventsSection?: {
+    title: string;
+    subtitle: string;
+    items: string[];
+    ctaLabel: string;
+  };
+  /** Page type MyLucy (landing LUCY — Marketing Inteligente) */
+  lucyLanding?: {
+    loginUrl: string;
+    whatsappUrl: string;
+    whatsappNumber: string;
+    challenges: { title: string; description: string; price: string; cta: string; ctaLink?: string; image: string }[];
+    moreVisibilityText: string;
+    moreVisibilityCta: string;
+    missionTitle: string;
+    missionText: string;
+    pillarsTitle: string;
+    pillars: { title: string; description: string }[];
+    policyUrl: string;
+    termsUrl: string;
+    social: { name: string; url: string }[];
+  };
 }
 
 export const themes: Record<ThemeId, Theme> = {
   cabeleireiro: {
     id: 'cabeleireiro',
-    brandName: 'Studio BelaForma',
-    tagline: 'Cortes, cor e cuidado premium',
+    brandName: 'Barbaria do Rei',
+    tagline: 'Corte, barba e estilo. Atendimento exclusivo.',
     branding: {
-      monogram: 'SB',
-      logoAlt: 'Logo Studio BelaForma',
+      monogram: 'CR',
+      logoAlt: 'Logo Barbaria do Rei',
     },
-    accentColor: '#EC4899',
-    gradientSecondary: '#8B5CF6',
+    accentColor: '#B45309',
+    gradientSecondary: '#78350F',
     address: 'Rua das Flores, 123 - Centro, São Paulo - SP',
-    hours: 'Seg-Sáb: 9h às 20h | Dom: 10h às 18h',
+    hours: 'Ter-Sáb: 9h às 19h | Seg e Dom: sob agendamento',
     phone: '(11) 3456-7890',
     whatsapp: '(11) 98765-4321',
-    email: 'contato@belezapura.com.br',
-    heroTitle: 'Transforme seu visual com especialistas',
-    heroSubtitle: 'Corte, coloração, tratamentos capilares e muito mais. Agende seu horário de forma rápida e fácil com nosso assistente virtual.',
+    email: 'contato@barbariadorei.com.br',
+    heroTitle: 'Barba e cabelo no lugar. Você em destaque.',
+    heroSubtitle: 'Corte masculino, barba com navalha e toalha quente, degradê e desenhos. Agende pelo WhatsApp ou pelo assistente virtual — atendimento personalizado.',
     ctaPrimaryLabel: 'Agendar horário',
     kpis: [
-      'Atendimento 24/7',
-      'Agendamento instantâneo',
-      'Confirmação automática',
-      'Profissionais certificados'
+      'Agendamento pelo WhatsApp',
+      'Corte e barba com precisão',
+      'Produtos premium',
+      'Atendimento exclusivo'
     ],
     services: [
-      'Corte feminino e masculino',
-      'Escova e finalização',
-      'Coloração e mechas',
-      'Hidratação e tratamentos',
-      'Penteados para eventos'
+      'Corte masculino (máquina e tesoura)',
+      'Barba com navalha e toalha quente',
+      'Degradê e desenhos',
+      'Sobrancelha e bigode',
+      'Combo corte + barba',
+      'Hidratação de barba'
     ],
     infos: [
-      'Aceitamos cartão e Pix',
-      'Produtos profissionais',
+      'Pix e cartão',
       'Ambiente climatizado',
-      'Café e Wi-Fi grátis',
-      'Estacionamento conveniado'
+      'Produtos de qualidade profissional',
+      'Horário sob agendamento',
+      'Atendimento individual'
     ],
-    whyText: 'Com mais de 15 anos de experiência, nosso studio oferece serviços de alta qualidade com profissionais especializados. Utilizamos apenas produtos premium e garantimos sua satisfação. Nosso assistente virtual está disponível 24h para agendamentos e dúvidas.',
+    whyText: 'Na Barbaria do Rei o foco é você: corte e barba feitos com cuidado e técnica. Uso de navalha, toalha quente e produtos que valorizam seu visual. Agende pelo chat ou WhatsApp e garanta seu horário.',
     botExamples: [
-      'Quero agendar um corte para amanhã',
-      'Quanto custa uma coloração completa?',
-      'Vocês trabalham com que marcas?',
-      'Qual horário tem disponível na sexta?',
+      'Quero agendar um corte para esta semana',
+      'Quanto custa corte e barba?',
+      'Tem horário disponível no sábado?',
+      'Fazem degradê e desenho?',
       'Preciso remarcar meu horário',
-      'Fazem escova progressiva?'
+      'Qual o endereço e horário de funcionamento?'
     ],
-    botTitle: 'Assistente Virtual',
-    botSubtitle: 'Agende seu horário ou tire suas dúvidas',
-    botGreeting: 'Olá! Sou o assistente do Studio BelaForma. Posso ajudar a agendar seu horário, informar preços ou esclarecer qualquer dúvida. Como posso te ajudar hoje?',
+    botTitle: 'Assistente Barbaria do Rei',
+    botSubtitle: 'Agende seu horário ou tire dúvidas',
+    botGreeting: 'Fala! Sou o assistente da Barbaria do Rei. Posso agendar seu corte ou barba, informar preços e horários. Como posso te ajudar?',
     images: {
       hero: {
-        src: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1200&q=80',
-        alt: 'Interior moderno de salão de beleza com cadeiras e espelhos'
+        src: 'https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=1200&q=80',
+        alt: 'Barbearia com cadeira de barbeiro e espelho'
       },
       gallery: [
         {
-          src: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&q=80',
-          alt: 'Profissional realizando corte de cabelo'
+          src: 'https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=800&q=80',
+          alt: 'Barbeiro fazendo barba com navalha'
         },
         {
-          src: 'https://images.unsplash.com/photo-1562322140-8baeececf3df?w=800&q=80',
-          alt: 'Produtos profissionais de cabeleireiro'
+          src: 'https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=800&q=80',
+          alt: 'Corte masculino na barbearia'
         },
         {
-          src: 'https://images.unsplash.com/photo-1633681926022-84c23e8cb2d6?w=800&q=80',
-          alt: 'Ambiente aconchegante do salão'
+          src: 'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=800&q=80',
+          alt: 'Ambiente da Barbaria do Rei'
         }
       ]
     }
   },
   restaurante: {
     id: 'restaurante',
-    brandName: 'Bistrô Vila Nova',
-    tagline: 'Sabor, clima e boa mesa',
+    brandName: 'La Bouchon Brasserie',
+    tagline: 'Clima aconchegante. Bistrô parisiense em São Paulo.',
     branding: {
-      monogram: 'BV',
-      logoAlt: 'Logo Bistrô Vila Nova',
+      monogram: 'LB',
+      logoAlt: 'Logo La Bouchon Brasserie',
     },
-    accentColor: '#F59E0B',
-    gradientSecondary: '#EF4444',
-    address: 'Av. Paulista, 1500 - Bela Vista, São Paulo - SP',
-    hours: 'Seg-Dom: 11h30 às 23h | Sex-Sáb: até 01h',
-    phone: '(11) 3234-5678',
-    whatsapp: '+5511973953946',
-    email: 'reservas@saborarte.com.br',
-    heroTitle: 'Uma experiência gastronômica inesquecível',
-    heroSubtitle: 'Pratos autorais, ambiente aconchegante e atendimento impecável. Reserve sua mesa com nosso assistente virtual.',
+    accentColor: '#C9A227',
+    gradientSecondary: '#8B6914',
+    address: 'Rua dos Pinheiros, 254 - Pinheiros, São Paulo - SP',
+    hours: 'Dom-Qui: 12h às 24h | Sex-Sáb: 12h à 1h',
+    phone: '(11) 2359-8141',
+    whatsapp: '+5511953115884',
+    email: 'reservas@labouchon.com.br',
+    heroTitle: 'Pratos clássicos, simples e saborosos',
+    heroSubtitle: 'Inspirado nos verdadeiros bistrôs parisienses, com jazz na alma. Reserve sua mesa, consulte o cardápio ou peça delivery pelo assistente virtual.',
     ctaPrimaryLabel: 'Reservar mesa',
     kpis: [
-      'Reservas instantâneas',
-      'Cardápio completo no chat',
-      'Delivery disponível',
-      'Chef premiado'
+      'Reservas pelo chat ou telefone',
+      'Cardápios e delivery',
+      'Brunch sábados e domingos',
+      'Buffet de almoço seg-sex'
     ],
     services: [
-      'Almoço executivo',
-      'Jantar à la carte',
-      'Menu degustação',
-      'Eventos e celebrações',
-      'Delivery e take-away'
+      'Almoço e jantar à la carte',
+      'Brunch (sáb, dom e feriados, 8h às 11h30)',
+      'Buffet de almoço (seg-sex 12h às 15h)',
+      'Eventos e encomendas',
+      'Delivery e take-away',
+      'Cocktails e petit plats no bar'
     ],
     infos: [
-      'Opções vegetarianas e veganas',
-      'Cardápio sem glúten',
-      'Sommelier disponível',
-      'Área kids aos domingos',
-      'Estacionamento com manobrista'
+      'Múltiplas unidades: Pinheiros, Jardins, Iguatemi, Pátio Higienópolis',
+      'Horários por unidade no site',
+      'Entre em contato para reservas',
+      'Delivery disponível'
     ],
-    whyText: 'Premiado pela crítica especializada, nosso bistrô combina técnica, ingredientes frescos e criatividade. Nossa equipe está pronta para proporcionar uma experiência única. Use nosso assistente para reservas, consultar o menu ou pedir delivery.',
+    whyText: 'De clima aconchegante e com inspiração nos bistrôs parisienses, servimos pratos clássicos e saborosos. O jazz é parte da nossa identidade. Use o assistente para reservas, cardápios, horários de funcionamento ou delivery.',
     botExamples: [
-      'Quero reservar mesa para 4 pessoas hoje à noite',
-      'Qual o prato do dia?',
-      'Vocês têm opções veganas?',
-      'Quanto custa o menu degustação?',
-      'Fazem delivery na região da Vila Madalena?',
-      'Preciso de informações sobre alergênicos'
+      'Quero reservar mesa para 4 pessoas',
+      'Gostaria de reservar a sala para um evento',
+      'Qual o horário de funcionamento?',
+      'Vocês têm brunch? Quando é?',
+      'O buffet de almoço é em qual horário?',
+      'Fazem delivery em Pinheiros?',
+      'Preciso de informações para evento privado'
     ],
-    botTitle: 'Assistente de Reservas',
-    botSubtitle: 'Reservas, cardápio e delivery',
-    botGreeting: 'Bem-vindo ao Bistrô Vila Nova! Posso ajudar com reservas, informações sobre nosso cardápio, opções de delivery ou qualquer dúvida. O que você gostaria de saber?',
+    botTitle: 'Assistente La Bouchon',
+    botSubtitle: 'Reservas, cardápios e delivery',
+    botGreeting: 'Bem-vindo à La Bouchon Brasserie! Posso ajudar com reservas, cardápios, horários de funcionamento, brunch, buffet ou delivery. Como posso ajudar?',
     images: {
       hero: {
         src: '/images/themes/restaurante/hero.webp',
-        alt: 'Interior acolhedor de restaurante com mesas preparadas'
+        alt: 'Interior da La Bouchon Brasserie, ambiente de bistrô'
       },
       gallery: [
         {
           src: '/images/themes/restaurante/gallery-01.webp',
-          alt: 'Hambúrguer gourmet servido com batatas'
+          alt: 'Prato clássico do cardápio'
         },
         {
           src: '/images/themes/restaurante/gallery-02.webp',
-          alt: 'Ambiente interno do restaurante durante serviço'
+          alt: 'Ambiente do restaurante durante o serviço'
         },
         {
           src: '/images/themes/restaurante/gallery-03.webp',
-          alt: 'Chef preparando pratos na cozinha'
+          alt: 'Cozinha e preparação dos pratos'
         }
       ]
+    },
+    eventsSection: {
+      title: 'Eventos e reserva de salão',
+      subtitle: 'Celebre conosco: aniversários, jantares de negócios, confraternizações e eventos privados. Ambiente acolhedor e cardápio sob medida.',
+      items: [
+        'Sala privativa para grupos (até 30 pessoas)',
+        'Menu degustação e bebidas para eventos',
+        'Brunch ou jantar sob encomenda',
+        'Reserva de espaço para reuniões e confraternizações'
+      ],
+      ctaLabel: 'Solicitar reserva de salão'
     }
   },
   imobiliaria: {
     id: 'imobiliaria',
     brandName: 'NovaChave Imóveis',
-    tagline: 'Encontre seu lugar ideal',
+    tagline: 'Qualidade para toda vida',
     branding: {
       monogram: 'NI',
       logoAlt: 'Logo NovaChave Imóveis',
     },
-    accentColor: '#3B82F6',
-    gradientSecondary: '#06B6D4',
-    address: 'Rua dos Empresários, 456 - Itaim Bibi, São Paulo - SP',
-    hours: 'Seg-Sex: 9h às 19h | Sáb: 9h às 14h',
-    phone: '(11) 3345-6789',
-    whatsapp: '(11) 98888-7777',
-    email: 'atendimento@imoveisprime.com.br',
-    heroTitle: 'Encontre o imóvel perfeito para você',
-    heroSubtitle: 'Compra, venda ou aluguel de imóveis com segurança e agilidade. Nosso assistente virtual está pronto para te ajudar.',
-    ctaPrimaryLabel: 'Buscar imóveis',
+    accentColor: '#1E3A5F',
+    gradientSecondary: '#2E5A8F',
+    address: 'Av. São Gabriel, 477 - 17º andar - Itaim Bibi, São Paulo - SP',
+    hours: 'Seg-Sex: 9h às 18h | Sáb: sob agendamento',
+    phone: '(11) 3165-3165',
+    whatsapp: '(11) 95046-5569',
+    email: 'contato@novachave.com.br',
+    heroTitle: 'Lançamentos, prontos e locação',
+    heroSubtitle: 'Empreendimentos de alto padrão em São Paulo. Agende sua visita ao decorado, consulte lançamentos e imóveis prontos para morar. Fale pelo chat, WhatsApp ou telefone.',
+    ctaPrimaryLabel: 'Agendar visita',
     kpis: [
-      'Atendimento 24/7',
-      'Visitas agendadas online',
-      'Simulação de financiamento',
-      '+1.500 imóveis disponíveis'
+      'Visite o decorado',
+      'Lançamentos e prontos',
+      'Agende sua visita',
+      'Atendimento por WhatsApp'
     ],
     services: [
-      'Compra e venda de imóveis',
+      'Lançamentos (novos empreendimentos)',
+      'Prontos para morar',
+      'Imóveis entregues',
       'Locação residencial e comercial',
-      'Consultoria imobiliária',
-      'Avaliação de imóveis',
-      'Documentação completa'
+      'Em obras – acompanhamento',
+      'Compramos seu terreno'
     ],
     infos: [
       'Financiamento facilitado',
-      'Visitas virtuais disponíveis',
-      'Assessoria jurídica',
-      'Parcerias com bancos',
-      'Corretores especializados'
+      'Visitas agendadas ao decorado',
+      'Área do corretor',
+      'Consultores especializados',
+      'Itaim Bibi e regiões nobres'
     ],
-    whyText: 'Com mais de 20 anos no mercado, somos referência em negócios imobiliários. Nossa equipe de corretores qualificados e nosso assistente virtual estão prontos para encontrar o imóvel ideal para você, seja para comprar, vender ou alugar.',
+    whyText: 'A NovaChave Imóveis atua com empreendimentos de qualidade em São Paulo. Agende sua visita, conheça lançamentos e imóveis prontos para morar. Nossa equipe e o assistente virtual estão à disposição por telefone, WhatsApp ou chat.',
     botExamples: [
-      'Procuro apartamento de 2 quartos na Zona Sul',
-      'Quanto custa alugar um imóvel comercial?',
-      'Quero agendar visita para um apartamento',
-      'Como funciona o financiamento?',
-      'Preciso vender meu apartamento',
-      'Quais documentos preciso para alugar?'
+      'Quero agendar visita ao decorado',
+      'Quais lançamentos vocês têm?',
+      'Tem imóveis prontos para morar no Jardins?',
+      'Como agendar uma visita?',
+      'Preciso de informações sobre financiamento',
+      'Compram terrenos?',
+      'Quero ver apartamentos para locação'
     ],
-    botTitle: 'Assistente Imobiliário',
-    botSubtitle: 'Encontre seu imóvel ideal',
-    botGreeting: 'Olá! Sou o assistente da NovaChave Imóveis. Posso ajudar você a encontrar imóveis para compra ou locação, agendar visitas, simular financiamento e muito mais. O que você procura?',
+    botTitle: 'Assistente NovaChave',
+    botSubtitle: 'Agende sua visita, lançamentos e locação',
+    botGreeting: 'Olá! Sou o assistente da NovaChave Imóveis. Posso ajudar a agendar sua visita ao decorado, informar sobre lançamentos, imóveis prontos para morar ou locação. Como prefere ser atendido: WhatsApp, e-mail ou ligação? Como posso ajudar?',
     images: {
       hero: {
         src: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80',
-        alt: 'Casa moderna com arquitetura contemporânea'
+        alt: 'Empreendimento NovaChave Imóveis - qualidade para toda vida'
       },
       gallery: [
         {
           src: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80',
-          alt: 'Interior moderno de sala de estar'
+          alt: 'Interior decorado - visite o decorado'
         },
         {
           src: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80',
-          alt: 'Cozinha moderna e equipada'
+          alt: 'Cozinha e área de convivência'
         },
         {
           src: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&q=80',
-          alt: 'Vista externa de propriedade premium'
+          alt: 'Fachada de empreendimento - prontos para morar'
         }
       ]
     }
@@ -249,70 +287,72 @@ export const themes: Record<ThemeId, Theme> = {
   dentista: {
     id: 'dentista',
     brandName: 'Clínica Sorriso Prime',
-    tagline: 'Odontologia moderna e acolhedora',
+    tagline: 'Um novo padrão de excelência na odontologia',
     branding: {
       monogram: 'SP',
       logoAlt: 'Logo Clínica Sorriso Prime',
     },
-    accentColor: '#10B981',
-    gradientSecondary: '#06B6D4',
-    address: 'Av. Brigadeiro Faria Lima, 2000 - Pinheiros, São Paulo - SP',
-    hours: 'Seg-Sex: 8h às 19h | Sáb: 8h às 13h',
-    phone: '(11) 3567-8901',
-    whatsapp: '(11) 97777-6666',
-    email: 'contato@odontovida.com.br',
-    heroTitle: 'Cuidando do seu sorriso com excelência',
-    heroSubtitle: 'Tratamentos odontológicos completos com tecnologia de ponta e profissionais especializados. Agende sua consulta agora.',
-    ctaPrimaryLabel: 'Marcar consulta',
+    accentColor: '#0D9488',
+    gradientSecondary: '#0F766E',
+    address: 'Av. Paulista, 925 - 13º andar - Bela Vista, São Paulo - SP',
+    hours: 'Seg a Sex: 8h às 18h',
+    phone: '(11) 97632-4570',
+    whatsapp: '(11) 97632-4570',
+    email: 'contato@sorrisoprime.com.br',
+    heroTitle: 'Dentistas especialistas',
+    heroSubtitle: 'Ambiente sofisticado e acolhedor, excelência técnica e inovação constante. Oferecemos uma experiência exclusiva: resultados clínicos impecáveis com atendimento verdadeiramente humano. Agende sua consulta.',
+    ctaPrimaryLabel: 'Agendar consulta',
     kpis: [
-      'Urgências atendidas',
-      'Agendamento online',
-      'Convênios aceitos',
-      'Dentistas especializados'
+      '+25 anos de experiência',
+      'Agendar consulta online',
+      'Especialistas de referência',
+      'Ambiente acolhedor na Paulista'
     ],
     services: [
-      'Limpeza e prevenção',
-      'Clareamento dental',
-      'Implantes e próteses',
-      'Ortodontia e aparelhos',
-      'Tratamento de canal'
+      'Odontologia estética (clareamento, facetas, lentes de contato)',
+      'Odontologia restauradora e implantes',
+      'Odontologia preventiva',
+      'Odontologia digital',
+      'Tratamento de canal e de gengiva',
+      'Dente do siso e cirurgias'
     ],
     infos: [
-      'Convênios médicos e odontológicos',
-      'Parcelamento sem juros',
-      'Equipamentos modernos',
-      'Sala de raio-X digital',
-      'Atendimento infantil especializado'
+      'Convênios e parcelamento',
+      'Equipamentos e tecnologias de ponta',
+      'Avaliação e planejamento personalizado',
+      'Antes e depois – acompanhamento',
+      'Localização: Av. Paulista'
     ],
-    whyText: 'Há mais de 25 anos cuidando da saúde bucal de famílias inteiras. Nossa clínica conta com dentistas especializados em todas as áreas e equipamentos de última geração. Agende sua avaliação através do nosso assistente virtual disponível 24h.',
+    whyText: 'A Clínica Sorriso Prime reúne especialistas de referência, tecnologias de ponta e compromisso com o paciente. Acreditamos que um sorriso expressa confiança e bem-estar. Agende uma consulta, receba uma avaliação e viva uma nova experiência. Entre em contato pelo chat, WhatsApp ou telefone.',
     botExamples: [
-      'Preciso agendar uma consulta de urgência',
-      'Quanto custa um clareamento dental?',
-      'Vocês aceitam convênio Unimed?',
-      'Qual dentista faz implante?',
-      'Quero fazer uma avaliação ortodôntica',
-      'Posso parcelar o tratamento?'
+      'Quero agendar uma consulta',
+      'Quanto custa clareamento dental?',
+      'Fazem facetas de porcelana e lentes de contato?',
+      'Preciso de avaliação para implante',
+      'Vocês aceitam convênio?',
+      'Qual horário tem disponível esta semana?',
+      'Tratamento de canal e de gengiva'
     ],
     botTitle: 'Assistente Sorriso Prime',
-    botSubtitle: 'Agendamentos e informações',
-    botGreeting: 'Olá! Sou o assistente da Clínica Sorriso Prime. Posso agendar consultas, informar sobre tratamentos, convênios e valores. Como posso ajudar com seu sorriso hoje?',
+    botSubtitle: 'Agende sua consulta e tire dúvidas',
+    botGreeting: 'Olá! Sou o assistente da Clínica Sorriso Prime. Posso agendar sua consulta, informar sobre tratamentos (estética, implantes, canal, clareamento), convênios e valores. Como posso ajudar com seu sorriso hoje?',
     images: {
       hero: {
         src: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=1200&q=80',
-        alt: 'Consultório odontológico moderno e equipado'
+        alt: 'Clínica Sorriso Prime - ambiente sofisticado e acolhedor'
       },
       gallery: [
         {
           src: 'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=800&q=80',
-          alt: 'Dentista realizando consulta'
+          alt: 'Atendimento odontológico com excelência técnica'
         },
         {
           src: 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=800&q=80',
-          alt: 'Equipamentos odontológicos modernos'
+          alt: 'Equipamentos modernos e odontologia digital'
         },
         {
           src: 'https://images.unsplash.com/photo-1598256989800-fe5f95da9787?w=800&q=80',
-          alt: 'Recepção da clínica odontológica'
+          alt: 'Recepção e ambiente acolhedor - Av. Paulista'
         }
       ]
     }
@@ -390,76 +430,131 @@ export const themes: Record<ThemeId, Theme> = {
   },
   lucy: {
     id: 'lucy',
-    brandName: 'Lucy Marketing',
-    tagline: 'Marketing Digital que Transforma',
+    brandName: 'LUCY',
+    tagline: 'Marketing Inteligente para vender mais',
     branding: {
       monogram: 'LM',
-      logoAlt: 'Logo Lucy Marketing',
+      logoAlt: 'Logo LUCY',
     },
     accentColor: '#FF6B9D',
     gradientSecondary: '#C94277',
-    address: 'Av. Paulista, 1234 - Bela Vista, São Paulo - SP',
+    address: 'São Paulo - SP',
     hours: 'Seg-Sex: 9h às 18h',
-    phone: '(11) 3456-7890',
-    whatsapp: '+5511987654321',
-    email: 'contato@lucymarketing.com.br',
-    heroTitle: 'Transforme sua presença digital',
-    heroSubtitle: 'Criação de conteúdo, gestão de redes sociais e estratégias de marketing que geram resultados reais para seu negócio.',
-    ctaPrimaryLabel: 'Começar agora',
+    phone: '(11) 99589-9176',
+    whatsapp: '11995899176',
+    email: 'contato@mylucy.ai',
+    heroTitle: 'Marketing que cabe no seu bolso, no seu dia a dia e no seu negócio.',
+    heroSubtitle: 'A Lucy é a solução que nasceu para ser seu braço – cabeça e ombro – de comunicação e marketing, de um jeito simples, acessível, estratégico e sem enrolação.',
+    ctaPrimaryLabel: 'Chama a Lucy!',
     kpis: [
-      'Planos a partir de R$ 99/mês',
-      'Gestão completa de redes',
-      'Criação de conteúdo profissional',
-      'Análise de performance',
-      'Suporte especializado'
+      'A partir de R$ 99/mês',
+      'Plataforma com IA',
+      'Posts, cardápio digital, site',
+      'Fale com especialistas'
     ],
     services: [
-      'Criação de posts e stories',
-      'Planejamento de calendário editorial',
-      'Gestão de redes sociais',
-      'Anúncios pagos (Facebook, Instagram, Google)',
-      'Relatórios de performance',
-      'Estratégia de conteúdo',
-      'Design gráfico e identidade visual',
-      'Copywriting profissional'
+      'Criação de posts (até 10/mês + cardápio digital)',
+      'Instagram + site (16 posts/mês + onepage)',
+      'Mídia paga e funis de vendas',
+      'Gestão completa de marketing',
+      'Plataforma self-service com IA'
     ],
     infos: [
-      'Plataforma self-service disponível',
-      'Serviço gerenciado com equipe criativa',
-      'Otimização para conversão',
-      'Atendimento personalizado',
-      'Sem fidelidade - cancele quando quiser'
+      'Planos a partir de R$ 99/mês',
+      'Equipe criativa e estratégica',
+      'Cardápio digital e anúncios Google',
+      'Atendimento por WhatsApp'
     ],
-    whyText: 'Com mais de 5 anos de experiência em marketing digital, ajudamos pequenas e médias empresas a crescerem online. Nossa plataforma combina tecnologia com expertise criativo para entregar resultados mensuráveis. Do self-service à gestão completa, temos a solução ideal para sua empresa.',
+    whyText: 'Com um modelo de negócios inclusivo e democrático, a Lucy oferece estratégias de qualidade e soluções criativas, com tecnologia e Inteligência Artificial a serviço dos pequenos e médios negócios. Queremos tornar o marketing acessível para que pessoas e negócios prosperem.',
     botExamples: [
-      'Quais planos vocês oferecem?',
-      'Como funciona a criação de conteúdo?',
-      'Vocês fazem gestão de Instagram?',
-      'Quanto custa anúncios no Facebook?',
-      'Preciso de ajuda com minha estratégia digital',
-      'Como agendar uma demonstração?'
+      'Quero começar por R$ 99/mês',
+      'Preciso de posts e não sei fazer sozinho',
+      'Quero Instagram atualizado e site',
+      'Já tenho redes e quero vender mais',
+      'Quero deixar todo marketing com a Lucy',
+      'Tenho outro desafio, quero conversar'
     ],
     botTitle: 'Assistente Lucy',
-    botSubtitle: 'Marketing digital sob medida',
-    botGreeting: 'Olá! Sou a assistente da Lucy Marketing. Posso te ajudar a escolher o melhor plano, tirar dúvidas sobre nossos serviços ou agendar uma conversa com nossa equipe. Como posso ajudar?',
+    botSubtitle: 'Chama a Lucy!',
+    botGreeting: 'Oi! Sou a assistente da Lucy. Posso te ajudar a escolher o melhor plano (a partir de R$ 99/mês), tirar dúvidas ou conectar você com nossos especialistas. Como posso ajudar?',
     images: {
       hero: {
-        src: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&q=80',
-        alt: 'Equipe de marketing trabalhando com análise de dados e estratégia digital'
+        src: '/lucy/imagem-lucy-mosaico.avif',
+        alt: 'LUCY — Marketing Inteligente para vender mais'
       },
       gallery: [
+        { src: '/lucy/iStock-2222205938-rchf9si8frns2baetmd5f77st4ujg4rb86ju7vpcts.jpg', alt: 'Marketing que cabe no seu bolso' },
+        { src: '/lucy/iStock-2188524624-rchfbr04occa92g0dyu647fdd172hfj6hvh97mstv4.jpg', alt: 'Soluções criativas' },
+        { src: '/lucy/iStock-2230066494-rchfbo6m3u8fa8k3ufmaeq4zkvkyuc7zhhisrsx0ds.jpg', alt: 'Equipe Lucy' }
+      ]
+    },
+    lucyLanding: {
+      loginUrl: 'https://login.mylucy.ai/mylucy',
+      whatsappUrl: 'https://api.whatsapp.com/send/?phone=5511995899176',
+      whatsappNumber: '11995899176',
+      challenges: [
         {
-          src: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&q=80',
-          alt: 'Equipe colaborativa trabalhando em estratégia de marketing'
+          title: 'Não tenho tempo e muita grana para fazer meus posts.',
+          description: 'Dentro da nossa plataforma, você mesmo cria seus posts para Facebook, Instagram e WhatsApp, agenda tudo e até publica direto pela ferramenta! Dá pra fazer Cardápio Digital e Promocional, Site para divulgar seu negócio e até Anúncios do Google.',
+          price: 'A partir de R$ 99/mês',
+          cta: 'Comece Agora!',
+          ctaLink: 'https://login.mylucy.ai/mylucy',
+          image: '/lucy/iStock-2222205938-rchf9si8frns2baetmd5f77st4ujg4rb86ju7vpcts.jpg'
         },
         {
-          src: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&q=80',
-          alt: 'Profissionais analisando métricas de performance digital'
+          title: 'Poxa, eu preciso criar meus posts, mas não sei fazer sozinho.',
+          description: 'Não sabe mexer na plataforma ou não tem tempo? Chama a Lucy! A nossa equipe cria até 10 posts por mês + Cardápio Digital para seu negócio e entrega prontinho pra você.',
+          price: 'A partir de R$ 199/mês',
+          cta: 'Chama a Lucy!',
+          image: '/lucy/iStock-2188524624-rchfbr04occa92g0dyu647fdd172hfj6hvh97mstv4.jpg'
         },
         {
-          src: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80',
-          alt: 'Reunião de planejamento de campanha de marketing'
+          title: 'Preciso de um Instagram mais atualizado e um site simples.',
+          description: 'Contrate a partir de 16 posts por mês - 8 formatos estáticos de feed + 8 desdobramento para stories - com direção criativa e de arte e texto de apoio, para publicação nos canais sociais da sua marca + onepage para seu negócio.',
+          price: 'A partir de R$ 1.499/mês',
+          cta: 'Chama a Lucy!',
+          image: '/lucy/iStock-2194842670.avif'
+        },
+        {
+          title: 'Já tenho redes sociais e site e quero vender mais.',
+          description: 'Conte com a gente para operações que precisam atrair e converter leads, com mídia paga e funis de vendas, incluindo tráfego pago, landing page e automação de atendimento.',
+          price: 'A partir de R$ 3.499/mês',
+          cta: 'Chama a Lucy!',
+          image: '/lucy/iStock-2199563535-2048x1365.avif'
+        },
+        {
+          title: 'Quero deixar tudo de marketing com a Lucy.',
+          description: 'Chama a Lucy para gestão completa de marketing, digital ou off-line, incluindo redes sociais, comunicação interna, influenciadores, investimento em mídia e funis completos para campanhas, com apoio estratégico dedicado.',
+          price: 'A partir de 1 briefing',
+          cta: 'Chama a Lucy!',
+          image: '/lucy/iStock-2201443946-1024x683.avif'
+        },
+        {
+          title: 'Tenho um outro desafio. Como faço?',
+          description: 'Tem um desafio aí e quer conversar com a gente? Chama a Lucy!',
+          price: 'A partir de 1 café',
+          cta: 'Chama a Lucy!',
+          image: '/lucy/iStock-2201908243.avif'
         }
+      ],
+      moreVisibilityText: '/MAIS VISIBILIDADE. /MAIS CLIENTES. /MAIS REPUTAÇÃO. /MAIS FATURAMENTO PARA O SEU NEGÓCIO.\n\nCrie você mesmo seus materiais de marketing em minutos, quantas vezes quiser, usando ferramenta com inteligência artificial, a partir de R$ 99 por mês!',
+      moreVisibilityCta: 'Comece Agora!',
+      missionTitle: 'Nossa Missão É Transformadora',
+      missionText: 'Com um modelo de negócios inclusivo, democrático e com propósito, a Lucy vem para oferecer estratégias de qualidade e soluções criativas por meio de uma plataforma que coloca a tecnologia e a Inteligência Artificial a serviço dos pequenos e médios negócios. Queremos tornar o marketing acessível para que pessoas e negócios prosperem e conquistem sua liberdade financeira.',
+      pillarsTitle: 'Tem um desafio aí?',
+      pillars: [
+        { title: 'Criação', description: 'Lucy é sua parceira criativa: transforma ideias em posts, campanhas e conteúdos inteligentes, com agilidade e estratégia — sem complicação.' },
+        { title: 'Planejamento', description: 'Lucy é seu braço de planejamento: organiza calendários, encontra oportunidades e conecta estratégias para o seu marketing render mais.' },
+        { title: 'Performance', description: 'Lucy é sua aliada em performance: acompanha resultados, ajusta campanhas e transforma dados em crescimento real.' },
+        { title: 'Comunicação Integrada', description: 'Lucy é sua parceira de comunicação integrada: conecta canais, mensagens e estratégias para sua marca falar com consistência e impacto.' }
+      ],
+      policyUrl: 'https://mylucy.ai/site/mylucy-antigo/politica-de-privacidade/',
+      termsUrl: 'https://mylucy.ai/site/mylucy-antigo/termos-de-uso/',
+      social: [
+        { name: 'WhatsApp', url: 'https://api.whatsapp.com/send/?phone=5511995899176' },
+        { name: 'Facebook', url: 'https://www.facebook.com/mylucy.co' },
+        { name: 'Instagram', url: 'https://www.instagram.com/mylucy.ai/' },
+        { name: 'LinkedIn', url: 'https://www.linkedin.com/company/mylucy' }
       ]
     }
   }

@@ -57,6 +57,19 @@ export default function BrandLogo({ themeId, variant, className = '' }: BrandLog
             <circle cx="6" cy="18" r="1" fill="currentColor"/>
           </svg>
         );
+      case 'lucy':
+        return (
+          <svg viewBox="0 0 24 24" fill="none" className={className} role="img" aria-label={logoAlt}>
+            <path d="M12 3L14 9L20 10L15 14L16 20L12 17L8 20L9 14L4 10L10 9L12 3Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        );
+      default:
+        return (
+          <svg viewBox="0 0 24 24" fill="none" className={className} role="img" aria-label={logoAlt}>
+            <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.5"/>
+            <path d="M12 6v6l4 2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+          </svg>
+        );
     }
   };
 
@@ -97,6 +110,19 @@ export default function BrandLogo({ themeId, variant, className = '' }: BrandLog
           <svg viewBox="0 0 48 48" fill="none" className={className} role="img" aria-label={logoAlt}>
             <path d="M12 28V12L22 22V12" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
             <path d="M29 16C29 16 29 12 33 12C37 12 37 14 37 16C37 18 35 19 33 19C35 19 38 20 38 23C38 26 35 28 32 28C29 28 27 26 27 24" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        );
+      case 'lucy':
+        return (
+          <svg viewBox="0 0 48 48" fill="none" className={className} role="img" aria-label={logoAlt}>
+            <path d="M24 8L28 20L40 24L28 28L24 40L20 28L8 24L20 20L24 8Z" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        );
+      default:
+        return (
+          <svg viewBox="0 0 48 48" fill="none" className={className} role="img" aria-label={logoAlt}>
+            <circle cx="24" cy="24" r="18" stroke="currentColor" strokeWidth="2.5"/>
+            <path d="M24 14v10l6 4" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
           </svg>
         );
     }

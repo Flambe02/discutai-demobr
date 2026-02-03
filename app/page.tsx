@@ -9,6 +9,7 @@ import DiscutAIWidget from '@/components/DiscutAIWidget';
 import WhatsAppWidget from '@/components/WhatsAppWidget';
 import FooterThemeSwitcher from '@/components/FooterThemeSwitcher';
 import BrandLogo from '@/components/BrandLogo';
+import LucyLanding from '@/components/LucyLanding';
 import { ThemeId } from '@/lib/themes';
 import {
   getThemeFromQuery,
@@ -70,6 +71,17 @@ function HomeContent() {
   // Éviter le flash de contenu avant hydration
   if (!isClient) {
     return null;
+  }
+
+  // Page type MyLucy (copycat mylucy.ai) pour le thème Lucy
+  if (currentThemeId === 'lucy' && theme.lucyLanding) {
+    return (
+      <>
+        <LucyLanding theme={theme} openBot={openBot} />
+        <DiscutAIWidget theme={theme} />
+        <FooterThemeSwitcher currentTheme={currentThemeId} />
+      </>
+    );
   }
 
   return (
@@ -171,6 +183,44 @@ function HomeContent() {
           </div>
         </div>
       </section>
+
+      {/* Section: Événements / Réservation de salle (restaurante uniquement) */}
+      {theme.eventsSection && (
+        <section className="py-12 border-t border-gray-800">
+          <div className="container mx-auto px-4">
+            <div className="max-w-3xl mx-auto text-center mb-8">
+              <h2 className="text-3xl font-bold text-white mb-3 flex items-center justify-center gap-2">
+                <span>🎉</span>
+                {theme.eventsSection.title}
+              </h2>
+              <p className="text-gray-300 text-lg">
+                {theme.eventsSection.subtitle}
+              </p>
+            </div>
+            <div className="grid sm:grid-cols-2 gap-4 max-w-4xl mx-auto mb-8">
+              {theme.eventsSection.items.map((item, index) => (
+                <div
+                  key={index}
+                  className="flex items-start gap-3 p-4 rounded-xl text-left border border-gray-700 bg-gray-800/50 hover:border-gray-600 transition-colors"
+                  style={{ borderColor: `${theme.accentColor}30` }}
+                >
+                  <span className="text-xl shrink-0" style={{ color: theme.accentColor }}>✓</span>
+                  <span className="text-gray-300">{item}</span>
+                </div>
+              ))}
+            </div>
+            <div className="text-center">
+              <button
+                onClick={openBot}
+                className="px-6 py-3 rounded-xl font-semibold text-white hover:opacity-90 transition-opacity"
+                style={{ background: `linear-gradient(135deg, ${theme.accentColor}, ${theme.gradientSecondary})` }}
+              >
+                {theme.eventsSection.ctaLabel}
+              </button>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Section: Trois cards (Pourquoi + Bot Examples + Contact) */}
       <section className="py-12">

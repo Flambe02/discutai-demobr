@@ -63,12 +63,12 @@ npm start
 
 A landing page inclui 6 temas pré-configurados:
 
-1. **Cabeleireiro** - Salão Beleza Pura
-2. **Restaurante** - Restaurante Sabor & Arte
-3. **Imobiliária** - Imóveis Prime
-4. **Dentista** - Clínica OdontoVida
+1. **Cabeleireiro** - Barbaria do Rei (inspirado em [César Reis Barbeiro](https://www.facebook.com/cesarreis.barbeiro/) / [Instagram](https://www.instagram.com/p/DQpqigpicwA/))
+2. **Restaurante** - La Bouchon Brasserie (inspirado em [Le Jazz](https://www.lejazz.com.br/))
+3. **Imobiliária** - NovaChave Imóveis (inspirado em [Seisa](https://seisa.com.br/))
+4. **Dentista** - Clínica Sorriso Prime (inspirado em [Benatti Odontologia](https://benattiodontologia.com.br/))
 5. **Genérico** - Empresa Modelo
-6. **Lucy Marketing** - Agência de Marketing Digital
+6. **Lucy** - LUCY — Marketing Inteligente para vender mais (réplique de [mylucy.ai](https://mylucy.ai/site/mylucy/), avec autorisation)
 
 ### Como usar os temas
 
@@ -279,6 +279,137 @@ Para dúvidas ou problemas, abra uma issue no repositório.
 
 ## 📖 Journal de Développement (Dev Log)
 
+### [Session] Page Lucy – Réplique MyLucy (mylucy.ai)
+
+#### 🎯 Objectif
+Remplacer la page du thème **Lucy Marketing** par une réplique de la page principale de [MyLucy](https://mylucy.ai/site/mylucy/) (« Marketing Inteligente para vender mais »), avec autorisation de Lucy. Utiliser les images du dossier `Lucy/` et les liens officiels (login, WhatsApp, política, termos, redes sociais).
+
+#### ✅ Modifications effectuées
+
+**1. Thème `lucy` (`lib/themes.ts`)**
+- **Marque** : LUCY — tagline « Marketing Inteligente para vender mais »
+- **Hero** : « Marketing que cabe no seu bolso, no seu dia a dia e no seu negócio. » + texte Lucy braço/cabeça/ombro
+- **CTA** : « Chama a Lucy! »
+- **Nouveau champ** `lucyLanding` : `loginUrl`, `whatsappUrl`, `challenges` (6 cartes avec titre, description, preço, CTA, image), `moreVisibilityText`/`moreVisibilityCta`, `missionTitle`/`missionText`, `pillarsTitle`/`pillars` (4 piliers), `policyUrl`, `termsUrl`, `social` (WhatsApp, Facebook, Instagram, LinkedIn). Liens officiels : login.mylucy.ai, api.whatsapp.com/send/?phone=5511995899176, mylucy.ai/site/mylucy-antigo/politica-de-privacidade/, termos-de-uso, facebook.com/mylucy.co, instagram.com/mylucy.ai, linkedin.com/company/mylucy.
+
+**2. Composant `components/LucyLanding.tsx`**
+- Header : logo LUCY (SVG), « Fazer login », « Fale com Especialistas » (WhatsApp)
+- Hero : titre, sous-titre, bouton « Chama a Lucy! » (ouvre le widget DiscutAI)
+- Section « Qual o seu desafio hoje? » : 6 cartes (image, titre, description, preço, CTA « Comece Agora! » ou « Chama a Lucy! »)
+- Section « /MAIS VISIBILIDADE. /MAIS CLIENTES… » + CTA « Comece Agora! » (lien login)
+- Section « Nossa Missão É Transformadora » + texte + CTA
+- Section « Tem um desafio aí? » : 4 piliers (Criação, Planejamento, Performance, Comunicação Integrada)
+- Footer : Institucional (Home, Política de Privacidade, Termos de Uso), Siga a Lucy (redes), copyright Lucy ©
+
+**3. Page (`app/page.tsx`)**
+- Si `currentThemeId === 'lucy'` et `theme.lucyLanding` → rendu de `<LucyLanding theme={theme} openBot={openBot} />` + `<FooterThemeSwitcher />` à la place du layout générique.
+
+**4. Images**
+- `public/lucy/` : logo `lucy-logo-header.svg`, images iStock (avif, jpg) copiées depuis le dossier `Lucy/` pour les 6 défis et la galerie.
+
+#### 📁 Fichiers modifiés / créés
+
+| Fichier | Description |
+|---------|-------------|
+| `lib/themes.ts` | Thème `lucy` + type `lucyLanding` avec contenu MyLucy et liens officiels |
+| `components/LucyLanding.tsx` | Nouveau – page type MyLucy |
+| `app/page.tsx` | Import LucyLanding, rendu conditionnel pour thème lucy |
+| `public/lucy/` | Logo SVG + images (avif, jpg) depuis Lucy/ |
+| `README.md` | Liste des thèmes + entrée dev log |
+
+---
+
+### [Session] Widget DiscutAI persistant sur la page Generico / Lucy
+
+#### 🎯 Objectif
+Corriger la disparition du widget DiscutAI sur la page Generico (et Lucy) : au retour sur cette page après avoir changé de thème, le widget doit toujours être présent.
+
+#### ✅ Modifications effectuées
+
+**Fichier `components/DiscutAIWidget.tsx`** :
+
+1. **Cache-busting du script au montage**
+   - Avant : `script.src = 'https://v2.discutai.com/widget/loader.js'`
+   - Après : `script.src = \`https://v2.discutai.com/widget/loader.js?v=${Date.now()}\`` (cache-bust)
+   - À chaque montage (y compris au retour sur generico/lucy), le script est rechargé avec une URL différente, ce qui force le navigateur à l’exécuter à nouveau (au lieu de servir une version en cache sans exécution).
+
+2. **Dépendance du `useEffect` sur `theme.id`**
+   - `useEffect(..., [])` → `useEffect(..., [theme.id])`
+   - Au changement generico ↔ lucy, l’effet se relance (cleanup puis ré-init avec la bonne config).
+   - Au retour depuis un autre thème, le composant remonte, l’effet s’exécute et injecte le script avec cache-bust → le widget réapparaît.
+
+Le cleanup existant (suppression du script par `id="discutai-widget-loader"` et des nœuds DOM du widget) reste inchangé, donc le widget ne s’affiche que sur les thèmes generico et lucy.
+
+#### 📁 Fichiers modifiés
+
+| Fichier | Description |
+|---------|-------------|
+| `components/DiscutAIWidget.tsx` | Cache-busting `loader.js?v=${Date.now()}`, deps `[theme.id]` |
+| `README.md` | Journal de développement mis à jour, problème "widget ne réapparaît pas" marqué résolu |
+
+#### 📝 Mémoire pour la suite
+
+- **Pourquoi le cache-busting ici ne fait pas apparaître le widget partout** : le cleanup retire toujours le script par son `id` fixe et tous les éléments discutai ; seuls les thèmes generico/lucy rendent `<DiscutAIWidget />`, donc le script n’est présent que sur ces pages.
+- **Pourquoi il faut recharger le script** : après suppression du nœud `<script>`, le ré-injecter avec la même `src` peut être servi depuis le cache sans ré-exécution (comportement navigateur). Un `?v=timestamp` force un nouveau chargement et une nouvelle exécution.
+
+---
+
+### [Session] Thème Restaurante – Inspiration Le Jazz Brasserie
+
+#### 🎯 Objectif
+Rendre la page du thème **restaurante** plus réaliste en s’inspirant du site [Le Jazz](https://www.lejazz.com.br/) : ton brasserie parisienne, jazz, horaires et services typiques.
+
+#### ✅ Modifications effectuées
+
+**Fichier `lib/themes.ts` – thème `restaurante`** :
+
+| Élément | Avant | Après |
+|--------|--------|--------|
+| **Marque** | Bistrô Vila Nova | **La Bouchon Brasserie** |
+| **Slogan** | Sabor, clima e boa mesa | Clima aconchegante. Bistrô parisiense em São Paulo. |
+| **Monogramme** | BV | LB |
+| **Adresse** | Av. Paulista… | Rua dos Pinheiros, 254 - Pinheiros |
+| **Horaires** | Seg-Dom 11h30-23h… | Dom-Qui: 12h às 24h \| Sex-Sáb: 12h à 1h |
+| **Téléphone / WhatsApp** | (11) 3234-5678 | (11) 2359-8141 / +55 11 95311-5884 |
+| **Hero** | Uma experiência gastronômica… | Pratos clássicos, simples e saborosos + inspiração bistrô parisiense, jazz |
+| **Services** | Almoço executivo, jantar… | Brunch (sáb/dom 8h-11h30), Buffet almoço (seg-sex 12h-15h), Eventos, Delivery, Cocktails e petit plats |
+| **Bot** | Bistrô Vila Nova | Assistente La Bouchon, reservas/cardápios/delivery |
+
+Référence : [Le Jazz – nossa história, endereços, horários, cardápios](https://www.lejazz.com.br/).
+
+---
+
+### [Session] Thème Cabeleireiro – Personnalisation César Reis Barbearia
+
+#### 🎯 Objectif
+Personnaliser la page du thème **cabeleireiro** en s’inspirant du contenu des pages [César Reis Barbeiro (Facebook)](https://www.facebook.com/cesarreis.barbeiro/) et [Instagram](https://www.instagram.com/p/DQpqigpicwA/) pour un rendu type barbearia (barbier) plutôt que salão de beleza.
+
+#### ✅ Modifications effectuées
+
+**Fichier `lib/themes.ts` – thème `cabeleireiro`** :
+
+| Élément | Avant | Après |
+|--------|--------|--------|
+| **Marque** | Studio BelaForma | **Barbaria do Rei** |
+| **Slogan** | Cortes, cor e cuidado premium | Corte, barba e estilo. Atendimento exclusivo. |
+| **Monogramme** | SB | CR |
+| **Couleurs** | Rose/violet (#EC4899, #8B5CF6) | Tons marron/âmbar (#B45309, #78350F) |
+| **Hero** | Transforme seu visual… | Barba e cabelo no lugar. Você em destaque. |
+| **Services** | Corte feminino/masculino, escova, coloração… | Corte masculino, barba com navalha e toalha quente, degradê, combo corte+barba… |
+| **Bot** | Assistente do Studio BelaForma | Assistente Barbaria do Rei, ton plus direct (« Fala! ») |
+| **Images** | Salão de beleza (Unsplash) | Barbearia (cadeira, navalha, corte masculino) |
+
+**Contenu inspiré des pages barbeiro** : focus corte + barba, agendamento pelo WhatsApp, atendimento exclusivo, horários tipo “Ter–Sáb” / “sob agendamento”, frases curtas et professionnelles.
+
+#### 📁 Fichiers modifiés
+
+| Fichier | Description |
+|---------|-------------|
+| `lib/themes.ts` | Thème `cabeleireiro` remplacé par Barbaria do Rei (texte, services, couleurs, images) |
+| `README.md` | Liste des thèmes mise à jour + entrée dev log |
+
+---
+
 ### 2026-02-02 - Intégration Widget DiscutAI et Corrections
 
 #### 🎯 Objectif
@@ -310,40 +441,16 @@ Intégrer le widget DiscutAI officiel sur le thème "generico" et corriger les p
 - **Solution**: Cleanup complet du script et des éléments DOM dans le `return` du `useEffect`
 - **Fichier**: `components/DiscutAIWidget.tsx`
 
-#### 🔄 Problème En Cours de Résolution
+**5. Widget DiscutAI ne réapparaissait pas au retour sur "generico" / "lucy"** ✅ (résolu plus bas)
 
-**Widget DiscutAI ne réapparaît pas au retour sur "generico"**
+**Cause du bug "widget ne réapparaît pas"**:
+- Au retour sur generico/lucy, le composant remonte et réinjecte le script avec la même `src`.
+- Le navigateur peut servir le script depuis le cache **sans le ré-exécuter**, donc le widget ne se réaffiche pas.
 
-**Contexte technique**:
-- Les widgets React natifs (BotWidget, WhatsAppWidget) fonctionnent parfaitement
-- DiscutAIWidget charge un script tiers qui injecte du DOM dynamiquement
-- React démonte le composant lors du changement de thème (comportement normal)
-
-**Approches testées**:
-
-1. **Cache-busting avec timestamp** ❌
-   ```typescript
-   script.src = `https://v2.discutai.com/widget/loader.js?v=${Date.now()}`;
-   ```
-   Résultat: Widget apparaissait partout
-
-2. **Cleanup complet + rechargement** ⚠️
-   ```typescript
-   return () => {
-     document.getElementById('discutai-widget-loader')?.remove();
-     // Suppression de tous les éléments injectés
-   };
-   ```
-   Résultat: Widget correctement isolé mais ne se réinitialise pas
-
-3. **Délai d'initialisation (EN TEST)** 🔄
-   ```typescript
-   const initTimer = setTimeout(() => {
-     window.DiscutAIWidget = { config };
-     // Chargement du script...
-   }, 100);
-   ```
-   Status: Déployé, en attente de tests utilisateur avec logs console
+**Solution appliquée** (voir entrée dev log ci-dessous "Widget DiscutAI persistant") :
+- Cache-busting sur la `src` du script : `loader.js?v=${Date.now()}` à chaque montage, pour forcer un nouveau chargement et une nouvelle exécution.
+- Le cleanup supprime toujours le script par `id="discutai-widget-loader"`, donc le widget n’apparaît que sur generico/lucy.
+- Dépendance `[theme.id]` dans le `useEffect` pour mettre à jour la config quand on alterne generico ↔ lucy.
 
 **Configuration Widget**:
 ```typescript
@@ -353,7 +460,7 @@ apiKey: "discutai_5a75e24f7d924e1b8ec34414e6cbb0be"
 baseUrl: "https://v2.discutai.com"
 ```
 
-**Logs de diagnostic ajoutés**:
+**Logs de diagnostic**:
 - 🔧 Initialisation DiscutAI Widget
 - 📦 Chargement du script DiscutAI / ℹ️ Script déjà présent
 - ✅ Script DiscutAI chargé / ❌ Erreur de chargement
@@ -405,12 +512,8 @@ useEffect(() => {
 
 #### 🔮 Prochaines Étapes
 
-1. **Test utilisateur** avec logs console pour diagnostiquer le problème de réapparition
-2. **Solutions alternatives** si le délai ne fonctionne pas:
-   - Garder le script en DOM mais réinitialiser uniquement la config
-   - Ajouter un flag global pour forcer rechargement complet
-   - Contacter l'équipe DiscutAI pour méthode officielle de réinitialisation
-3. **Optimisation**: Considérer React.StrictMode impact en dev vs prod
+1. **Optimisation**: Considérer React.StrictMode impact en dev vs prod
+2. Tests de non-régression sur les thèmes generico / lucy (changement de thème et retour)
 
 #### 🛠️ Stack Technique (Mise à jour)
 
@@ -467,5 +570,6 @@ URL: `?theme=lucy`
 ---
 
 Développé avec ❤️ pour démonstrations Discutai
-#   d i s c u t a i - d e m o b r  
+#   d i s c u t a i - d e m o b r 
+ 
  
