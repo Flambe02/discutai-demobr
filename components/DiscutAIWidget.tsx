@@ -34,21 +34,29 @@ export default function DiscutAIWidget({ theme }: DiscutAIWidgetProps) {
 
     console.log('🔧 Chargement widget DiscutAI pour:', theme.id);
 
-    // Configurer le widget
+    // IMPORTANT: Définir la configuration AVANT de charger le script
     (window as any).DiscutAIWidget = { config };
+    console.log('📋 Config définie:', (window as any).DiscutAIWidget);
 
-    // Charger le script DiscutAI (toujours, dev et prod)
+    // Vérifier si le script existe déjà
+    let existingScript = document.getElementById('discutai-widget-loader');
+    if (existingScript) {
+      console.log('ℹ️ Script déjà présent, suppression...');
+      existingScript.remove();
+    }
+
+    // Charger le script DiscutAI avec le bon ID
     const script = document.createElement('script');
-    script.id = 'discutai-widget-script';
+    script.id = 'discutai-widget-loader'; // ID attendu par le loader
     script.src = `https://v2.discutai.com/widget/loader.js?t=${Date.now()}`;
     script.async = true;
 
     script.onload = () => {
-      console.log('✅ Widget DiscutAI chargé');
+      console.log('✅ Script loader DiscutAI chargé');
     };
 
     script.onerror = () => {
-      console.error('❌ Erreur chargement widget DiscutAI');
+      console.error('❌ Erreur chargement script loader DiscutAI');
     };
 
     document.body.appendChild(script);
@@ -56,7 +64,7 @@ export default function DiscutAIWidget({ theme }: DiscutAIWidgetProps) {
     // Cleanup au démontage
     return () => {
       console.log('🧹 Cleanup widget DiscutAI');
-      const s = document.getElementById('discutai-widget-script');
+      const s = document.getElementById('discutai-widget-loader');
       if (s) s.remove();
       // Supprimer tous les éléments injectés par le widget
       document.querySelectorAll('[id*="discutai"], [class*="discutai"]').forEach(el => el.remove());
