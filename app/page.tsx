@@ -37,9 +37,8 @@ function HomeContent() {
   // Fonction pour ouvrir le bot/widget
   const openBot = () => {
     // Cette fonction sera appelée par le CTA pour ouvrir le bot
-    if (currentThemeId === 'generico' || currentThemeId === 'lucy') {
-      // Pour les thèmes generico et lucy, chercher et cliquer sur le bouton DiscutAI
-      // Essayer plusieurs sélecteurs possibles pour le widget DiscutAI
+    if (currentThemeId === 'generico') {
+      // Pour le thème generico UNIQUEMENT, chercher et cliquer sur le bouton DiscutAI
       const discutaiButton =
         document.querySelector('[id*="discutai"][role="button"]') as HTMLButtonElement ||
         document.querySelector('[class*="discutai"][role="button"]') as HTMLButtonElement ||
@@ -51,6 +50,9 @@ function HomeContent() {
       } else {
         console.log('⚠️ Bouton DiscutAI non trouvé - le widget est peut-être encore en chargement');
       }
+    } else if (currentThemeId === 'lucy') {
+      // Pour Lucy, ouvrir WhatsApp
+      window.open('https://api.whatsapp.com/send/?phone=5511995899176', '_blank');
     } else {
       // Pour les autres thèmes, utiliser le BotWidget standard
       const botButton = document.querySelector('[aria-label="Abrir assistente virtual"]') as HTMLButtonElement;
@@ -74,11 +76,11 @@ function HomeContent() {
   }
 
   // Page type MyLucy (copycat mylucy.ai) pour le thème Lucy
+  // Lucy utilise WhatsApp au lieu du widget DiscutAI
   if (currentThemeId === 'lucy' && theme.lucyLanding) {
     return (
       <>
         <LucyLanding theme={theme} openBot={openBot} />
-        <DiscutAIWidget theme={theme} />
         <FooterThemeSwitcher currentTheme={currentThemeId} />
       </>
     );
@@ -321,10 +323,10 @@ function HomeContent() {
         </div>
       </section>
 
-      {/* Bot Widget - Afficher WhatsApp pour restaurant, DiscutAI pour generico/lucy, BotWidget pour les autres */}
+      {/* Bot Widget - Afficher WhatsApp pour restaurant, DiscutAI pour generico UNIQUEMENT, BotWidget pour les autres */}
       {currentThemeId === 'restaurante' ? (
         <WhatsAppWidget theme={theme} phoneNumber="+5511973953946" />
-      ) : currentThemeId === 'generico' || currentThemeId === 'lucy' ? (
+      ) : currentThemeId === 'generico' ? (
         <DiscutAIWidget theme={theme} />
       ) : (
         <BotWidget theme={theme} />

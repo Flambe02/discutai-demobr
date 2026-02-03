@@ -8,6 +8,7 @@ interface DiscutAIWidgetProps {
 }
 
 // Configuration du widget par thème pour le vrai script DiscutAI
+// Note: Widget DiscutAI uniquement sur le thème "generico"
 const getWidgetConfig = (themeId: string) => {
   const configs: Record<string, object> = {
     generico: {
@@ -22,35 +23,19 @@ const getWidgetConfig = (themeId: string) => {
       height: 500,
       baseUrl: "https://v2.discutai.com",
     },
-    lucy: {
-      assistantWorkspaceId: "87ab9a2d-8d18-45bd-b349-145f59254096",
-      assistantName: "TRPC Test",
-      apiKey: "discutai_5a75e24f7d924e1b8ec34414e6cbb0be",
-      themeColor: "#ED1C24",
-      position: "bottom-right",
-      welcomeMessage: "Olá! Como posso ajudar com seu marketing digital?",
-      showAvatar: true,
-      width: 350,
-      height: 500,
-      baseUrl: "https://v2.discutai.com",
-    },
   };
 
   return configs[themeId];
 };
 
 // Configuration pour le widget de simulation (fallback en dev)
+// Note: Widget DiscutAI uniquement sur le thème "generico"
 const getSimulationConfig = (themeId: string) => {
   const configs: Record<string, { themeColor: string; welcomeMessage: string; brandName: string }> = {
     generico: {
       themeColor: "#6366F1",
       welcomeMessage: "Olá! Como posso ajudar hoje?",
       brandName: "Nexa Soluções",
-    },
-    lucy: {
-      themeColor: "#ED1C24",
-      welcomeMessage: "Olá! Como posso ajudar com seu marketing digital?",
-      brandName: "LUCY",
     },
   };
   return configs[themeId];
