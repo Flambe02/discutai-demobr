@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ThemeId, themeLabels, themeIds } from '@/lib/themes';
 import { setThemeInLocalStorage } from '@/lib/themeUtils';
@@ -43,9 +44,22 @@ export default function FooterThemeSwitcher({ currentTheme }: FooterThemeSwitche
         <div className="flex flex-col items-center gap-3">
           {/* Ligne 1 : Sélecteur de thème */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 w-full">
-            {/* Label */}
-            <div className="text-gray-400 text-sm font-medium">
-              Modo Demo:
+            {/* Logo + Label */}
+            <div className="flex items-center gap-3">
+              <Link
+                href="/?theme=tprc"
+                className="flex items-center gap-2 hover:opacity-90 transition-opacity"
+                title="Voltar para a home TPRC"
+              >
+                <img
+                  src="/images/pimentao-rouge-logo.png"
+                  alt="The Pimentão Rouge Company"
+                  className="h-7 w-auto"
+                />
+              </Link>
+              <div className="text-gray-400 text-sm font-medium">
+                Modo Demo:
+              </div>
             </div>
 
             {/* Boutons de thème (exclure TPRC car c'est la landing page de l'agence) */}
