@@ -93,7 +93,7 @@ export default function TPRCLanding() {
             <a href="/?theme=generico" className="text-sm text-gray-400 hover:text-white transition-colors">
               Demo
             </a>
-            <a href="#contato" className="text-sm text-gray-400 hover:text-white transition-colors">
+            <a href="mailto:florent.lambert@pimentaorouge.com" className="text-sm text-gray-400 hover:text-white transition-colors">
               Contato
             </a>
           </div>
@@ -140,7 +140,7 @@ export default function TPRCLanding() {
               <a href="/?theme=generico" className="block text-gray-400 hover:text-white" onClick={() => setMobileMenuOpen(false)}>
                 Demo
               </a>
-              <a href="#contato" className="block text-gray-400 hover:text-white" onClick={() => setMobileMenuOpen(false)}>
+              <a href="mailto:florent.lambert@pimentaorouge.com" className="block text-gray-400 hover:text-white" onClick={() => setMobileMenuOpen(false)}>
                 Contato
               </a>
             </div>

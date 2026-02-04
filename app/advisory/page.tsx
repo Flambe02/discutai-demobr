@@ -597,9 +597,7 @@ export default function AdvisoryPage() {
 
             <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
               <a
-                href="https://api.whatsapp.com/send/?phone=5511973953946"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="mailto:florent.lambert@pimentaorouge.com"
                 className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-full text-base font-semibold overflow-hidden"
               >
                 <div className="absolute inset-0 rounded-full bg-gradient-to-r from-emerald-500 via-cyan-500 to-blue-500" />
