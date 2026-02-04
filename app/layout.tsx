@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   title: 'Discutai Demo BR - Integração de Chatbot',
   description: 'Demonstração de integração de chatbot em sites de clientes - Cabeleireiro, Restaurante, Imobiliária, Dentista',
   keywords: 'chatbot, assistente virtual, agendamento, atendimento automático',
+  icons: {
+    icon: '/images/pimentao-rouge-logo.png',
+  },
 };
 
 export default function RootLayout({

@@ -247,11 +247,16 @@ export default function MusicaPage() {
 
                   {/* Visual */}
                   <div className="relative flex justify-center">
-                    <div className="relative w-full max-w-sm">
+                    <a
+                      href="https://www.youtube.com/watch?v=n6uPy_MPFNY&list=OLAK5uy_lZ3iAObiVXbZioKRe-RrCw7WPKfHOO4ns"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="relative w-full max-w-sm block focus:outline-none focus:ring-2 focus:ring-purple-400 rounded-2xl"
+                    >
                       {/* Glow */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-blue-500/20 blur-3xl scale-150 opacity-50" />
-                      {/* Mockup */}
-                      <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-purple-900/30 to-pink-900/30 border border-white/10 p-6">
+                      <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-blue-500/20 blur-3xl scale-150 opacity-50 pointer-events-none" />
+                      {/* Mockup cliquable */}
+                      <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-purple-900/30 to-pink-900/30 border border-white/10 p-6 hover:border-purple-400/60 transition-colors">
                         <div className="flex items-center gap-4 mb-4">
                           <div className="w-12 h-12 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
                             <Play className="w-6 h-6 text-white" />
@@ -283,7 +288,7 @@ export default function MusicaPage() {
                           ))}
                         </div>
                       </div>
-                    </div>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -373,7 +378,7 @@ export default function MusicaPage() {
                       Uma viagem musical pelos continentes para pequenos exploradores.
                     </p>
                     <a
-                      href="https://www.pimentao.fr"
+                      href="https://music.youtube.com/playlist?list=OLAK5uy_nI6lIN7ixBXFM3uWtKatp-6I1lF680G_E"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 text-white hover:opacity-90 transition-opacity"
