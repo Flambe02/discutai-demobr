@@ -1,4 +1,4 @@
-export type ThemeId = 'cabeleireiro' | 'restaurante' | 'imobiliaria' | 'dentista' | 'generico' | 'lucy';
+export type ThemeId = 'tprc' | 'cabeleireiro' | 'restaurante' | 'imobiliaria' | 'dentista' | 'generico';
 
 export interface Theme {
   id: ThemeId;
@@ -37,25 +37,41 @@ export interface Theme {
     items: string[];
     ctaLabel: string;
   };
-  /** Page type MyLucy (landing LUCY — Marketing Inteligente) */
-  lucyLanding?: {
-    loginUrl: string;
-    whatsappUrl: string;
-    whatsappNumber: string;
-    challenges: { title: string; description: string; price: string; cta: string; ctaLink?: string; image: string }[];
-    moreVisibilityText: string;
-    moreVisibilityCta: string;
-    missionTitle: string;
-    missionText: string;
-    pillarsTitle: string;
-    pillars: { title: string; description: string }[];
-    policyUrl: string;
-    termsUrl: string;
-    social: { name: string; url: string }[];
-  };
 }
 
 export const themes: Record<ThemeId, Theme> = {
+  // TPRC - Homepage Agência (page spéciale, données minimales)
+  tprc: {
+    id: 'tprc',
+    brandName: 'The Pimentão Rouge Company',
+    tagline: 'Inteligência Artificial que gera resultados reais.',
+    branding: {
+      monogram: 'P',
+      logoAlt: 'Logo The Pimentão Rouge Company',
+    },
+    accentColor: '#3B82F6',
+    gradientSecondary: '#8B5CF6',
+    address: 'São Paulo, SP',
+    hours: 'Seg-Sex: 9h às 18h',
+    phone: '(11) 99999-9999',
+    whatsapp: '(11) 99999-9999',
+    email: 'florent.lambert@pimentaorouge.com',
+    heroTitle: 'Inteligência Artificial que gera resultados reais.',
+    heroSubtitle: 'TPRC: agência boutique de IA. Inteligência conversacional, criatividade musical e precisão financeira para escalar negócios.',
+    ctaPrimaryLabel: 'Agendar Diagnóstico',
+    kpis: ['IA Conversacional', 'Creative Tech', 'Payments'],
+    services: ['Agentes IA', 'Chatbots', 'Automação', 'Música', 'Payments'],
+    infos: ['Diagnóstico gratuito', 'Suporte dedicado'],
+    whyText: 'Combinamos IA, criatividade e estratégia para transformar negócios.',
+    botExamples: ['Como funciona?', 'Quero agendar um diagnóstico'],
+    botTitle: 'Assistente Pimentão Rouge',
+    botSubtitle: 'Tire suas dúvidas sobre nossos serviços.',
+    botGreeting: 'Olá! Sou o assistente da Pimentão Rouge Company. Como posso ajudar?',
+    images: {
+      hero: { src: '/images/pimentao-rouge-logo.png', alt: 'The Pimentão Rouge Company' },
+      gallery: [],
+    },
+  },
   cabeleireiro: {
     id: 'cabeleireiro',
     brandName: 'Barbaria do Rei',
@@ -427,146 +443,17 @@ export const themes: Record<ThemeId, Theme> = {
         }
       ]
     }
-  },
-  lucy: {
-    id: 'lucy',
-    brandName: 'LUCY',
-    tagline: 'Marketing Inteligente para vender mais',
-    branding: {
-      monogram: 'LM',
-      logoAlt: 'Logo LUCY',
-    },
-    accentColor: '#FF6B9D',
-    gradientSecondary: '#C94277',
-    address: 'São Paulo - SP',
-    hours: 'Seg-Sex: 9h às 18h',
-    phone: '(11) 99589-9176',
-    whatsapp: '11995899176',
-    email: 'contato@mylucy.ai',
-    heroTitle: 'Marketing que cabe no seu bolso, no seu dia a dia e no seu negócio.',
-    heroSubtitle: 'A Lucy é a solução que nasceu para ser seu braço – cabeça e ombro – de comunicação e marketing, de um jeito simples, acessível, estratégico e sem enrolação.',
-    ctaPrimaryLabel: 'Chama a Lucy!',
-    kpis: [
-      'A partir de R$ 99/mês',
-      'Plataforma com IA',
-      'Posts, cardápio digital, site',
-      'Fale com especialistas'
-    ],
-    services: [
-      'Criação de posts (até 10/mês + cardápio digital)',
-      'Instagram + site (16 posts/mês + onepage)',
-      'Mídia paga e funis de vendas',
-      'Gestão completa de marketing',
-      'Plataforma self-service com IA'
-    ],
-    infos: [
-      'Planos a partir de R$ 99/mês',
-      'Equipe criativa e estratégica',
-      'Cardápio digital e anúncios Google',
-      'Atendimento por WhatsApp'
-    ],
-    whyText: 'Com um modelo de negócios inclusivo e democrático, a Lucy oferece estratégias de qualidade e soluções criativas, com tecnologia e Inteligência Artificial a serviço dos pequenos e médios negócios. Queremos tornar o marketing acessível para que pessoas e negócios prosperem.',
-    botExamples: [
-      'Quero começar por R$ 99/mês',
-      'Preciso de posts e não sei fazer sozinho',
-      'Quero Instagram atualizado e site',
-      'Já tenho redes e quero vender mais',
-      'Quero deixar todo marketing com a Lucy',
-      'Tenho outro desafio, quero conversar'
-    ],
-    botTitle: 'Assistente Lucy',
-    botSubtitle: 'Chama a Lucy!',
-    botGreeting: 'Oi! Sou a assistente da Lucy. Posso te ajudar a escolher o melhor plano (a partir de R$ 99/mês), tirar dúvidas ou conectar você com nossos especialistas. Como posso ajudar?',
-    images: {
-      hero: {
-        src: '/lucy/imagem-lucy-mosaico.avif',
-        alt: 'LUCY — Marketing Inteligente para vender mais'
-      },
-      gallery: [
-        { src: '/lucy/iStock-2222205938-rchf9si8frns2baetmd5f77st4ujg4rb86ju7vpcts.jpg', alt: 'Marketing que cabe no seu bolso' },
-        { src: '/lucy/iStock-2188524624-rchfbr04occa92g0dyu647fdd172hfj6hvh97mstv4.jpg', alt: 'Soluções criativas' },
-        { src: '/lucy/iStock-2230066494-rchfbo6m3u8fa8k3ufmaeq4zkvkyuc7zhhisrsx0ds.jpg', alt: 'Equipe Lucy' }
-      ]
-    },
-    lucyLanding: {
-      loginUrl: 'https://login.mylucy.ai/mylucy',
-      whatsappUrl: 'https://api.whatsapp.com/send/?phone=5511995899176',
-      whatsappNumber: '11995899176',
-      challenges: [
-        {
-          title: 'Não tenho tempo e muita grana para fazer meus posts.',
-          description: 'Dentro da nossa plataforma, você mesmo cria seus posts para Facebook, Instagram e WhatsApp, agenda tudo e até publica direto pela ferramenta! Dá pra fazer Cardápio Digital e Promocional, Site para divulgar seu negócio e até Anúncios do Google.',
-          price: 'A partir de R$ 99/mês',
-          cta: 'Comece Agora!',
-          ctaLink: 'https://login.mylucy.ai/mylucy',
-          image: '/lucy/iStock-2222205938-rchf9si8frns2baetmd5f77st4ujg4rb86ju7vpcts.jpg'
-        },
-        {
-          title: 'Poxa, eu preciso criar meus posts, mas não sei fazer sozinho.',
-          description: 'Não sabe mexer na plataforma ou não tem tempo? Chama a Lucy! A nossa equipe cria até 10 posts por mês + Cardápio Digital para seu negócio e entrega prontinho pra você.',
-          price: 'A partir de R$ 199/mês',
-          cta: 'Chama a Lucy!',
-          image: '/lucy/iStock-2188524624-rchfbr04occa92g0dyu647fdd172hfj6hvh97mstv4.jpg'
-        },
-        {
-          title: 'Preciso de um Instagram mais atualizado e um site simples.',
-          description: 'Contrate a partir de 16 posts por mês - 8 formatos estáticos de feed + 8 desdobramento para stories - com direção criativa e de arte e texto de apoio, para publicação nos canais sociais da sua marca + onepage para seu negócio.',
-          price: 'A partir de R$ 1.499/mês',
-          cta: 'Chama a Lucy!',
-          image: '/lucy/iStock-2194842670.avif'
-        },
-        {
-          title: 'Já tenho redes sociais e site e quero vender mais.',
-          description: 'Conte com a gente para operações que precisam atrair e converter leads, com mídia paga e funis de vendas, incluindo tráfego pago, landing page e automação de atendimento.',
-          price: 'A partir de R$ 3.499/mês',
-          cta: 'Chama a Lucy!',
-          image: '/lucy/iStock-2199563535-2048x1365.avif'
-        },
-        {
-          title: 'Quero deixar tudo de marketing com a Lucy.',
-          description: 'Chama a Lucy para gestão completa de marketing, digital ou off-line, incluindo redes sociais, comunicação interna, influenciadores, investimento em mídia e funis completos para campanhas, com apoio estratégico dedicado.',
-          price: 'A partir de 1 briefing',
-          cta: 'Chama a Lucy!',
-          image: '/lucy/iStock-2201443946-1024x683.avif'
-        },
-        {
-          title: 'Tenho um outro desafio. Como faço?',
-          description: 'Tem um desafio aí e quer conversar com a gente? Chama a Lucy!',
-          price: 'A partir de 1 café',
-          cta: 'Chama a Lucy!',
-          image: '/lucy/iStock-2201908243.avif'
-        }
-      ],
-      moreVisibilityText: '/MAIS VISIBILIDADE. /MAIS CLIENTES. /MAIS REPUTAÇÃO. /MAIS FATURAMENTO PARA O SEU NEGÓCIO.\n\nCrie você mesmo seus materiais de marketing em minutos, quantas vezes quiser, usando ferramenta com inteligência artificial, a partir de R$ 99 por mês!',
-      moreVisibilityCta: 'Comece Agora!',
-      missionTitle: 'Nossa Missão É Transformadora',
-      missionText: 'Com um modelo de negócios inclusivo, democrático e com propósito, a Lucy vem para oferecer estratégias de qualidade e soluções criativas por meio de uma plataforma que coloca a tecnologia e a Inteligência Artificial a serviço dos pequenos e médios negócios. Queremos tornar o marketing acessível para que pessoas e negócios prosperem e conquistem sua liberdade financeira.',
-      pillarsTitle: 'Tem um desafio aí?',
-      pillars: [
-        { title: 'Criação', description: 'Lucy é sua parceira criativa: transforma ideias em posts, campanhas e conteúdos inteligentes, com agilidade e estratégia — sem complicação.' },
-        { title: 'Planejamento', description: 'Lucy é seu braço de planejamento: organiza calendários, encontra oportunidades e conecta estratégias para o seu marketing render mais.' },
-        { title: 'Performance', description: 'Lucy é sua aliada em performance: acompanha resultados, ajusta campanhas e transforma dados em crescimento real.' },
-        { title: 'Comunicação Integrada', description: 'Lucy é sua parceira de comunicação integrada: conecta canais, mensagens e estratégias para sua marca falar com consistência e impacto.' }
-      ],
-      policyUrl: 'https://mylucy.ai/site/mylucy-antigo/politica-de-privacidade/',
-      termsUrl: 'https://mylucy.ai/site/mylucy-antigo/termos-de-uso/',
-      social: [
-        { name: 'WhatsApp', url: 'https://api.whatsapp.com/send/?phone=5511995899176' },
-        { name: 'Facebook', url: 'https://www.facebook.com/mylucy.co' },
-        { name: 'Instagram', url: 'https://www.instagram.com/mylucy.ai/' },
-        { name: 'LinkedIn', url: 'https://www.linkedin.com/company/mylucy' }
-      ]
-    }
   }
 };
 
-export const themeIds: ThemeId[] = ['cabeleireiro', 'restaurante', 'imobiliaria', 'dentista', 'generico', 'lucy'];
+export const themeIds: ThemeId[] = ['tprc', 'cabeleireiro', 'restaurante', 'imobiliaria', 'dentista', 'generico'];
 
 export const themeLabels: Record<ThemeId, string> = {
+  tprc: 'TPRC Home',
   cabeleireiro: 'Cabeleireiro',
   restaurante: 'Restaurante',
   imobiliaria: 'Imobiliária',
   dentista: 'Dentista',
-  generico: 'Genérico',
-  lucy: 'Lucy Marketing'
+  generico: 'Genérico'
 };
+

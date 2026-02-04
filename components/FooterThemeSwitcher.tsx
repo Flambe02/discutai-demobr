@@ -48,9 +48,11 @@ export default function FooterThemeSwitcher({ currentTheme }: FooterThemeSwitche
               Modo Demo:
             </div>
 
-            {/* Boutons de thème */}
+            {/* Boutons de thème (exclure TPRC car c'est la landing page de l'agence) */}
             <div className="flex flex-wrap items-center justify-center gap-2">
-              {themeIds.map((themeId) => (
+              {themeIds
+                .filter((id) => id !== 'tprc') // Exclure TPRC du sélecteur de démo
+                .map((themeId) => (
                 <button
                   key={themeId}
                   onClick={() => handleThemeChange(themeId)}

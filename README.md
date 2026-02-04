@@ -61,8 +61,9 @@ npm start
 
 ## 🎨 Temas Disponíveis
 
-A landing page inclui 6 temas pré-configurados:
+A landing page inclui 7 temas pré-configurados:
 
+0. **TPRC** ⭐ (Homepage) - Landing page premium da agência TPRC (Dark Mode, Framer Motion, estilo Limova.ai)
 1. **Cabeleireiro** - Barbaria do Rei (inspirado em [César Reis Barbeiro](https://www.facebook.com/cesarreis.barbeiro/) / [Instagram](https://www.instagram.com/p/DQpqigpicwA/))
 2. **Restaurante** - La Bouchon Brasserie (inspirado em [Le Jazz](https://www.lejazz.com.br/))
 3. **Imobiliária** - NovaChave Imóveis (inspirado em [Seisa](https://seisa.com.br/))
@@ -77,6 +78,8 @@ A landing page inclui 6 temas pré-configurados:
 Adicione `?theme=` na URL seguido do ID do tema:
 
 ```
+http://localhost:3000/                     # Homepage TPRC (padrão)
+http://localhost:3000/?theme=tprc          # Homepage TPRC
 http://localhost:3000/?theme=cabeleireiro
 http://localhost:3000/?theme=restaurante
 http://localhost:3000/?theme=imobiliaria
@@ -566,6 +569,224 @@ URL: `?theme=lucy`
 - Exemple: `https://votre-site.vercel.app/?theme=lucy`
 
 **Commit**: `feat: Add Lucy Marketing theme inspired by mylucy.ai`
+
+---
+
+### 2026-02-03 - Correction Images Cards Lucy (Correspondance MyLucy.ai)
+
+#### 🎯 Objectif
+Corriger l'attribution des images dans les cards de la page Lucy pour correspondre exactement au site original [MyLucy.ai](https://mylucy.ai/site/mylucy/).
+
+#### ✅ Problème Identifié
+Les images iStock étaient présentes dans `public/lucy/` mais assignées aux mauvais cards:
+- **Card 2**: utilisait `iStock-2188524624` (fond quadrillé blanc) au lieu de `iStock-1480053259` (illustration colorée)
+- **Card 3**: utilisait `iStock-2230066494` au lieu de `iStock-2194842670`
+
+#### ✅ Corrections Effectuées
+
+**Fichier `components/LucyLanding.tsx`**:
+
+| Card | Avant | Après |
+|------|-------|-------|
+| Card 1 | iStock-2222205938 ✓ | iStock-2222205938 ✓ |
+| Card 2 | iStock-2188524624 ❌ | **iStock-1480053259.avif** ✓ |
+| Card 3 | iStock-2230066494 ❌ | **iStock-2194842670.avif** ✓ |
+| Card 4 | iStock-2168015374 ✓ | iStock-2168015374 ✓ |
+| Card 5 | iStock-2188524624 ✓ | iStock-2188524624 ✓ |
+| Card 6 | iStock-2230066494 ✓ | iStock-2230066494 ✓ |
+
+#### 📁 Fichiers Modifiés
+
+| Fichier | Description |
+|---------|-------------|
+| `components/LucyLanding.tsx` | Correction src des images Card 2 et Card 3 |
+| `README.md` | Journal de développement mis à jour |
+
+---
+
+## 📅 Calendar Booking API (Phase 1)
+
+Secure backend API for calendar availability and booking, designed for DiscutAI tool integration.
+
+### Environment Variable
+
+Add this secret to your environment:
+
+```bash
+# .env.local (for development)
+DISCUTAI_TOOL_SECRET=your-secret-key-here
+```
+
+**On Vercel:**
+1. Go to your project → Settings → Environment Variables
+2. Add `DISCUTAI_TOOL_SECRET` with a strong secret value
+3. Apply to Production, Preview, and Development environments
+
+### Endpoints
+
+#### GET `/api/calendar/availability`
+
+Returns available time slots for booking.
+
+**Query Parameters:**
+| Param | Required | Default | Description |
+|-------|----------|---------|-------------|
+| `from` | Yes | - | Start date (ISO 8601) |
+| `to` | Yes | - | End date (ISO 8601) |
+| `durationMin` | No | 30 | Slot duration in minutes |
+| `tz` | No | America/Sao_Paulo | Timezone |
+
+**Response:**
+```json
+{
+  "timezone": "America/Sao_Paulo",
+  "slots": [
+    { "start": "2026-02-05T09:00:00.000Z", "end": "2026-02-05T09:30:00.000Z" }
+  ],
+  "meta": { "from": "...", "to": "...", "durationMin": 30 }
+}
+```
+
+#### POST `/api/calendar/book`
+
+Creates a calendar booking.
+
+**Request Body:**
+```json
+{
+  "title": "Consulta com Dr. Silva",
+  "start": "2026-02-05T14:00:00.000Z",
+  "end": "2026-02-05T14:30:00.000Z",
+  "timezone": "America/Sao_Paulo",
+  "attendees": [{ "email": "cliente@email.com" }],
+  "location": "Online",
+  "notes": "Primeira consulta",
+  "idempotencyKey": "unique-key-123"
+}
+```
+
+**Response:**
+```json
+{
+  "eventId": "evt_1234567890_abc123",
+  "htmlLink": "https://calendar.google.com/calendar/event?eid=...",
+  "start": "2026-02-05T14:00:00.000Z",
+  "end": "2026-02-05T14:30:00.000Z",
+  "timezone": "America/Sao_Paulo"
+}
+```
+
+### curl Test Commands
+
+```bash
+# Set your secret
+export SECRET="your-secret-key-here"
+
+# Test availability endpoint
+curl -X GET "http://localhost:3000/api/calendar/availability?from=2026-02-05T00:00:00Z&to=2026-02-07T23:59:59Z&durationMin=30&tz=America/Sao_Paulo" \
+  -H "Authorization: Bearer $SECRET" \
+  -H "Content-Type: application/json"
+
+# Test booking endpoint
+curl -X POST "http://localhost:3000/api/calendar/book" \
+  -H "Authorization: Bearer $SECRET" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Teste de Agendamento",
+    "start": "2026-02-05T14:00:00.000Z",
+    "end": "2026-02-05T14:30:00.000Z",
+    "timezone": "America/Sao_Paulo",
+    "attendees": [{"email": "test@example.com"}],
+    "location": "Google Meet",
+    "notes": "Consulta de teste",
+    "idempotencyKey": "test-key-001"
+  }'
+
+# Test 401 Unauthorized (no token)
+curl -X GET "http://localhost:3000/api/calendar/availability?from=2026-02-05&to=2026-02-07" \
+  -H "Content-Type: application/json"
+
+# Test 401 Unauthorized (wrong token)
+curl -X GET "http://localhost:3000/api/calendar/availability?from=2026-02-05&to=2026-02-07" \
+  -H "Authorization: Bearer wrong-token" \
+  -H "Content-Type: application/json"
+```
+
+### Security
+
+- All endpoints require `Authorization: Bearer <DISCUTAI_TOOL_SECRET>` header
+- Returns `401 Unauthorized` if token is missing or invalid
+- Idempotency keys prevent duplicate bookings (24h TTL)
+
+### Phase 1 Limitations
+
+- Availability returns **hardcoded sample slots** (no Google Calendar yet)
+- Booking returns **fake eventId** (no actual event creation yet)
+- Idempotency cache is **in-memory** (resets on server restart)
+
+Phase 2 will integrate with Google Calendar API for real availability and event creation.
+
+---
+
+### 2026-02-04 - Landing Page TPRC (Homepage Premium Dark Mode)
+
+#### 🎯 Objectif
+Créer une nouvelle homepage pour l'agence TPRC avec un rendu professionnel style Limova.ai / Dark Mode Premium.
+
+#### ✅ Implémentation
+
+**Nouvelles dépendances installées:**
+- `framer-motion` - Animations fluides et transitions
+- `lucide-react` - Icônes modernes et légères
+
+**Structure de la page:**
+1. **Navigation** - Logo TPRC, liens (Home, Soluções, Demo, Contato), CTA glassmorphism
+2. **Hero Section** - Background noir avec effet réseau de neurones, titre gradient, badge "Agência de IA"
+3. **Bento Grid (Soluções)** - 3 cartes avec bordures gradient irisées:
+   - IA Conversacional (DiscutAI)
+   - Creative Tech & Música
+   - Payments & Benefits
+4. **Section Demo** - Texte à gauche, mockup smartphone flottant à droite avec chat example
+5. **Demos Grid** - 6 boutons vers les thèmes de demo (Barbearia, Restaurante, etc.)
+6. **Contact CTA** - Section finale avec bouton WhatsApp
+7. **Footer** - Logo, liens, tagline
+
+**Features:**
+- Design Dark Mode profond (#050505)
+- Animations Framer Motion (fade-in up, stagger)
+- Effet Glassmorphism sur les boutons CTA
+- Gradient borders animés
+- Responsive Mobile-First
+- Smooth scroll
+- Menu mobile hamburger
+
+#### 📁 Fichiers Créés/Modifiés
+
+| Fichier | Description |
+|---------|-------------|
+| `components/TPRCLanding.tsx` | Nouveau - Landing page complète TPRC |
+| `lib/themes.ts` | Ajout du thème 'tprc' avec données minimales |
+| `lib/themeUtils.ts` | Default theme changé de 'cabeleireiro' à 'tprc' |
+| `app/page.tsx` | Import TPRCLanding, rendu conditionnel |
+| `app/globals.css` | Animations gradient-x, bg-gradient-radial, glass effect |
+| `package.json` | framer-motion, lucide-react ajoutés |
+
+#### 🔗 Accès
+
+- **Homepage par défaut**: `http://localhost:3000/`
+- **URL explicite**: `http://localhost:3000/?theme=tprc`
+
+#### 🎨 Palette de Couleurs
+
+| Élément | Couleur |
+|---------|---------|
+| Background | #050505 |
+| Accent Blue | #3B82F6 |
+| Accent Purple | #8B5CF6 |
+| Accent Pink | #EC4899 |
+| Accent Emerald | #10B981 |
+| Text Primary | #FFFFFF |
+| Text Secondary | #9CA3AF |
 
 ---
 

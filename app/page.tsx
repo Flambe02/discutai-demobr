@@ -9,8 +9,9 @@ import DiscutAIWidget from '@/components/DiscutAIWidget';
 import WhatsAppWidget from '@/components/WhatsAppWidget';
 import FooterThemeSwitcher from '@/components/FooterThemeSwitcher';
 import BrandLogo from '@/components/BrandLogo';
-import LucyLanding from '@/components/LucyLanding';
+import TPRCLanding from '@/components/TPRCLanding';
 import { ThemeId } from '@/lib/themes';
+// Note: LucyLanding a été supprimé - le thème "lucy" n'existe plus
 import {
   getThemeFromQuery,
   getThemeFromLocalStorage,
@@ -20,7 +21,7 @@ import {
 
 function HomeContent() {
   const searchParams = useSearchParams();
-  const [currentThemeId, setCurrentThemeId] = useState<ThemeId>('cabeleireiro');
+  const [currentThemeId, setCurrentThemeId] = useState<ThemeId>('tprc');
   const [isClient, setIsClient] = useState(false);
 
   // Hydration et résolution du thème
@@ -50,9 +51,6 @@ function HomeContent() {
       } else {
         console.log('⚠️ Bouton DiscutAI non trouvé - le widget est peut-être encore en chargement');
       }
-    } else if (currentThemeId === 'lucy') {
-      // Pour Lucy, ouvrir WhatsApp
-      window.open('https://api.whatsapp.com/send/?phone=5511995899176', '_blank');
     } else {
       // Pour les autres thèmes, utiliser le BotWidget standard
       const botButton = document.querySelector('[aria-label="Abrir assistente virtual"]') as HTMLButtonElement;
@@ -75,16 +73,12 @@ function HomeContent() {
     return null;
   }
 
-  // Page type MyLucy (copycat mylucy.ai) pour le thème Lucy
-  // Lucy utilise WhatsApp au lieu du widget DiscutAI
-  if (currentThemeId === 'lucy' && theme.lucyLanding) {
-    return (
-      <>
-        <LucyLanding theme={theme} openBot={openBot} />
-        <FooterThemeSwitcher currentTheme={currentThemeId} />
-      </>
-    );
+  // Page d'accueil TPRC (Landing page premium de l'agence)
+  // Pas de FooterThemeSwitcher sur la homepage TPRC
+  if (currentThemeId === 'tprc') {
+    return <TPRCLanding />;
   }
+
 
   return (
     <div className="min-h-screen">

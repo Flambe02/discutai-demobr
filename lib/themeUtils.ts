@@ -39,7 +39,7 @@ export function setThemeInLocalStorage(themeId: ThemeId): void {
 }
 
 export function getDefaultTheme(): ThemeId {
-  return 'cabeleireiro';
+  return 'tprc';
 }
 
 export function resolveTheme(
