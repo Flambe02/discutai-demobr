@@ -7,9 +7,9 @@ const inter = Inter({ subsets: ['latin'] });
 const poppins = Poppins({ subsets: ['latin'], weight: ['400', '500', '600', '700'], variable: '--font-poppins' });
 
 export const metadata: Metadata = {
-  title: 'Discutai Demo BR - Integração de Chatbot',
-  description: 'Demonstração de integração de chatbot em sites de clientes - Cabeleireiro, Restaurante, Imobiliária, Dentista',
-  keywords: 'chatbot, assistente virtual, agendamento, atendimento automático',
+  title: 'TPRC: agência boutique de IA. Inteligência conversacional, criatividade musical e precisão financeira para escalar negócios.',
+  description: 'TPRC: agência boutique de IA que combina inteligência conversacional, criatividade musical e precisão financeira para escalar negócios.',
+  keywords: 'TPRC, inteligência artificial, chatbot, assistente virtual, música, criatividade, payments, advisory',
   icons: {
     icon: '/images/pimentao-rouge-logo.png',
   },
