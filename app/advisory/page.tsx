@@ -637,7 +637,7 @@ export default function AdvisoryPage() {
             <div className="flex items-center gap-6 text-sm text-gray-400">
               <Link href="/?theme=tprc" className="hover:text-white transition-colors">Home</Link>
               <Link href="/musica" className="hover:text-white transition-colors">Música</Link>
-              <a href="#contato" className="hover:text-white transition-colors">Contato</a>
+              <a href="mailto:florent.lambert@pimentaorouge.com" className="hover:text-white transition-colors">Contato</a>
             </div>
 
             {/* Tagline */}

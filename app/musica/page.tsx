@@ -608,7 +608,7 @@ export default function MusicaPage() {
               <a href="#portfolio" className="hover:text-white transition-colors">
                 Portfólio
               </a>
-              <a href="#contato" className="hover:text-white transition-colors">
+              <a href="mailto:florent.lambert@pimentaorouge.com" className="hover:text-white transition-colors">
                 Contato
               </a>
             </div>
