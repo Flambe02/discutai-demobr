@@ -73,30 +73,28 @@ export default function GTranslateWidget() {
   }, []);
 
   const handleLanguageChange = (langCode: string) => {
-    if (langCode === currentLang) {
-      setIsOpen(false);
-      return;
-    }
-
-    setCurrentLang(langCode);
     setIsOpen(false);
 
     // Si retour au portugais (langue originale), supprimer le cookie et recharger
     if (langCode === 'pt') {
-      // Supprimer les cookies Google Translate
+      // Supprimer les cookies Google Translate - toujours le faire même si déjà sur PT
       document.cookie = 'googtrans=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
       document.cookie = `googtrans=; path=/; domain=.${window.location.hostname}; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
       document.cookie = `googtrans=; path=/; domain=${window.location.hostname}; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
-      // Recharger pour afficher le contenu original
-      window.location.reload();
+      // Aussi essayer avec le domaine racine
+      document.cookie = 'googtrans=; path=/; domain=.pimentaorouge.com; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+      // Forcer le reload
+      window.location.href = window.location.pathname;
       return;
     }
 
-    // Pour les autres langues, définir le cookie et recharger
-    document.cookie = `googtrans=/pt/${langCode}; path=/`;
-    document.cookie = `googtrans=/pt/${langCode}; path=/; domain=.${window.location.hostname}`;
-
-    window.location.reload();
+    // Pour les autres langues
+    if (langCode !== currentLang) {
+      setCurrentLang(langCode);
+      document.cookie = `googtrans=/pt/${langCode}; path=/`;
+      document.cookie = `googtrans=/pt/${langCode}; path=/; domain=.${window.location.hostname}`;
+      window.location.reload();
+    }
   };
 
   const currentLanguage = languages.find(l => l.code === currentLang) || languages[0];
