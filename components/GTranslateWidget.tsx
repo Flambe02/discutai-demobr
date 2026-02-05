@@ -8,6 +8,7 @@ const languages = [
   { code: 'en', name: 'EN', flag: '🇺🇸' },
   { code: 'fr', name: 'FR', flag: '🇫🇷' },
   { code: 'es', name: 'ES', flag: '🇪🇸' },
+  { code: 'it', name: 'IT', flag: '🇮🇹' },
 ];
 
 declare global {
@@ -49,7 +50,7 @@ export default function GTranslateWidget() {
       (window as any).googleTranslateElementInit = function() {
         new (window as any).google.translate.TranslateElement({
           pageLanguage: 'pt',
-          includedLanguages: 'pt,en,fr,es',
+          includedLanguages: 'pt,en,fr,es,it',
           layout: (window as any).google.translate.TranslateElement.InlineLayout.SIMPLE,
           autoDisplay: false,
         }, 'google_translate_element');
