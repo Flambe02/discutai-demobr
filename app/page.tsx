@@ -2,6 +2,7 @@
 
 import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
+import Script from 'next/script';
 import Hero from '@/components/Hero';
 import Gallery from '@/components/Gallery';
 import BotWidget from '@/components/BotWidget';
@@ -123,13 +124,23 @@ function HomeContent() {
               </div>
 
               {/* CTA principal */}
-              <button
-                onClick={openBot}
-                className="px-5 py-2 rounded-lg font-medium text-white hover:opacity-90 transition-opacity"
-                style={{ backgroundColor: theme.accentColor }}
-              >
-                {theme.ctaPrimaryLabel}
-              </button>
+              {currentThemeId === 'cabeleireiro' ? (
+                <a
+                  href="#agendamento"
+                  className="px-5 py-2 rounded-lg font-medium text-white hover:opacity-90 transition-opacity"
+                  style={{ backgroundColor: theme.accentColor }}
+                >
+                  Reservar horário
+                </a>
+              ) : (
+                <button
+                  onClick={openBot}
+                  className="px-5 py-2 rounded-lg font-medium text-white hover:opacity-90 transition-opacity"
+                  style={{ backgroundColor: theme.accentColor }}
+                >
+                  {theme.ctaPrimaryLabel}
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -179,6 +190,36 @@ function HomeContent() {
           </div>
         </div>
       </section>
+
+      {/* Section: Agendamento Calendly (cabeleireiro uniquement) */}
+      {currentThemeId === 'cabeleireiro' && (
+        <section id="agendamento" className="py-16 bg-gradient-to-b from-gray-900 to-gray-950 border-t border-gray-800">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl md:text-4xl font-bold text-white mb-3 flex items-center justify-center gap-3">
+                  <span>📅</span>
+                  Reserve seu horário agora
+                </h2>
+                <p className="text-gray-400 text-lg">
+                  Escolha o melhor horário para você. Atendimento personalizado e sem filas.
+                </p>
+              </div>
+              <div className="rounded-2xl overflow-hidden bg-white/5 border border-gray-700 p-2">
+                <div
+                  className="calendly-inline-widget"
+                  data-url="https://calendly.com/thepimentaorougecompany/30min"
+                  style={{ minWidth: '320px', height: '700px' }}
+                />
+              </div>
+            </div>
+          </div>
+          <Script
+            src="https://assets.calendly.com/assets/external/widget.js"
+            strategy="lazyOnload"
+          />
+        </section>
+      )}
 
       {/* Section: Événements / Réservation de salle (restaurante uniquement) */}
       {theme.eventsSection && (
@@ -304,16 +345,27 @@ function HomeContent() {
             Pronto para começar?
           </h2>
           <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
-            Nosso assistente virtual está disponível 24 horas por dia para atender você.
-            Clique no botão abaixo e comece agora mesmo!
+            {currentThemeId === 'cabeleireiro'
+              ? 'Agende seu horário online de forma rápida e prática. Escolha o melhor momento para você!'
+              : 'Nosso assistente virtual está disponível 24 horas por dia para atender você. Clique no botão abaixo e comece agora mesmo!'}
           </p>
-          <button
-            onClick={openBot}
-            className="px-8 py-4 rounded-xl font-bold text-lg text-white hover:scale-105 transition-transform shadow-xl"
-            style={{ background: `linear-gradient(135deg, ${theme.accentColor}, ${theme.gradientSecondary})` }}
-          >
-            {theme.ctaPrimaryLabel} agora
-          </button>
+          {currentThemeId === 'cabeleireiro' ? (
+            <a
+              href="#agendamento"
+              className="inline-block px-8 py-4 rounded-xl font-bold text-lg text-white hover:scale-105 transition-transform shadow-xl"
+              style={{ background: `linear-gradient(135deg, ${theme.accentColor}, ${theme.gradientSecondary})` }}
+            >
+              Reservar horário agora
+            </a>
+          ) : (
+            <button
+              onClick={openBot}
+              className="px-8 py-4 rounded-xl font-bold text-lg text-white hover:scale-105 transition-transform shadow-xl"
+              style={{ background: `linear-gradient(135deg, ${theme.accentColor}, ${theme.gradientSecondary})` }}
+            >
+              {theme.ctaPrimaryLabel} agora
+            </button>
+          )}
         </div>
       </section>
 
