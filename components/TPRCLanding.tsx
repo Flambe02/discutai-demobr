@@ -11,8 +11,9 @@ import {
   ExternalLink,
   Menu,
   X,
+  Play,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 // Animation variants
@@ -39,6 +40,22 @@ const staggerContainer = {
 
 export default function TPRCLanding() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [videoModalOpen, setVideoModalOpen] = useState(false);
+
+  // Close video modal on ESC key
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setVideoModalOpen(false);
+    };
+    if (videoModalOpen) {
+      document.addEventListener('keydown', handleEsc);
+      document.body.style.overflow = 'hidden';
+    }
+    return () => {
+      document.removeEventListener('keydown', handleEsc);
+      document.body.style.overflow = 'unset';
+    };
+  }, [videoModalOpen]);
 
   return (
     <div className="min-h-screen bg-[#050505] text-white font-[var(--font-geist-sans)] antialiased overflow-x-hidden">
@@ -397,14 +414,14 @@ export default function TPRCLanding() {
               </div>
 
               <div className="flex flex-wrap gap-4">
-                <Link
-                  href="/?theme=cabeleireiro"
-                  className="group relative inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium overflow-hidden"
+                <button
+                  onClick={() => setVideoModalOpen(true)}
+                  className="group relative inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium overflow-hidden cursor-pointer"
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full" />
-                  <span className="relative z-10">Acessar Demo DiscutAI</span>
-                  <ExternalLink className="relative z-10 w-4 h-4" />
-                </Link>
+                  <Play className="relative z-10 w-4 h-4" />
+                  <span className="relative z-10">DiscutAI em 2mn</span>
+                </button>
                 <Link
                   href="/?theme=generico"
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium border border-white/20 hover:bg-white/5 transition-colors"
@@ -598,6 +615,47 @@ export default function TPRCLanding() {
           </div>
         </div>
       </footer>
+
+      {/* ===== VIDEO MODAL ===== */}
+      {videoModalOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm"
+          onClick={() => setVideoModalOpen(false)}
+        >
+          {/* Close button */}
+          <button
+            onClick={() => setVideoModalOpen(false)}
+            className="absolute top-6 right-6 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+          >
+            <X className="w-6 h-6" />
+          </button>
+
+          {/* Video container */}
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.1 }}
+            className="relative w-full max-w-4xl aspect-video rounded-2xl overflow-hidden shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <iframe
+              src="https://www.youtube.com/embed/oVdsVNZMF-I?autoplay=1&rel=0"
+              title="DiscutAI em 2 minutos"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="absolute inset-0 w-full h-full"
+            />
+          </motion.div>
+
+          {/* Caption */}
+          <p className="absolute bottom-6 left-1/2 -translate-x-1/2 text-gray-400 text-sm">
+            Pressione ESC ou clique fora para fechar
+          </p>
+        </motion.div>
+      )}
     </div>
   );
 }
