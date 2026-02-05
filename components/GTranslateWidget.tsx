@@ -107,15 +107,17 @@ export default function GTranslateWidget() {
       {/* Google Translate element caché */}
       <div id="google_translate_element" className="hidden" />
 
-      {/* Notre dropdown custom - Position: bottom right */}
-      <div ref={dropdownRef} className="fixed bottom-4 right-4 z-[99999] sm:bottom-5 sm:right-5">
+      {/* Notre dropdown custom - Position: bottom right - notranslate empêche Google de traduire */}
+      <div ref={dropdownRef} className="notranslate fixed bottom-4 right-4 z-[99999] sm:bottom-5 sm:right-5" translate="no">
         <button
+          type="button"
           onClick={() => setIsOpen(!isOpen)}
-          onTouchEnd={(e) => { e.preventDefault(); setIsOpen(!isOpen); }}
+          onTouchStart={(e) => { e.stopPropagation(); }}
+          onTouchEnd={(e) => { e.preventDefault(); e.stopPropagation(); setIsOpen(!isOpen); }}
           className="flex items-center gap-2 px-3 py-2.5 sm:px-2.5 sm:py-1.5 rounded-lg text-sm sm:text-xs font-medium
                      bg-black/80 hover:bg-black/90 border border-white/20 hover:border-white/30
                      backdrop-blur-md transition-all duration-200 text-gray-200 hover:text-white
-                     shadow-lg shadow-black/30 touch-manipulation select-none"
+                     shadow-lg shadow-black/30 touch-manipulation select-none cursor-pointer"
           aria-label="Sélectionner la langue"
           style={{ WebkitTapHighlightColor: 'transparent', WebkitUserSelect: 'none' }}
         >
@@ -132,10 +134,12 @@ export default function GTranslateWidget() {
                           shadow-xl shadow-black/40 min-w-[120px] overflow-hidden z-[99999]">
             {languages.map((lang) => (
               <button
+                type="button"
                 key={lang.code}
                 onClick={() => handleLanguageChange(lang.code)}
+                onTouchStart={(e) => { e.stopPropagation(); }}
                 onTouchEnd={(e) => { e.preventDefault(); e.stopPropagation(); handleLanguageChange(lang.code); }}
-                className={`w-full flex items-center gap-2.5 px-4 py-3 sm:px-3 sm:py-2 text-sm sm:text-xs transition-colors touch-manipulation select-none
+                className={`w-full flex items-center gap-2.5 px-4 py-3 sm:px-3 sm:py-2 text-sm sm:text-xs transition-colors touch-manipulation select-none cursor-pointer
                            ${currentLang === lang.code
                              ? 'bg-white/15 text-white'
                              : 'text-gray-300 hover:text-white hover:bg-white/10 active:bg-white/20'}`}
