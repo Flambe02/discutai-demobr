@@ -67,3 +67,38 @@ html {
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+/* ===== Google Translate - Hide default UI ===== */
+
+/* Cacher complètement la barre Google Translate */
+.goog-te-banner-frame,
+.skiptranslate,
+#goog-gt-tt,
+.goog-te-balloon-frame,
+.goog-tooltip,
+.goog-tooltip:hover,
+div#goog-gt-,
+.goog-text-highlight,
+.VIpgJd-ZVi9od-ORHb-OEVmcd,
+.VIpgJd-ZVi9od-l4eHX-hSRGPd {
+  display: none !important;
+}
+
+/* Retirer le padding ajouté par Google Translate */
+body {
+  top: 0 !important;
+  position: static !important;
+}
+
+/* Cacher l'iframe et widget Google */
+.goog-te-menu-frame,
+#google_translate_element {
+  display: none !important;
+}
+
+/* Style pour les textes traduits - éviter le surlignage */
+font[style*="background"],
+font[style*="vertical-align"] {
+  background: none !important;
+  box-shadow: none !important;
+}
