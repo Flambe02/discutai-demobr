@@ -108,36 +108,38 @@ export default function GTranslateWidget() {
       <div id="google_translate_element" className="hidden" />
 
       {/* Notre dropdown custom - Position: bottom right */}
-      <div ref={dropdownRef} className="fixed bottom-4 right-4 z-[9998] sm:bottom-5 sm:right-5">
+      <div ref={dropdownRef} className="fixed bottom-4 right-4 z-[99999] sm:bottom-5 sm:right-5">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium
-                     bg-black/60 hover:bg-black/80 border border-white/10 hover:border-white/20
-                     backdrop-blur-md transition-all duration-200 text-gray-300 hover:text-white
-                     shadow-lg shadow-black/20"
+          className="flex items-center gap-2 px-3 py-2.5 sm:px-2.5 sm:py-1.5 rounded-lg text-sm sm:text-xs font-medium
+                     bg-black/80 hover:bg-black/90 border border-white/20 hover:border-white/30
+                     backdrop-blur-md transition-all duration-200 text-gray-200 hover:text-white
+                     shadow-lg shadow-black/30 touch-manipulation"
           aria-label="Sélectionner la langue"
+          style={{ WebkitTapHighlightColor: 'transparent' }}
         >
-          <Globe className="w-3.5 h-3.5 opacity-60" />
-          <span>{currentLanguage.flag}</span>
+          <Globe className="w-4 h-4 sm:w-3.5 sm:h-3.5 opacity-70" />
+          <span className="text-base sm:text-xs">{currentLanguage.flag}</span>
           <span>{currentLanguage.name}</span>
-          <ChevronDown className={`w-3 h-3 opacity-50 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+          <ChevronDown className={`w-3.5 h-3.5 sm:w-3 sm:h-3 opacity-50 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
         </button>
 
         {/* Dropdown - Opens upward */}
         {isOpen && (
-          <div className="absolute bottom-full right-0 mb-1.5 py-1 rounded-lg
-                          bg-[#0a0a0a]/95 border border-white/10 backdrop-blur-xl
-                          shadow-xl shadow-black/30 min-w-[100px] overflow-hidden">
+          <div className="absolute bottom-full right-0 mb-2 py-1.5 rounded-lg
+                          bg-[#0a0a0a]/98 border border-white/15 backdrop-blur-xl
+                          shadow-xl shadow-black/40 min-w-[120px] overflow-hidden">
             {languages.map((lang) => (
               <button
                 key={lang.code}
                 onClick={() => handleLanguageChange(lang.code)}
-                className={`w-full flex items-center gap-2 px-3 py-1.5 text-xs transition-colors
+                className={`w-full flex items-center gap-2.5 px-4 py-3 sm:px-3 sm:py-2 text-sm sm:text-xs transition-colors touch-manipulation
                            ${currentLang === lang.code
-                             ? 'bg-white/10 text-white'
-                             : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
+                             ? 'bg-white/15 text-white'
+                             : 'text-gray-300 hover:text-white hover:bg-white/10 active:bg-white/20'}`}
+                style={{ WebkitTapHighlightColor: 'transparent' }}
               >
-                <span>{lang.flag}</span>
+                <span className="text-base sm:text-sm">{lang.flag}</span>
                 <span>{lang.name}</span>
               </button>
             ))}
