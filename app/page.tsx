@@ -61,6 +61,15 @@ function HomeContent() {
     }
   };
 
+  // Fonction pour ouvrir le popup Calendly (cabeleireiro)
+  const openCalendly = () => {
+    if (typeof window !== 'undefined' && (window as any).Calendly) {
+      (window as any).Calendly.initPopupWidget({
+        url: 'https://calendly.com/thepimentaorougecompany/30min'
+      });
+    }
+  };
+
   // Exposer une fonction globale pour ouvrir le widget (utile pour les boutons CTA)
   useEffect(() => {
     (window as any).openChatWidget = openBot;
@@ -125,13 +134,13 @@ function HomeContent() {
 
               {/* CTA principal */}
               {currentThemeId === 'cabeleireiro' ? (
-                <a
-                  href="#agendamento"
-                  className="px-5 py-2 rounded-lg font-medium text-white hover:opacity-90 transition-opacity"
+                <button
+                  onClick={openCalendly}
+                  className="px-5 py-2 rounded-lg font-medium text-white hover:opacity-90 transition-opacity cursor-pointer"
                   style={{ backgroundColor: theme.accentColor }}
                 >
                   Reservar horário
-                </a>
+                </button>
               ) : (
                 <button
                   onClick={openBot}
@@ -190,36 +199,6 @@ function HomeContent() {
           </div>
         </div>
       </section>
-
-      {/* Section: Agendamento Calendly (cabeleireiro uniquement) */}
-      {currentThemeId === 'cabeleireiro' && (
-        <section id="agendamento" className="py-16 bg-gradient-to-b from-gray-900 to-gray-950 border-t border-gray-800">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto">
-              <div className="text-center mb-8">
-                <h2 className="text-3xl md:text-4xl font-bold text-white mb-3 flex items-center justify-center gap-3">
-                  <span>📅</span>
-                  Reserve seu horário agora
-                </h2>
-                <p className="text-gray-400 text-lg">
-                  Escolha o melhor horário para você. Atendimento personalizado e sem filas.
-                </p>
-              </div>
-              <div className="rounded-2xl overflow-hidden bg-white/5 border border-gray-700 p-2">
-                <div
-                  className="calendly-inline-widget"
-                  data-url="https://calendly.com/thepimentaorougecompany/30min"
-                  style={{ minWidth: '320px', height: '700px' }}
-                />
-              </div>
-            </div>
-          </div>
-          <Script
-            src="https://assets.calendly.com/assets/external/widget.js"
-            strategy="lazyOnload"
-          />
-        </section>
-      )}
 
       {/* Section: Événements / Réservation de salle (restaurante uniquement) */}
       {theme.eventsSection && (
@@ -350,13 +329,13 @@ function HomeContent() {
               : 'Nosso assistente virtual está disponível 24 horas por dia para atender você. Clique no botão abaixo e comece agora mesmo!'}
           </p>
           {currentThemeId === 'cabeleireiro' ? (
-            <a
-              href="#agendamento"
-              className="inline-block px-8 py-4 rounded-xl font-bold text-lg text-white hover:scale-105 transition-transform shadow-xl"
+            <button
+              onClick={openCalendly}
+              className="px-8 py-4 rounded-xl font-bold text-lg text-white hover:scale-105 transition-transform shadow-xl cursor-pointer"
               style={{ background: `linear-gradient(135deg, ${theme.accentColor}, ${theme.gradientSecondary})` }}
             >
               Reservar horário agora
-            </a>
+            </button>
           ) : (
             <button
               onClick={openBot}
@@ -376,6 +355,17 @@ function HomeContent() {
         <DiscutAIWidget theme={theme} />
       ) : (
         <BotWidget theme={theme} />
+      )}
+
+      {/* Calendly Popup Widget - Cabeleireiro uniquement */}
+      {currentThemeId === 'cabeleireiro' && (
+        <>
+          <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" />
+          <Script
+            src="https://assets.calendly.com/assets/external/widget.js"
+            strategy="lazyOnload"
+          />
+        </>
       )}
 
       {/* Footer Theme Switcher */}
