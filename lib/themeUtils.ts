@@ -44,9 +44,11 @@ export function getDefaultTheme(): ThemeId {
 
 export function resolveTheme(
   queryTheme: ThemeId | null,
-  localStorageTheme: ThemeId | null
+  _localStorageTheme: ThemeId | null
 ): ThemeId {
-  return queryTheme || localStorageTheme || getDefaultTheme();
+  // Si pas de paramètre ?theme= dans l'URL, toujours afficher la page d'accueil TPRC
+  // Le localStorage n'est plus utilisé pour éviter de tomber sur un thème de démo
+  return queryTheme || getDefaultTheme();
 }
 
 export function getTheme(themeId: ThemeId) {
