@@ -24,7 +24,6 @@ function HomeContent() {
   const searchParams = useSearchParams();
   const [currentThemeId, setCurrentThemeId] = useState<ThemeId>('tprc');
   const [isClient, setIsClient] = useState(false);
-  const [discutaiConfigReady, setDiscutaiConfigReady] = useState(false);
 
   // Hydration et résolution du thème
   useEffect(() => {
@@ -79,9 +78,10 @@ function HomeContent() {
     };
   }, [currentThemeId, openBot]);
 
-  // Config DiscutAI pour cabeleireiro - doit être défini avant le chargement du script
+  // Config et chargement DiscutAI pour cabeleireiro
   useEffect(() => {
     if (currentThemeId === 'cabeleireiro') {
+      // 1. Définir la config
       (window as any).DiscutAIWidget = {
         config: {
           assistantWorkspaceId: "d3d97d6e-444b-41ce-8a52-ddd932e129c5",
@@ -96,9 +96,15 @@ function HomeContent() {
           baseUrl: "https://v2.discutai.com"
         }
       };
-      setDiscutaiConfigReady(true);
-    } else {
-      setDiscutaiConfigReady(false);
+
+      // 2. Charger le script seulement s'il n'est pas déjà chargé
+      if (!document.getElementById('discutai-widget-loader')) {
+        const script = document.createElement('script');
+        script.id = 'discutai-widget-loader';
+        script.src = 'https://v2.discutai.com/widget/loader.js';
+        script.async = true;
+        document.body.appendChild(script);
+      }
     }
   }, [currentThemeId]);
 
@@ -394,14 +400,7 @@ function HomeContent() {
         </>
       )}
 
-      {/* DiscutAI Widget - Ricar AI - Charger seulement quand la config est prête */}
-      {currentThemeId === 'cabeleireiro' && discutaiConfigReady && (
-        <Script
-          src="https://v2.discutai.com/widget/loader.js"
-          id="discutai-widget-loader"
-          strategy="afterInteractive"
-        />
-      )}
+      {/* DiscutAI Widget - Ricar AI - Chargé via useEffect */}
 
       {/* Footer Theme Switcher */}
       <FooterThemeSwitcher currentTheme={currentThemeId} />
