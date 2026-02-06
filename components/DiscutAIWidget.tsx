@@ -7,7 +7,7 @@ interface DiscutAIWidgetProps {
   theme: Theme;
 }
 
-// Configuration du widget DiscutAI pour le thème "generico"
+// Configuration du widget DiscutAI par thème
 const getWidgetConfig = (themeId: string) => {
   const configs: Record<string, object> = {
     generico: {
@@ -20,6 +20,18 @@ const getWidgetConfig = (themeId: string) => {
       showAvatar: true,
       width: 350,
       height: 500,
+      baseUrl: "https://v2.discutai.com",
+    },
+    cabeleireiro: {
+      assistantWorkspaceId: "d3d97d6e-444b-41ce-8a52-ddd932e129c5",
+      assistantName: "Ricar AI",
+      themeColor: "#007bff",
+      position: "bottom-right",
+      welcomeMessage: "Bom dia, como posso ajudar?",
+      showAvatar: true,
+      width: 350,
+      height: 500,
+      logoUrl: "https://veztjskcirpqzdwizxxn.supabase.co/storage/v1/object/public/assistants-avatars/c1cb4d5c-bdc5-4d32-8f0f-ee095719f35d.jpg",
       baseUrl: "https://v2.discutai.com",
     },
   };

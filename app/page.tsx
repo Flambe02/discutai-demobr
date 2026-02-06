@@ -78,33 +78,6 @@ function HomeContent() {
     };
   }, [currentThemeId, openBot]);
 
-  // DiscutAI Widget pour cabeleireiro uniquement
-  useEffect(() => {
-    if (currentThemeId !== 'cabeleireiro') return;
-    if (document.getElementById('discutai-widget-loader')) return;
-
-    // Définir la config d'abord (synchrone)
-    (window as any).DiscutAIWidget = {
-      config: {
-        assistantWorkspaceId: "d3d97d6e-444b-41ce-8a52-ddd932e129c5",
-        assistantName: "Ricar AI",
-        themeColor: "#007bff",
-        position: "bottom-right",
-        welcomeMessage: "Bom dia, como posso ajudar?",
-        showAvatar: true,
-        width: 350,
-        height: 500,
-        logoUrl: "https://veztjskcirpqzdwizxxn.supabase.co/storage/v1/object/public/assistants-avatars/c1cb4d5c-bdc5-4d32-8f0f-ee095719f35d.jpg",
-        baseUrl: "https://v2.discutai.com"
-      }
-    };
-
-    // Charger le loader (ID exact comme dans le script original)
-    const script = document.createElement('script');
-    script.id = 'discutai-widget-loader';
-    script.src = 'https://v2.discutai.com/widget/loader.js';
-    document.body.appendChild(script);
-  }, [currentThemeId]);
 
   // Éviter le flash de contenu avant hydration
   if (!isClient) {
@@ -376,13 +349,11 @@ function HomeContent() {
         </div>
       </section>
 
-      {/* Bot Widget - Afficher WhatsApp pour restaurant, DiscutAI pour generico, rien pour cabeleireiro (DiscutAI via script), BotWidget pour les autres */}
+      {/* Bot Widget - Afficher WhatsApp pour restaurant, DiscutAI pour generico et cabeleireiro, BotWidget pour les autres */}
       {currentThemeId === 'restaurante' ? (
         <WhatsAppWidget theme={theme} phoneNumber="+5511973953946" />
-      ) : currentThemeId === 'generico' ? (
+      ) : currentThemeId === 'generico' || currentThemeId === 'cabeleireiro' ? (
         <DiscutAIWidget theme={theme} />
-      ) : currentThemeId === 'cabeleireiro' ? (
-        null // DiscutAI Ricar AI chargé via script
       ) : (
         <BotWidget theme={theme} />
       )}
@@ -397,7 +368,6 @@ function HomeContent() {
           />
         </>
       )}
-      {/* DiscutAI Widget chargé via useEffect */}
 
       {/* Footer Theme Switcher */}
       <FooterThemeSwitcher currentTheme={currentThemeId} />
