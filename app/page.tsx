@@ -348,11 +348,13 @@ function HomeContent() {
         </div>
       </section>
 
-      {/* Bot Widget - Afficher WhatsApp pour restaurant, DiscutAI pour generico UNIQUEMENT, BotWidget pour les autres */}
+      {/* Bot Widget - Afficher WhatsApp pour restaurant, DiscutAI pour generico, rien pour cabeleireiro (DiscutAI via script), BotWidget pour les autres */}
       {currentThemeId === 'restaurante' ? (
         <WhatsAppWidget theme={theme} phoneNumber="+5511973953946" />
       ) : currentThemeId === 'generico' ? (
         <DiscutAIWidget theme={theme} />
+      ) : currentThemeId === 'cabeleireiro' ? (
+        null // DiscutAI Ricar AI chargé via script
       ) : (
         <BotWidget theme={theme} />
       )}
@@ -363,6 +365,34 @@ function HomeContent() {
           <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" />
           <Script
             src="https://assets.calendly.com/assets/external/widget.js"
+            strategy="lazyOnload"
+          />
+          {/* DiscutAI Widget - Ricar AI */}
+          <Script
+            id="discutai-widget-config"
+            strategy="beforeInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `
+                window.DiscutAIWidget = {
+                  config: {
+                    assistantWorkspaceId: "d3d97d6e-444b-41ce-8a52-ddd932e129c5",
+                    assistantName: "Ricar AI",
+                    themeColor: "#007bff",
+                    position: "bottom-right",
+                    welcomeMessage: "Bom dia, como posso ajudar ? ",
+                    showAvatar: true,
+                    width: 350,
+                    height: 500,
+                    logoUrl: "https://veztjskcirpqzdwizxxn.supabase.co/storage/v1/object/public/assistants-avatars/c1cb4d5c-bdc5-4d32-8f0f-ee095719f35d.jpg",
+                    baseUrl: "https://v2.discutai.com"
+                  }
+                };
+              `
+            }}
+          />
+          <Script
+            src="https://v2.discutai.com/widget/loader.js"
+            id="discutai-widget-loader"
             strategy="lazyOnload"
           />
         </>
