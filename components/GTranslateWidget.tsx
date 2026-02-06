@@ -105,8 +105,8 @@ export default function GTranslateWidget() {
       {/* Google Translate element caché */}
       <div id="google_translate_element" className="hidden" />
 
-      {/* Notre dropdown custom - Position: bottom right - notranslate empêche Google de traduire */}
-      <div ref={dropdownRef} className="notranslate fixed bottom-4 right-4 z-[99999] sm:bottom-5 sm:right-5" translate="no">
+      {/* Notre dropdown custom - Position: bottom left - notranslate empêche Google de traduire */}
+      <div ref={dropdownRef} className="notranslate fixed bottom-4 left-4 z-[99999] sm:bottom-5 sm:left-5" translate="no">
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
@@ -127,7 +127,7 @@ export default function GTranslateWidget() {
 
         {/* Dropdown - Opens upward */}
         {isOpen && (
-          <div className="absolute bottom-full right-0 mb-2 py-1.5 rounded-lg
+          <div className="absolute bottom-full left-0 mb-2 py-1.5 rounded-lg
                           bg-[#0a0a0a] border border-white/15 backdrop-blur-xl
                           shadow-xl shadow-black/40 min-w-[120px] overflow-hidden z-[99999]">
             {languages.map((lang) => (
