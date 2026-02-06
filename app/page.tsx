@@ -24,6 +24,7 @@ function HomeContent() {
   const searchParams = useSearchParams();
   const [currentThemeId, setCurrentThemeId] = useState<ThemeId>('tprc');
   const [isClient, setIsClient] = useState(false);
+  const [widgetKey, setWidgetKey] = useState(0);
 
   // Hydration et résolution du thème
   useEffect(() => {
@@ -32,6 +33,8 @@ function HomeContent() {
     const localTheme = getThemeFromLocalStorage();
     const resolvedTheme = resolveTheme(queryTheme, localTheme);
     setCurrentThemeId(resolvedTheme);
+    // Incrémenter la clé pour forcer le remount du widget DiscutAI
+    setWidgetKey(k => k + 1);
   }, [searchParams]);
 
   const theme = getTheme(currentThemeId);
@@ -353,7 +356,7 @@ function HomeContent() {
       {currentThemeId === 'restaurante' ? (
         <WhatsAppWidget theme={theme} phoneNumber="+5511973953946" />
       ) : currentThemeId === 'generico' || currentThemeId === 'cabeleireiro' ? (
-        <DiscutAIWidget theme={theme} />
+        <DiscutAIWidget key={`discutai-${currentThemeId}-${widgetKey}`} theme={theme} />
       ) : (
         <BotWidget theme={theme} />
       )}
