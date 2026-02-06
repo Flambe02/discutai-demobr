@@ -78,45 +78,6 @@ function HomeContent() {
     };
   }, [currentThemeId, openBot]);
 
-  // Config et chargement DiscutAI pour cabeleireiro
-  useEffect(() => {
-    if (currentThemeId === 'cabeleireiro') {
-      // 1. Définir la config AVANT de charger le script
-      (window as any).DiscutAIWidget = {
-        config: {
-          assistantWorkspaceId: "d3d97d6e-444b-41ce-8a52-ddd932e129c5",
-          assistantName: "Ricar AI",
-          themeColor: "#007bff",
-          position: "bottom-right",
-          welcomeMessage: "Bom dia, como posso ajudar?",
-          showAvatar: true,
-          width: 350,
-          height: 500,
-          logoUrl: "https://veztjskcirpqzdwizxxn.supabase.co/storage/v1/object/public/assistants-avatars/c1cb4d5c-bdc5-4d32-8f0f-ee095719f35d.jpg",
-          baseUrl: "https://v2.discutai.com"
-        }
-      };
-
-      // 2. Charger le script seulement s'il n'est pas déjà chargé
-      const existingScript = document.getElementById('discutai-widget-loader');
-      if (!existingScript) {
-        const script = document.createElement('script');
-        script.id = 'discutai-widget-loader';
-        script.src = 'https://v2.discutai.com/widget/loader.js';
-        document.body.appendChild(script);
-      }
-    }
-
-    // Cleanup: supprimer le widget quand on quitte la page cabeleireiro
-    return () => {
-      if (currentThemeId === 'cabeleireiro') {
-        const widgetContainer = document.querySelector('[id*="discutai"]');
-        if (widgetContainer) {
-          widgetContainer.remove();
-        }
-      }
-    };
-  }, [currentThemeId]);
 
   // Éviter le flash de contenu avant hydration
   if (!isClient) {
@@ -399,7 +360,7 @@ function HomeContent() {
         <BotWidget theme={theme} />
       )}
 
-      {/* Calendly Popup Widget - Cabeleireiro uniquement */}
+      {/* Calendly + DiscutAI Widget - Cabeleireiro uniquement */}
       {currentThemeId === 'cabeleireiro' && (
         <>
           <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" />
@@ -407,10 +368,33 @@ function HomeContent() {
             src="https://assets.calendly.com/assets/external/widget.js"
             strategy="lazyOnload"
           />
+          {/* DiscutAI Widget - Ricar AI */}
+          <Script
+            id="discutai-config"
+            strategy="beforeInteractive"
+          >
+            {`window.DiscutAIWidget = {
+              config: {
+                assistantWorkspaceId: "d3d97d6e-444b-41ce-8a52-ddd932e129c5",
+                assistantName: "Ricar AI",
+                themeColor: "#007bff",
+                position: "bottom-right",
+                welcomeMessage: "Bom dia, como posso ajudar?",
+                showAvatar: true,
+                width: 350,
+                height: 500,
+                logoUrl: "https://veztjskcirpqzdwizxxn.supabase.co/storage/v1/object/public/assistants-avatars/c1cb4d5c-bdc5-4d32-8f0f-ee095719f35d.jpg",
+                baseUrl: "https://v2.discutai.com"
+              }
+            };`}
+          </Script>
+          <Script
+            src="https://v2.discutai.com/widget/loader.js"
+            id="discutai-widget-loader"
+            strategy="afterInteractive"
+          />
         </>
       )}
-
-      {/* DiscutAI Widget - Ricar AI - Chargé via useEffect */}
 
       {/* Footer Theme Switcher */}
       <FooterThemeSwitcher currentTheme={currentThemeId} />
