@@ -24,6 +24,7 @@ function HomeContent() {
   const searchParams = useSearchParams();
   const [currentThemeId, setCurrentThemeId] = useState<ThemeId>('tprc');
   const [isClient, setIsClient] = useState(false);
+  const [discutaiConfigReady, setDiscutaiConfigReady] = useState(false);
 
   // Hydration et résolution du thème
   useEffect(() => {
@@ -95,6 +96,9 @@ function HomeContent() {
           baseUrl: "https://v2.discutai.com"
         }
       };
+      setDiscutaiConfigReady(true);
+    } else {
+      setDiscutaiConfigReady(false);
     }
   }, [currentThemeId]);
 
@@ -387,16 +391,16 @@ function HomeContent() {
             src="https://assets.calendly.com/assets/external/widget.js"
             strategy="lazyOnload"
           />
-          {/* DiscutAI Widget - Ricar AI */}
-          <Script
-            src="https://v2.discutai.com/widget/loader.js"
-            id="discutai-widget-loader"
-            strategy="afterInteractive"
-            onLoad={() => {
-              // Config is set via useEffect below
-            }}
-          />
         </>
+      )}
+
+      {/* DiscutAI Widget - Ricar AI - Charger seulement quand la config est prête */}
+      {currentThemeId === 'cabeleireiro' && discutaiConfigReady && (
+        <Script
+          src="https://v2.discutai.com/widget/loader.js"
+          id="discutai-widget-loader"
+          strategy="afterInteractive"
+        />
       )}
 
       {/* Footer Theme Switcher */}

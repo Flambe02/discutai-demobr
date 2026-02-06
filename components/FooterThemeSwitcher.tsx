@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ThemeId, themeLabels, themeIds } from '@/lib/themes';
 import { setThemeInLocalStorage } from '@/lib/themeUtils';
-import { useState } from 'react';
 
 interface FooterThemeSwitcherProps {
   currentTheme: ThemeId;
@@ -13,7 +12,6 @@ interface FooterThemeSwitcherProps {
 export default function FooterThemeSwitcher({ currentTheme }: FooterThemeSwitcherProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [copySuccess, setCopySuccess] = useState(false);
 
   const handleThemeChange = (newTheme: ThemeId) => {
     if (newTheme === currentTheme) return;
@@ -25,17 +23,6 @@ export default function FooterThemeSwitcher({ currentTheme }: FooterThemeSwitche
     const params = new URLSearchParams(searchParams.toString());
     params.set('theme', newTheme);
     router.push(`?${params.toString()}`, { scroll: false });
-  };
-
-  const handleCopyLink = async () => {
-    try {
-      const url = `${window.location.origin}${window.location.pathname}?theme=${currentTheme}`;
-      await navigator.clipboard.writeText(url);
-      setCopySuccess(true);
-      setTimeout(() => setCopySuccess(false), 2000);
-    } catch (error) {
-      console.error('Erro ao copiar link:', error);
-    }
   };
 
   return (
@@ -81,24 +68,6 @@ export default function FooterThemeSwitcher({ currentTheme }: FooterThemeSwitche
               ))}
             </div>
 
-            {/* Bouton copier lien */}
-            <button
-              onClick={handleCopyLink}
-              className="px-4 py-2 rounded-lg text-sm font-medium bg-blue-600 text-white hover:bg-blue-700 transition-colors flex items-center gap-2"
-              title="Copiar link da demo"
-            >
-              {copySuccess ? (
-                <>
-                  <span>✓</span>
-                  <span>Copiado!</span>
-                </>
-              ) : (
-                <>
-                  <span>🔗</span>
-                  <span className="hidden sm:inline">Copiar link</span>
-                </>
-              )}
-            </button>
           </div>
 
           {/* Ligne 2 : Disclaimer */}
