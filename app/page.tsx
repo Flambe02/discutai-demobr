@@ -81,14 +81,14 @@ function HomeContent() {
   // Config et chargement DiscutAI pour cabeleireiro
   useEffect(() => {
     if (currentThemeId === 'cabeleireiro') {
-      // 1. Définir la config
+      // 1. Définir la config AVANT de charger le script
       (window as any).DiscutAIWidget = {
         config: {
           assistantWorkspaceId: "d3d97d6e-444b-41ce-8a52-ddd932e129c5",
           assistantName: "Ricar AI",
           themeColor: "#007bff",
           position: "bottom-right",
-          welcomeMessage: "Bom dia, como posso ajudar ? ",
+          welcomeMessage: "Bom dia, como posso ajudar?",
           showAvatar: true,
           width: 350,
           height: 500,
@@ -98,14 +98,24 @@ function HomeContent() {
       };
 
       // 2. Charger le script seulement s'il n'est pas déjà chargé
-      if (!document.getElementById('discutai-widget-loader')) {
+      const existingScript = document.getElementById('discutai-widget-loader');
+      if (!existingScript) {
         const script = document.createElement('script');
         script.id = 'discutai-widget-loader';
         script.src = 'https://v2.discutai.com/widget/loader.js';
-        script.async = true;
         document.body.appendChild(script);
       }
     }
+
+    // Cleanup: supprimer le widget quand on quitte la page cabeleireiro
+    return () => {
+      if (currentThemeId === 'cabeleireiro') {
+        const widgetContainer = document.querySelector('[id*="discutai"]');
+        if (widgetContainer) {
+          widgetContainer.remove();
+        }
+      }
+    };
   }, [currentThemeId]);
 
   // Éviter le flash de contenu avant hydration
