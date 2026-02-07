@@ -45,16 +45,51 @@ const getWidgetConfig = (themeId: string) => {
   return configs[themeId];
 };
 
+// Redimensionner les éléments du widget pour mobile
+function resizeWidgetForMobile() {
+  if (window.innerWidth > 768) return;
+
+  const maxW = Math.min(window.innerWidth - 20, 320);
+  const maxH = Math.min(window.innerHeight * 0.6, 450);
+
+  // Cibler tous les éléments du widget
+  const selectors = [
+    '[id*="discutai"]',
+    '[class*="discutai"]',
+  ];
+
+  selectors.forEach(sel => {
+    document.querySelectorAll(sel).forEach(el => {
+      const htmlEl = el as HTMLElement;
+      // Ne pas redimensionner les petits boutons (toggle)
+      if (htmlEl.offsetWidth > 80 || htmlEl.offsetHeight > 80) {
+        htmlEl.style.setProperty('max-width', `${maxW}px`, 'important');
+        htmlEl.style.setProperty('max-height', `${maxH}px`, 'important');
+        htmlEl.style.setProperty('width', `${maxW}px`, 'important');
+        htmlEl.style.setProperty('height', `${maxH}px`, 'important');
+      }
+    });
+  });
+
+  // Cibler les iframes séparément
+  document.querySelectorAll('[id*="discutai"] iframe, [class*="discutai"] iframe').forEach(el => {
+    const iframe = el as HTMLElement;
+    iframe.style.setProperty('max-width', `${maxW}px`, 'important');
+    iframe.style.setProperty('max-height', `${maxH}px`, 'important');
+    iframe.style.setProperty('width', `${maxW}px`, 'important');
+    iframe.style.setProperty('height', `${maxH}px`, 'important');
+  });
+}
+
 export default function DiscutAIWidget({ theme }: DiscutAIWidgetProps) {
   useEffect(() => {
     const config = getWidgetConfig(theme.id);
     if (!config) return;
 
-    // Ajuster la taille pour mobile
     const isMobile = window.innerWidth <= 768;
     if (isMobile) {
-      (config as any).width = 300;
-      (config as any).height = 420;
+      (config as any).width = Math.min(window.innerWidth - 20, 320);
+      (config as any).height = Math.min(window.innerHeight * 0.6, 450);
     }
 
     // Nettoyer tout élément précédent
@@ -72,7 +107,29 @@ export default function DiscutAIWidget({ theme }: DiscutAIWidgetProps) {
     script.src = `https://v2.discutai.com/widget/loader.js?t=${Date.now()}`;
     document.body.appendChild(script);
 
-    // Cleanup au démontage
+    // Observer le DOM pour redimensionner dès que le widget apparaît
+    let observer: MutationObserver | null = null;
+    if (isMobile) {
+      observer = new MutationObserver(() => {
+        resizeWidgetForMobile();
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+
+      // Aussi vérifier périodiquement les 5 premières secondes
+      const intervals = [500, 1000, 1500, 2000, 3000, 5000];
+      const timers = intervals.map(ms => setTimeout(resizeWidgetForMobile, ms));
+
+      return () => {
+        observer?.disconnect();
+        timers.forEach(clearTimeout);
+        const s = document.getElementById('discutai-widget-loader');
+        if (s) s.remove();
+        document.querySelectorAll('[id*="discutai"], [class*="discutai"]').forEach(el => el.remove());
+        delete (window as any).DiscutAIWidget;
+      };
+    }
+
+    // Cleanup au démontage (desktop)
     return () => {
       const s = document.getElementById('discutai-widget-loader');
       if (s) s.remove();
