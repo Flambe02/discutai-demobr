@@ -50,6 +50,13 @@ export default function DiscutAIWidget({ theme }: DiscutAIWidgetProps) {
     const config = getWidgetConfig(theme.id);
     if (!config) return;
 
+    // Ajuster la taille pour mobile
+    const isMobile = window.innerWidth <= 768;
+    if (isMobile) {
+      (config as any).width = 300;
+      (config as any).height = 420;
+    }
+
     // Nettoyer tout élément précédent
     document.querySelectorAll('[id*="discutai"], [class*="discutai"]').forEach(el => el.remove());
     const oldScript = document.getElementById('discutai-widget-loader');
