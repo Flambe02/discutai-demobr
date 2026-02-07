@@ -71,3 +71,16 @@
   z-index: 50 !important;
 }
 
+/* Cacher complètement le widget sur mobile */
+@media (max-width: 768px) {
+  #discutai-widget-container,
+  [id*="discutai"],
+  [class*="discutai"] {
+    display: none !important;
+    visibility: hidden !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+  }
+}
+

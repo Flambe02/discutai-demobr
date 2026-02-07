@@ -43,8 +43,14 @@ const getWidgetConfig = (themeId: string) => {
 
 export default function DiscutAIWidget({ theme }: DiscutAIWidgetProps) {
   useEffect(() => {
-    // Ne pas charger le widget sur mobile
-    if (window.innerWidth <= 768) return;
+    // Ne pas charger le widget sur mobile - nettoyer et quitter
+    if (window.innerWidth <= 768) {
+      document.querySelectorAll('[id*="discutai"], [class*="discutai"]').forEach(el => el.remove());
+      const s = document.getElementById('discutai-widget-loader');
+      if (s) s.remove();
+      delete (window as any).DiscutAIWidget;
+      return;
+    }
 
     const config = getWidgetConfig(theme.id);
     if (!config) return;
