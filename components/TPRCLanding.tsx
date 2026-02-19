@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 // Animation variants
 const fadeInUp = {
@@ -41,6 +42,11 @@ const staggerContainer = {
 export default function TPRCLanding() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [videoModalOpen, setVideoModalOpen] = useState(false);
+
+  // Remove SSR hero shell once the client component mounts
+  useEffect(() => {
+    document.getElementById('ssr-hero-shell')?.remove();
+  }, []);
 
   // Close video modal on ESC key
   useEffect(() => {
@@ -90,10 +96,13 @@ export default function TPRCLanding() {
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           {/* Logo */}
           <Link href="/?theme=tprc" className="flex items-center gap-3 group">
-            <img
+            <Image
               src="/images/pimentao-rouge-logo.png"
               alt="The Pimentão Rouge Company"
-              className="h-10 w-auto group-hover:scale-105 transition-transform"
+              width={40}
+              height={40}
+              priority
+              className="group-hover:scale-105 transition-transform"
             />
             <span className="text-lg font-bold tracking-tight hidden sm:block">The Pimentão Rouge Company</span>
             <span className="text-lg font-bold tracking-tight sm:hidden">TPRC</span>
@@ -272,7 +281,7 @@ export default function TPRCLanding() {
             </motion.div>
 
             {/* Bento Grid */}
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {/* Card 1 - IA Conversacional */}
               <motion.div
                 variants={fadeInUp}
@@ -357,6 +366,7 @@ export default function TPRCLanding() {
                   </Link>
                 </div>
               </motion.div>
+
             </div>
           </motion.div>
         </div>
@@ -590,10 +600,11 @@ export default function TPRCLanding() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             {/* Logo */}
             <div className="flex items-center gap-3">
-              <img
+              <Image
                 src="/images/pimentao-rouge-logo.png"
                 alt="The Pimentão Rouge Company"
-                className="h-8 w-auto"
+                width={32}
+                height={32}
               />
               <span className="font-semibold hidden sm:block">The Pimentão Rouge Company</span>
               <span className="font-semibold sm:hidden">TPRC</span>

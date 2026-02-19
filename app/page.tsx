@@ -1,387 +1,270 @@
-'use client';
-
-import { Suspense, useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
-import Script from 'next/script';
-import Hero from '@/components/Hero';
-import Gallery from '@/components/Gallery';
-import BotWidget from '@/components/BotWidget';
-import DiscutAIWidget from '@/components/DiscutAIWidget';
-import WhatsAppWidget from '@/components/WhatsAppWidget';
-import FooterThemeSwitcher from '@/components/FooterThemeSwitcher';
-import BrandLogo from '@/components/BrandLogo';
-import TPRCLanding from '@/components/TPRCLanding';
+﻿import type { Metadata } from 'next';
+import HomePageClient from '@/components/HomePageClient';
 import { ThemeId } from '@/lib/themes';
-// Note: LucyLanding a été supprimé - le thème "lucy" n'existe plus
-import {
-  getThemeFromQuery,
-  getThemeFromLocalStorage,
-  resolveTheme,
-  getTheme,
-} from '@/lib/themeUtils';
+import { getDefaultTheme, isValidThemeId } from '@/lib/themeUtils';
 
-function HomeContent() {
-  const searchParams = useSearchParams();
-  const [currentThemeId, setCurrentThemeId] = useState<ThemeId>('tprc');
-  const [isClient, setIsClient] = useState(false);
-  const [widgetKey, setWidgetKey] = useState(0);
+type HomePageProps = {
+  searchParams?: Promise<{ theme?: string | string[] }>;
+};
 
-  // Hydration et résolution du thème
-  useEffect(() => {
-    setIsClient(true);
-    const queryTheme = getThemeFromQuery(searchParams);
-    const localTheme = getThemeFromLocalStorage();
-    const resolvedTheme = resolveTheme(queryTheme, localTheme);
-    setCurrentThemeId(resolvedTheme);
-    // Incrémenter la clé pour forcer le remount du widget DiscutAI
-    setWidgetKey(k => k + 1);
-  }, [searchParams]);
+const baseUrl = 'https://www.pimentaorouge.com';
 
-  const theme = getTheme(currentThemeId);
+export const metadata: Metadata = {
+  title: 'TPRC | Agência Boutique de IA no Brasil',
+  description:
+    'A Pimentão Rouge (TPRC) é uma agência boutique de IA no Brasil especializada em IA conversacional, AI Music Branding, advisory estratégico e capacitação corporativa em IA generativa.',
+  alternates: {
+    canonical: '/',
+    languages: {
+      'pt-BR': `${baseUrl}/`,
+    },
+  },
+  openGraph: {
+    title: 'TPRC | Agência Boutique de IA no Brasil',
+    description:
+      'Inteligência conversacional, música para sua empresa e advisory estratégico para acelerar crescimento.',
+    url: `${baseUrl}/`,
+    siteName: 'The Pimentão Rouge Company',
+    locale: 'pt_BR',
+    type: 'website',
+    images: [
+      {
+        url: '/images/pimentao-rouge-logo.png',
+        width: 1200,
+        height: 1200,
+        alt: 'The Pimentão Rouge Company',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'TPRC | Agência Boutique de IA no Brasil',
+    description:
+      'IA conversacional, música para empresas e advisory estratégico com foco em resultado.',
+    images: ['/images/pimentao-rouge-logo.png'],
+  },
+};
 
-  // Fonction pour ouvrir le bot/widget
-  const openBot = () => {
-    // Cette fonction sera appelée par le CTA pour ouvrir le bot
-    if (currentThemeId === 'generico') {
-      // Pour le thème generico UNIQUEMENT, chercher et cliquer sur le bouton DiscutAI
-      const discutaiButton =
-        document.querySelector('[id*="discutai"][role="button"]') as HTMLButtonElement ||
-        document.querySelector('[class*="discutai"][role="button"]') as HTMLButtonElement ||
-        document.querySelector('iframe[src*="discutai"]')?.previousElementSibling as HTMLButtonElement ||
-        document.querySelector('[id^="discutai"] button') as HTMLButtonElement;
+export default async function Home({ searchParams }: HomePageProps) {
+  const resolvedSearchParams = (await searchParams) ?? {};
+  const rawTheme = resolvedSearchParams.theme;
+  const firstTheme = Array.isArray(rawTheme) ? rawTheme[0] : rawTheme;
+  const initialThemeId: ThemeId = isValidThemeId(firstTheme) ? firstTheme : getDefaultTheme();
 
-      if (discutaiButton) {
-        discutaiButton.click();
-      } else {
-        console.log('⚠️ Bouton DiscutAI non trouvé - le widget est peut-être encore en chargement');
-      }
-    } else {
-      // Pour les autres thèmes, utiliser le BotWidget standard
-      const botButton = document.querySelector('[aria-label="Abrir assistente virtual"]') as HTMLButtonElement;
-      if (botButton) {
-        botButton.click();
-      }
-    }
+  const professionalServiceJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ProfessionalService',
+    '@id': `${baseUrl}/#professional-service`,
+    name: 'Pimentão Rouge',
+    alternateName: 'The Pimentão Rouge Company',
+    url: `${baseUrl}/`,
+    description:
+      'Boutique de IA premium no Brasil. Criação de Digital Employees e AI Agents, AI Music Branding, consultoria estratégica e capacitação corporativa em IA generativa.',
+    areaServed: [
+      { '@type': 'Country', name: 'Brazil' },
+      { '@type': 'ContinentOrRegion', name: 'Europe' },
+    ],
+    serviceType: [
+      'Digital Employees & AI Agents',
+      'AI Music Branding',
+      'Consultoria Estratégica em IA',
+      'Capacitação e Treinamento em IA',
+    ],
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: 'Portfólio Pimentão Rouge',
+      itemListElement: [
+        {
+          '@type': 'Offer',
+          name: 'Digital Employees & AI Agents',
+          itemOffered: {
+            '@type': 'Service',
+            name: 'Implementação de Agentes de IA',
+            description:
+              'Criação de colaboradores digitais autônomos para suporte, vendas e operações.',
+          },
+        },
+        {
+          '@type': 'Offer',
+          name: 'AI Music Branding',
+          itemOffered: {
+            '@type': 'Service',
+            name: 'Identidade Sonora com IA',
+            description:
+              'Composição de identidade sonora algorítmica e música sob medida para marcas.',
+          },
+        },
+        {
+          '@type': 'Offer',
+          name: 'Advisory',
+          itemOffered: {
+            '@type': 'Service',
+            name: 'Consultoria Estratégica em IA',
+            description:
+              'Diagnóstico de maturidade, priorização de casos de uso e roadmap de implementação.',
+          },
+        },
+        {
+          '@type': 'Offer',
+          name: 'Capacitação Executiva em IA',
+          itemOffered: {
+            '@type': 'Course',
+            name: 'Workshop de IA para Executivos e Times',
+            description:
+              'Treinamento prático para liderança e equipes com foco em adoção, governança e produtividade com IA generativa.',
+            provider: {
+              '@type': 'Organization',
+              name: 'Pimentão Rouge',
+              url: `${baseUrl}/`,
+            },
+          },
+        },
+      ],
+    },
   };
 
-  // Fonction pour ouvrir le popup Calendly (cabeleireiro)
-  const openCalendly = () => {
-    if (typeof window !== 'undefined' && (window as any).Calendly) {
-      (window as any).Calendly.initPopupWidget({
-        url: 'https://calendly.com/thepimentaorougecompany/30min'
-      });
-    }
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'O que é a Pimentão Rouge?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'A Pimentão Rouge (TPRC) é uma agência boutique de IA premium no Brasil, especializada em Digital Employees, AI Music Branding, consultoria estratégica e capacitação corporativa em IA generativa.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Quais serviços a TPRC oferece?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Oferecemos quatro frentes integradas: (1) criação de Digital Employees e AI Agents para atendimento, vendas e operações; (2) AI Music Branding para identidade sonora; (3) consultoria estratégica com diagnóstico de maturidade e roadmap; (4) capacitação corporativa com workshops em IA generativa.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Em quais regiões a Pimentão Rouge atua?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Atuamos no Brasil e na Europa, com foco em empresas que buscam transformação digital com IA de alto impacto.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Como funciona o diagnóstico estratégico de IA?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'O diagnóstico avalia a maturidade da sua empresa em IA, identifica quick wins e gargalos, e entrega um roadmap de implementação com priorização de use cases e baseline de ROI.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'O que é o DiscutAI?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'O DiscutAI é o motor de IA conversacional da Pimentão Rouge. Ele permite criar chatbots inteligentes e Digital Employees para atendimento, vendas e suporte, com integração a sistemas existentes.',
+        },
+      },
+    ],
   };
-
-  // Exposer une fonction globale pour ouvrir le widget (utile pour les boutons CTA)
-  useEffect(() => {
-    (window as any).openChatWidget = openBot;
-    return () => {
-      delete (window as any).openChatWidget;
-    };
-  }, [currentThemeId, openBot]);
-
-
-  // Éviter le flash de contenu avant hydration
-  if (!isClient) {
-    return null;
-  }
-
-  // Page d'accueil TPRC (Landing page premium de l'agence)
-  // Pas de FooterThemeSwitcher sur la homepage TPRC
-  if (currentThemeId === 'tprc') {
-    return <TPRCLanding />;
-  }
-
 
   return (
-    <div className="min-h-screen">
-      {/* Header Sticky */}
-      <header className="sticky top-0 z-30 bg-gray-900/95 backdrop-blur-sm border-b border-gray-800 shadow-lg">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            {/* Logo et brand */}
-            <div className="flex items-center gap-4">
-              <div
-                className="w-12 h-12 rounded-full flex items-center justify-center p-2.5"
-                style={{ background: `linear-gradient(135deg, ${theme.accentColor}, ${theme.gradientSecondary})` }}
-              >
-                <BrandLogo
-                  themeId={currentThemeId}
-                  variant="mono"
-                  className="w-full h-full text-white"
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(professionalServiceJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+
+      {/* SSR shell: visible above-the-fold content rendered on server for fast FCP/LCP.
+          Hidden by the client component once JS hydrates via the #ssr-hero-shell ID. */}
+      {initialThemeId === 'tprc' && (
+        <div
+          id="ssr-hero-shell"
+          className="min-h-screen bg-[#050505] text-white antialiased overflow-x-hidden"
+        >
+          {/* Nav bar */}
+          <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-[#050505]/80 border-b border-white/5">
+            <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+              <a href="/" className="flex items-center gap-3">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/images/pimentao-rouge-logo.png"
+                  alt="The Pimentão Rouge Company"
+                  width={40}
+                  height={40}
                 />
-              </div>
-              <div>
-                <h1 className="text-xl font-bold text-white">{theme.brandName}</h1>
-                <p className="text-sm text-gray-400">{theme.tagline}</p>
-              </div>
+                <span className="text-lg font-bold tracking-tight hidden sm:block">
+                  The Pimentão Rouge Company
+                </span>
+                <span className="text-lg font-bold tracking-tight sm:hidden">TPRC</span>
+              </a>
             </div>
+          </nav>
 
-            {/* Badges et info */}
-            <div className="flex flex-wrap items-center gap-3">
-              <div className="text-xs text-gray-400 flex items-center gap-1">
-                <span>📍</span>
-                <span className="hidden lg:inline">{theme.address.split(',')[0]}</span>
-                <span className="lg:hidden">Ver endereço</span>
+          {/* Hero */}
+          <section className="relative min-h-screen flex items-center justify-center pt-20 px-6">
+            <div className="max-w-5xl mx-auto text-center space-y-8">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-gray-400">
+                Agência de Inteligência Artificial
               </div>
-              <div className="text-xs text-gray-400 flex items-center gap-1">
-                <span>🕐</span>
-                <span className="hidden md:inline">{theme.hours.split('|')[0].trim()}</span>
-                <span className="md:hidden">Horários</span>
-              </div>
-              <div className="flex items-center gap-1 px-2 py-1 bg-yellow-500/10 rounded-lg">
-                <span>⭐</span>
-                <span className="text-sm font-semibold text-yellow-500">4,8</span>
-                <span className="text-xs text-gray-400">(312)</span>
-              </div>
-
-              {/* CTA principal */}
-              {currentThemeId === 'cabeleireiro' ? (
-                <button
-                  onClick={openCalendly}
-                  className="px-5 py-2 rounded-lg font-medium text-white hover:opacity-90 transition-opacity cursor-pointer"
-                  style={{ backgroundColor: theme.accentColor }}
-                >
-                  Reservar horário
-                </button>
-              ) : (
-                <button
-                  onClick={openBot}
-                  className="px-5 py-2 rounded-lg font-medium text-white hover:opacity-90 transition-opacity"
-                  style={{ backgroundColor: theme.accentColor }}
-                >
-                  {theme.ctaPrimaryLabel}
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* Hero Section */}
-      <Hero theme={theme} />
-
-      {/* Gallery Section */}
-      <Gallery theme={theme} />
-
-      {/* Section: Deux cards (Services + Infos) */}
-      <section className="py-12 bg-gray-900/50">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* Card Services */}
-            <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-6 hover:border-gray-600 transition-colors">
-              <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
-                <span>🎯</span>
-                Nossos serviços
-              </h2>
-              <ul className="space-y-3">
-                {theme.services.map((service, index) => (
-                  <li key={index} className="flex items-start gap-3">
-                    <span className="text-lg mt-0.5" style={{ color: theme.accentColor }}>✓</span>
-                    <span className="text-gray-300">{service}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Card Infos */}
-            <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-6 hover:border-gray-600 transition-colors">
-              <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
-                <span>ℹ️</span>
-                Informações úteis
-              </h2>
-              <ul className="space-y-3">
-                {theme.infos.map((info, index) => (
-                  <li key={index} className="flex items-start gap-3">
-                    <span className="text-lg mt-0.5" style={{ color: theme.accentColor }}>•</span>
-                    <span className="text-gray-300">{info}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Section: Événements / Réservation de salle (restaurante uniquement) */}
-      {theme.eventsSection && (
-        <section className="py-12 border-t border-gray-800">
-          <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto text-center mb-8">
-              <h2 className="text-3xl font-bold text-white mb-3 flex items-center justify-center gap-2">
-                <span>🎉</span>
-                {theme.eventsSection.title}
-              </h2>
-              <p className="text-gray-300 text-lg">
-                {theme.eventsSection.subtitle}
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight">
+                <span className="bg-gradient-to-r from-white via-white to-gray-400 bg-clip-text text-transparent">
+                  Inteligência Artificial
+                </span>
+                <br />
+                <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                  que gera resultados reais.
+                </span>
+              </h1>
+              <p className="text-lg sm:text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
+                TPRC: agência boutique de IA.{' '}
+                <span className="text-white font-medium">Inteligência conversacional</span>,{' '}
+                <span className="text-white font-medium">criatividade musical</span> e{' '}
+                <span className="text-white font-medium">precisão financeira</span> para escalar
+                negócios.
               </p>
             </div>
-            <div className="grid sm:grid-cols-2 gap-4 max-w-4xl mx-auto mb-8">
-              {theme.eventsSection.items.map((item, index) => (
-                <div
-                  key={index}
-                  className="flex items-start gap-3 p-4 rounded-xl text-left border border-gray-700 bg-gray-800/50 hover:border-gray-600 transition-colors"
-                  style={{ borderColor: `${theme.accentColor}30` }}
-                >
-                  <span className="text-xl shrink-0" style={{ color: theme.accentColor }}>✓</span>
-                  <span className="text-gray-300">{item}</span>
-                </div>
-              ))}
-            </div>
-            <div className="text-center">
-              <button
-                onClick={openBot}
-                className="px-6 py-3 rounded-xl font-semibold text-white hover:opacity-90 transition-opacity"
-                style={{ background: `linear-gradient(135deg, ${theme.accentColor}, ${theme.gradientSecondary})` }}
-              >
-                {theme.eventsSection.ctaLabel}
-              </button>
-            </div>
-          </div>
-        </section>
-      )}
+          </section>
 
-      {/* Section: Trois cards (Pourquoi + Bot Examples + Contact) */}
-      <section className="py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-3 gap-6">
-            {/* Card Pourquoi */}
-            <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-6 hover:border-gray-600 transition-colors">
-              <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                <span>💡</span>
-                Por que escolher a gente
-              </h2>
-              <p className="text-gray-300 leading-relaxed">
-                {theme.whyText}
-              </p>
-            </div>
-
-            {/* Card Bot Examples */}
-            <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-6 hover:border-gray-600 transition-colors">
-              <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                <span>💬</span>
-                Peça ao Bot
-              </h2>
-              <p className="text-sm text-gray-400 mb-4">
-                Exemplos do que você pode perguntar:
-              </p>
-              <ul className="space-y-2">
-                {theme.botExamples.map((example, index) => (
-                  <li
-                    key={index}
-                    className="text-sm text-gray-300 px-3 py-2 bg-gray-900/50 rounded-lg hover:bg-gray-900 transition-colors cursor-pointer"
-                    onClick={openBot}
-                  >
-                    "{example}"
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Card Contact */}
-            <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-6 hover:border-gray-600 transition-colors">
-              <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                <span>📞</span>
-                Contato
-              </h2>
-              <div className="space-y-3 text-sm">
-                <div className="flex items-start gap-2">
-                  <span className="text-gray-400">Telefone:</span>
-                  <a href={`tel:${theme.phone}`} className="text-gray-300 hover:text-white">
-                    {theme.phone}
-                  </a>
-                </div>
-                <div className="flex items-start gap-2">
-                  <span className="text-gray-400">WhatsApp:</span>
-                  <a
-                    href={`https://wa.me/${theme.whatsapp.replace(/\D/g, '')}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-green-400 hover:text-green-300"
-                  >
-                    {theme.whatsapp}
-                  </a>
-                </div>
-                <div className="flex items-start gap-2">
-                  <span className="text-gray-400">E-mail:</span>
-                  <a href={`mailto:${theme.email}`} className="text-gray-300 hover:text-white break-all">
-                    {theme.email}
-                  </a>
-                </div>
-                <div className="flex items-start gap-2">
-                  <span className="text-gray-400">Endereço:</span>
-                  <span className="text-gray-300 flex-1">
-                    {theme.address}
-                  </span>
-                </div>
-              </div>
-            </div>
+          {/* Crawlable structured content (hidden visually, accessible to crawlers) */}
+          <div className="sr-only">
+            <h2>Nossas Soluções</h2>
+            <h3>IA Conversacional e Digital Employees</h3>
+            <p>
+              Automação de agenda e suporte com motor DiscutAI. Chatbots inteligentes que entendem
+              contexto e entregam resultados. Criação de colaboradores digitais autônomos para
+              atendimento, vendas e operações.
+            </p>
+            <h3>Creative Tech e AI Music Branding</h3>
+            <p>
+              Produção de conteúdo sonoro viral e estratégico. Jingles, trilhas e sound design que
+              marcam sua marca. Composição de identidade sonora algorítmica e música sob medida.
+            </p>
+            <h3>Payments e Benefits Advisory</h3>
+            <p>
+              Strategic Advisory: Inteligência de mercado e análise regulatória cross-border
+              Brasil-Europa potencializada por IA para investidores e M&amp;A.
+            </p>
+            <h3>Capacitação Corporativa em IA</h3>
+            <p>
+              Workshops práticos para liderança e equipes com foco em adoção, governança e
+              produtividade com IA generativa. Programas de upskilling e treinamento corporativo.
+            </p>
+            <nav aria-label="Serviços">
+              <a href="/musica">Música para sua empresa com IA</a>
+              <a href="/advisory">Advisory em Payments e Benefits</a>
+            </nav>
           </div>
         </div>
-      </section>
-
-      {/* CTA Final */}
-      <section className="py-16 bg-gradient-to-br from-gray-900 to-gray-800">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Pronto para começar?
-          </h2>
-          <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
-            {currentThemeId === 'cabeleireiro'
-              ? 'Agende seu horário online de forma rápida e prática. Escolha o melhor momento para você!'
-              : 'Nosso assistente virtual está disponível 24 horas por dia para atender você. Clique no botão abaixo e comece agora mesmo!'}
-          </p>
-          {currentThemeId === 'cabeleireiro' ? (
-            <button
-              onClick={openCalendly}
-              className="px-8 py-4 rounded-xl font-bold text-lg text-white hover:scale-105 transition-transform shadow-xl cursor-pointer"
-              style={{ background: `linear-gradient(135deg, ${theme.accentColor}, ${theme.gradientSecondary})` }}
-            >
-              Reservar horário agora
-            </button>
-          ) : (
-            <button
-              onClick={openBot}
-              className="px-8 py-4 rounded-xl font-bold text-lg text-white hover:scale-105 transition-transform shadow-xl"
-              style={{ background: `linear-gradient(135deg, ${theme.accentColor}, ${theme.gradientSecondary})` }}
-            >
-              {theme.ctaPrimaryLabel} agora
-            </button>
-          )}
-        </div>
-      </section>
-
-      {/* Bot Widget - Afficher WhatsApp pour restaurant, DiscutAI pour generico et cabeleireiro, BotWidget pour les autres */}
-      {currentThemeId === 'restaurante' ? (
-        <WhatsAppWidget theme={theme} phoneNumber="+5511973953946" />
-      ) : currentThemeId === 'generico' || currentThemeId === 'cabeleireiro' ? (
-        <DiscutAIWidget key={`discutai-${currentThemeId}-${widgetKey}`} theme={theme} />
-      ) : (
-        <BotWidget theme={theme} />
       )}
 
-      {/* Calendly Widget - Cabeleireiro uniquement */}
-      {currentThemeId === 'cabeleireiro' && (
-        <>
-          <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" />
-          <Script
-            src="https://assets.calendly.com/assets/external/widget.js"
-            strategy="lazyOnload"
-          />
-        </>
-      )}
-
-      {/* Footer Theme Switcher */}
-      <FooterThemeSwitcher currentTheme={currentThemeId} />
-    </div>
-  );
-}
-
-export default function Home() {
-  return (
-    <Suspense fallback={<div className="min-h-screen bg-gray-900" />}>
-      <HomeContent />
-    </Suspense>
+      <HomePageClient initialThemeId={initialThemeId} />
+    </>
   );
 }

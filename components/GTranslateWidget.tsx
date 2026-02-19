@@ -25,9 +25,19 @@ declare global {
 export default function GTranslateWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [currentLang, setCurrentLang] = useState('pt');
+  const [isEnabled, setIsEnabled] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const isLocalhost =
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1';
+    const isDev = process.env.NODE_ENV !== 'production';
+    const enabled = !(isLocalhost || isDev);
+    setIsEnabled(enabled);
+
+    if (!enabled) return;
+
     // Détecter la langue actuelle depuis le cookie Google Translate
     const detectCurrentLanguage = () => {
       const cookies = document.cookie.split(';');
@@ -72,6 +82,10 @@ export default function GTranslateWidget() {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  if (!isEnabled) {
+    return null;
+  }
 
   const handleLanguageChange = (langCode: string) => {
     setIsOpen(false);
