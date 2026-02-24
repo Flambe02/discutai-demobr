@@ -1,6 +1,6 @@
 ﻿'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Script from 'next/script';
 import Hero from '@/components/Hero';
 import Gallery from '@/components/Gallery';
@@ -20,9 +20,16 @@ interface HomePageClientProps {
 export default function HomePageClient({ initialThemeId }: HomePageClientProps) {
   const [currentThemeId, setCurrentThemeId] = useState<ThemeId>(initialThemeId);
   const [widgetKey, setWidgetKey] = useState(0);
+  const hasMountedRef = useRef(false);
 
   // Synchronise l'etat local avec le theme resolu cote serveur quand l'URL change.
+  // On ignore le premier run : currentThemeId est déjà correctement initialisé depuis initialThemeId,
+  // forcer un widgetKey++ au mount causerait un double-chargement du script DiscutAI.
   useEffect(() => {
+    if (!hasMountedRef.current) {
+      hasMountedRef.current = true;
+      return;
+    }
     setCurrentThemeId(initialThemeId);
     setWidgetKey((k) => k + 1);
   }, [initialThemeId]);
