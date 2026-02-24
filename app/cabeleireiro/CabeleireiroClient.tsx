@@ -18,18 +18,21 @@ const staggerContainer = {
   },
 };
 
+function cleanupDiscutAI() {
+  // Supprime loader.js ET widget.js (chargé dynamiquement par loader.js)
+  document.querySelectorAll('script[src*="discutai"]').forEach(el => el.remove());
+  // Supprime les éléments UI du widget
+  document.querySelectorAll('[id*="discutai"], [class*="discutai"]').forEach(el => el.remove());
+  delete (window as any).DiscutAIWidget;
+}
+
 export default function CabeleireiroClient() {
   useEffect(() => {
-    // Ne pas charger le widget sur mobile
-    if (window.innerWidth <= 768) return;
-
-    // Nettoyer tout widget précédent
-    document.querySelectorAll('[id*="discutai"], [class*="discutai"]').forEach(el => el.remove());
-    const oldScript = document.getElementById('discutai-widget-loader');
-    if (oldScript) oldScript.remove();
-    delete (window as any).DiscutAIWidget;
+    // Nettoyer tout vestige d'une instance précédente (loader.js + widget.js + UI)
+    cleanupDiscutAI();
 
     // Config Jessica – Barbaria do Rei
+    // Doit être défini AVANT que loader.js s'exécute (il lit window.DiscutAIWidget.config au démarrage)
     (window as any).DiscutAIWidget = {
       config: {
         assistantWorkspaceId: "8fd31883-b679-4bbd-a5cd-f159c26aba06",
@@ -47,14 +50,12 @@ export default function CabeleireiroClient() {
 
     const script = document.createElement('script');
     script.id = 'discutai-widget-loader';
-    script.src = 'https://v2.discutai.com/widget/loader.js';
+    script.async = true;
+    script.src = `https://v2.discutai.com/widget/loader.js?t=${Date.now()}`;
     document.body.appendChild(script);
 
     return () => {
-      const s = document.getElementById('discutai-widget-loader');
-      if (s) s.remove();
-      document.querySelectorAll('[id*="discutai"], [class*="discutai"]').forEach(el => el.remove());
-      delete (window as any).DiscutAIWidget;
+      cleanupDiscutAI();
     };
   }, []);
 

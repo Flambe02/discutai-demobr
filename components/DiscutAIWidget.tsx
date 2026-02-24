@@ -41,41 +41,36 @@ const getWidgetConfig = (themeId: string) => {
   return configs[themeId];
 };
 
+/** Supprime tous les scripts et éléments DOM liés à DiscutAI */
+function cleanupDiscutAI() {
+  // Supprime loader.js ET widget.js (chargé dynamiquement par loader.js)
+  document.querySelectorAll('script[src*="discutai"]').forEach(el => el.remove());
+  // Supprime les éléments UI du widget (bouton flottant, chat, iframes…)
+  document.querySelectorAll('[id*="discutai"], [class*="discutai"]').forEach(el => el.remove());
+  delete (window as any).DiscutAIWidget;
+}
+
 export default function DiscutAIWidget({ theme }: DiscutAIWidgetProps) {
   useEffect(() => {
-    // Ne pas charger le widget sur mobile - nettoyer et quitter
-    if (window.innerWidth <= 768) {
-      document.querySelectorAll('[id*="discutai"], [class*="discutai"]').forEach(el => el.remove());
-      const s = document.getElementById('discutai-widget-loader');
-      if (s) s.remove();
-      delete (window as any).DiscutAIWidget;
-      return;
-    }
-
     const config = getWidgetConfig(theme.id);
     if (!config) return;
 
-    // Nettoyer tout élément précédent
-    document.querySelectorAll('[id*="discutai"], [class*="discutai"]').forEach(el => el.remove());
-    const oldScript = document.getElementById('discutai-widget-loader');
-    if (oldScript) oldScript.remove();
-    delete (window as any).DiscutAIWidget;
+    // Nettoyer tout vestige d'une instance précédente
+    cleanupDiscutAI();
 
-    // Définir la config
+    // Définir la config AVANT de charger le script (le loader lit window.DiscutAIWidget.config à l'exécution)
     (window as any).DiscutAIWidget = { config };
 
-    // Charger le script avec cache-busting
+    // Charger loader.js (lui-même charge widget.js)
     const script = document.createElement('script');
     script.id = 'discutai-widget-loader';
+    script.async = true;
     script.src = `https://v2.discutai.com/widget/loader.js?t=${Date.now()}`;
     document.body.appendChild(script);
 
     // Cleanup au démontage
     return () => {
-      const s = document.getElementById('discutai-widget-loader');
-      if (s) s.remove();
-      document.querySelectorAll('[id*="discutai"], [class*="discutai"]').forEach(el => el.remove());
-      delete (window as any).DiscutAIWidget;
+      cleanupDiscutAI();
     };
   }, [theme.id]);
 
