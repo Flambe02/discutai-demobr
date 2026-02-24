@@ -26,6 +26,9 @@ function cleanupDiscutAI() {
 
 export default function CabeleireiroClient() {
   useEffect(() => {
+    // Active le widget sur mobile pour cette page (override du hide global)
+    document.body.classList.add('cabeleireiro-page');
+
     // 1. Supprimer tout vestige d'une instance précédente
     cleanupDiscutAI();
 
@@ -52,6 +55,7 @@ export default function CabeleireiroClient() {
     };
 
     return () => {
+      document.body.classList.remove('cabeleireiro-page');
       cleanupDiscutAI();
     };
   }, []);

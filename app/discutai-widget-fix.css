@@ -71,11 +71,11 @@
   z-index: 50 !important;
 }
 
-/* Cacher complètement le widget sur mobile */
+/* Cacher le widget sur mobile — sauf sur body.cabeleireiro-page */
 @media (max-width: 768px) {
-  #discutai-widget-container,
-  [id*="discutai"],
-  [class*="discutai"] {
+  body:not(.cabeleireiro-page) #discutai-widget-container,
+  body:not(.cabeleireiro-page) [id*="discutai"],
+  body:not(.cabeleireiro-page) [class*="discutai"] {
     display: none !important;
     visibility: hidden !important;
     width: 0 !important;
