@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Scissors, Clock, MapPin, Phone, Star, ArrowLeft, Calendar } from 'lucide-react';
 import Link from 'next/link';
@@ -17,9 +18,43 @@ const staggerContainer = {
   },
 };
 
-// Le chargement du widget Jessica est géré dans page.tsx via next/script (server component)
-// → pas de useEffect, pas d'interférence React Strict Mode
+function cleanupDiscutAI() {
+  document.querySelectorAll('script[src*="discutai.com/widget"]').forEach(el => el.remove());
+  document.querySelectorAll('[id*="discutai"], [class*="discutai"]').forEach(el => el.remove());
+  delete (window as any).DiscutAIWidget;
+}
+
 export default function CabeleireiroClient() {
+  useEffect(() => {
+    // 1. Supprimer tout vestige d'une instance précédente
+    cleanupDiscutAI();
+
+    // 2. Injecter loader.js EN PREMIER — ordre identique au script officiel DiscutAI
+    const script = document.createElement('script');
+    script.id = 'discutai-widget-loader';
+    script.src = 'https://v2.discutai.com/widget/loader.js';
+    document.body.appendChild(script);
+
+    // 3. Définir la config Jessica immédiatement après (synchrone, loader.js charge encore)
+    (window as any).DiscutAIWidget = {
+      config: {
+        assistantWorkspaceId: '8fd31883-b679-4bbd-a5cd-f159c26aba06',
+        assistantName: 'Jessica',
+        themeColor: '#ff3100',
+        position: 'bottom-right',
+        welcomeMessage: 'Ola bom dia',
+        showAvatar: true,
+        width: 350,
+        height: 500,
+        logoUrl: 'https://veztjskcirpqzdwizxxn.supabase.co/storage/v1/object/public/assistants-avatars/103833e0-68ad-42e3-bf06-add3d4c5bb10.jpg',
+        baseUrl: 'https://v2.discutai.com',
+      },
+    };
+
+    return () => {
+      cleanupDiscutAI();
+    };
+  }, []);
 
   const services = [
     { name: 'Corte masculino', price: 'R$ 45' },
