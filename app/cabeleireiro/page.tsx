@@ -30,31 +30,43 @@ export default function CabeleireiroPage() {
     <>
       <CabeleireiroClient />
       {/*
-        Script injecté depuis le server component → échappe totalement à React Strict Mode.
-        1) Le script inline définit window.DiscutAIWidget AVANT que loader.js s'exécute.
-        2) loader.js est chargé juste après (afterInteractive garantit l'ordre dans Next.js).
+        IIFE unique injectée depuis le server component → échappe à React Strict Mode.
+        Avantages vs 2 scripts séparés :
+        - Pas de race condition : loader.js est créé APRÈS que window.DiscutAIWidget.config soit défini
+        - Pas de déduplication Next.js : un seul id, le script loader.js est injecté dynamiquement
+        - Cache-buster sur loader.js : évite les anciens bundles mis en cache par le navigateur
+        - Nettoyage préalable : supprime tout vestige d'une instance précédente (navigation SPA)
       */}
-      <Script id="discutai-jessica-config" strategy="afterInteractive">{`
-        window.DiscutAIWidget = {
-          config: {
-            assistantWorkspaceId: "8fd31883-b679-4bbd-a5cd-f159c26aba06",
-            assistantName: "Jessica",
-            themeColor: "#ff3100",
-            position: "bottom-right",
-            welcomeMessage: "Ola bom dia",
-            showAvatar: true,
-            width: 350,
-            height: 500,
-            logoUrl: "https://veztjskcirpqzdwizxxn.supabase.co/storage/v1/object/public/assistants-avatars/103833e0-68ad-42e3-bf06-add3d4c5bb10.jpg",
-            baseUrl: "https://v2.discutai.com"
-          }
-        };
+      <Script id="discutai-jessica-init" strategy="afterInteractive">{`
+        (function() {
+          // 1. Nettoyer tout vestige d'instance précédente (widget.js + loader.js + DOM)
+          document.querySelectorAll('script[src*="discutai.com/widget"]').forEach(function(el) { el.remove(); });
+          document.querySelectorAll('[id*="discutai"], [class*="discutai"]').forEach(function(el) { el.remove(); });
+          delete window.DiscutAIWidget;
+
+          // 2. Définir la config Jessica AVANT de charger loader.js
+          window.DiscutAIWidget = {
+            config: {
+              assistantWorkspaceId: "8fd31883-b679-4bbd-a5cd-f159c26aba06",
+              assistantName: "Jessica",
+              themeColor: "#ff3100",
+              position: "bottom-right",
+              welcomeMessage: "Ola bom dia",
+              showAvatar: true,
+              width: 350,
+              height: 500,
+              logoUrl: "https://veztjskcirpqzdwizxxn.supabase.co/storage/v1/object/public/assistants-avatars/103833e0-68ad-42e3-bf06-add3d4c5bb10.jpg",
+              baseUrl: "https://v2.discutai.com"
+            }
+          };
+
+          // 3. Charger loader.js dynamiquement — config déjà en place, zéro race condition
+          var s = document.createElement('script');
+          s.id = 'discutai-widget-loader';
+          s.src = 'https://v2.discutai.com/widget/loader.js?t=' + Date.now();
+          document.body.appendChild(s);
+        })();
       `}</Script>
-      <Script
-        id="discutai-widget-loader"
-        src="https://v2.discutai.com/widget/loader.js"
-        strategy="afterInteractive"
-      />
     </>
   );
 }
