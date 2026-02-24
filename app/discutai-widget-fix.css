@@ -70,34 +70,3 @@
 .discutai-widget-container {
   z-index: 9999 !important;
 }
-
-/* Cacher le widget sur mobile — sauf sur body.cabeleireiro-page */
-@media (max-width: 768px) {
-  body:not(.cabeleireiro-page) #discutai-widget-container,
-  body:not(.cabeleireiro-page) [id*="discutai"],
-  body:not(.cabeleireiro-page) [class*="discutai"] {
-    display: none !important;
-    visibility: hidden !important;
-    width: 0 !important;
-    height: 0 !important;
-    overflow: hidden !important;
-  }
-}
-
-/* Force affichage du widget sur mobile — /cabeleireiro uniquement
-   Override les règles internes de widget.js qui cachent le toggle sur petits écrans */
-@media (max-width: 768px) {
-  body.cabeleireiro-page #discutai-widget-container,
-  body.cabeleireiro-page .discutai-widget-container,
-  body.cabeleireiro-page [id*="discutai-widget"],
-  body.cabeleireiro-page [class*="discutai-widget"] {
-    display: block !important;
-    visibility: visible !important;
-    z-index: 9999 !important;
-    width: auto !important;
-    height: auto !important;
-    overflow: visible !important;
-    pointer-events: auto !important;
-  }
-}
-

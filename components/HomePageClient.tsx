@@ -1,6 +1,6 @@
 ﻿'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Script from 'next/script';
 import Hero from '@/components/Hero';
 import Gallery from '@/components/Gallery';
@@ -37,7 +37,7 @@ export default function HomePageClient({ initialThemeId }: HomePageClientProps) 
   const theme = getTheme(currentThemeId);
 
   // Fonction pour ouvrir le bot/widget
-  const openBot = () => {
+  const openBot = useCallback(() => {
     // Cette fonction sera appelée par le CTA pour ouvrir le bot
     if (currentThemeId === 'generico') {
       // Pour le thème generico UNIQUEMENT, chercher et cliquer sur le bouton DiscutAI
@@ -59,16 +59,16 @@ export default function HomePageClient({ initialThemeId }: HomePageClientProps) 
         botButton.click();
       }
     }
-  };
+  }, [currentThemeId]);
 
   // Fonction pour ouvrir le popup Calendly (cabeleireiro)
-  const openCalendly = () => {
+  const openCalendly = useCallback(() => {
     if (typeof window !== 'undefined' && (window as any).Calendly) {
       (window as any).Calendly.initPopupWidget({
         url: 'https://calendly.com/thepimentaorougecompany/30min'
       });
     }
-  };
+  }, []);
 
   // Exposer une fonction globale pour ouvrir le widget (utile pour les boutons CTA)
   useEffect(() => {
@@ -367,5 +367,4 @@ export default function HomePageClient({ initialThemeId }: HomePageClientProps) 
     </div>
   );
 }
-
 

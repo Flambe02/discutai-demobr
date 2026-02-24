@@ -7,9 +7,24 @@ interface DiscutAIWidgetProps {
   theme: Theme;
 }
 
+interface DiscutAIWidgetConfig {
+  assistantWorkspaceId: string;
+  assistantName: string;
+  apiKey?: string;
+  themeColor: string;
+  position: string;
+  welcomeMessage: string;
+  inputPlaceholder?: string;
+  showAvatar: boolean;
+  width?: number;
+  height?: number;
+  logoUrl?: string;
+  baseUrl: string;
+}
+
 // Configuration du widget DiscutAI par thème
 const getWidgetConfig = (themeId: string) => {
-  const configs: Record<string, object> = {
+  const configs: Record<string, DiscutAIWidgetConfig> = {
     generico: {
       assistantWorkspaceId: "87ab9a2d-8d18-45bd-b349-145f59254096",
       assistantName: "TRPC Test",
@@ -38,7 +53,7 @@ const getWidgetConfig = (themeId: string) => {
     },
   };
 
-  return configs[themeId];
+  return configs[themeId] ?? null;
 };
 
 /** Supprime tous les scripts et éléments DOM liés à DiscutAI */
@@ -55,12 +70,20 @@ export default function DiscutAIWidget({ theme }: DiscutAIWidgetProps) {
   useEffect(() => {
     const config = getWidgetConfig(theme.id);
     if (!config) return;
+    const runtimeConfig = { ...config };
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+
+    // Mobile: laisser le widget appliquer sa taille par défaut.
+    if (isMobile) {
+      delete runtimeConfig.width;
+      delete runtimeConfig.height;
+    }
 
     // Nettoyer tout vestige d'une instance précédente
     cleanupDiscutAI();
 
     // Définir la config AVANT de charger le script (le loader lit window.DiscutAIWidget.config à l'exécution)
-    (window as any).DiscutAIWidget = { config };
+    (window as any).DiscutAIWidget = { config: runtimeConfig };
 
     // Charger loader.js (lui-même charge widget.js)
     const script = document.createElement('script');
@@ -82,18 +105,7 @@ export default function DiscutAIWidget({ theme }: DiscutAIWidgetProps) {
 declare global {
   interface Window {
     DiscutAIWidget?: {
-      config: {
-        assistantWorkspaceId: string;
-        assistantName: string;
-        apiKey: string;
-        themeColor: string;
-        position: string;
-        welcomeMessage: string;
-        showAvatar: boolean;
-        width: number;
-        height: number;
-        baseUrl: string;
-      };
+      config: DiscutAIWidgetConfig;
     };
   }
 }
