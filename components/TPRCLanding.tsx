@@ -43,9 +43,15 @@ export default function TPRCLanding() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [videoModalOpen, setVideoModalOpen] = useState(false);
 
-  // Remove SSR hero shell once the client component mounts
+  // Hide SSR hero shell once the client component mounts.
+  // Do not remove it from the DOM manually: React owns that tree.
   useEffect(() => {
-    document.getElementById('ssr-hero-shell')?.remove();
+    const ssrShell = document.getElementById('ssr-hero-shell');
+    if (ssrShell) {
+      ssrShell.setAttribute('hidden', 'true');
+      ssrShell.setAttribute('aria-hidden', 'true');
+      (ssrShell as HTMLElement).style.display = 'none';
+    }
   }, []);
 
   // Close video modal on ESC key
