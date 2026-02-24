@@ -48,6 +48,7 @@ function cleanupDiscutAI() {
   // Supprime les éléments UI du widget (bouton flottant, chat, iframes…)
   document.querySelectorAll('[id*="discutai"], [class*="discutai"]').forEach(el => el.remove());
   delete (window as any).DiscutAIWidget;
+  delete (window as any).DiscutAIWidgetLoaded; // ← flag anti-double-init de loader.js — doit être reset
 }
 
 export default function DiscutAIWidget({ theme }: DiscutAIWidgetProps) {

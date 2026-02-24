@@ -22,6 +22,7 @@ function cleanupDiscutAI() {
   document.querySelectorAll('script[src*="discutai.com/widget"]').forEach(el => el.remove());
   document.querySelectorAll('[id*="discutai"], [class*="discutai"]').forEach(el => el.remove());
   delete (window as any).DiscutAIWidget;
+  delete (window as any).DiscutAIWidgetLoaded; // ← flag anti-double-init de loader.js — doit être reset
 }
 
 export default function CabeleireiroClient() {
