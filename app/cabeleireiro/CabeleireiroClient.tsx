@@ -54,7 +54,17 @@ export default function CabeleireiroClient() {
       },
     };
 
+    // 4. Après chargement de widget.js : forcer la visibilité sur mobile
+    //    widget.js peut injecter display:none via style inline → JS seul peut l'annuler
+    const forceVisibleTimer = setTimeout(() => {
+      document.querySelectorAll<HTMLElement>('[id*="discutai"], [class*="discutai"]').forEach(el => {
+        if (el.style.display === 'none') el.style.removeProperty('display');
+        if (el.style.visibility === 'hidden') el.style.removeProperty('visibility');
+      });
+    }, 1500);
+
     return () => {
+      clearTimeout(forceVisibleTimer);
       document.body.classList.remove('cabeleireiro-page');
       cleanupDiscutAI();
     };
