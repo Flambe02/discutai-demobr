@@ -72,6 +72,8 @@ export default function DiscutAIWidget({ theme }: DiscutAIWidgetProps) {
     if (!config) return;
     const runtimeConfig = { ...config };
     const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    let cancelled = false;
+    let visibilityCheckTimer: ReturnType<typeof setTimeout> | null = null;
 
     // Mobile: laisser le widget appliquer sa taille par défaut.
     if (isMobile) {
@@ -79,21 +81,58 @@ export default function DiscutAIWidget({ theme }: DiscutAIWidgetProps) {
       delete runtimeConfig.height;
     }
 
-    // Nettoyer tout vestige d'une instance précédente
-    cleanupDiscutAI();
+    const hasWidgetMounted = () => {
+      return Boolean(
+        document.querySelector('#discutai-widget-container') ||
+          document.querySelector('[id*="discutai-widget"]') ||
+          document.querySelector('[class*="discutai-widget"]') ||
+          document.querySelector('iframe[src*="discutai"]')
+      );
+    };
 
-    // Définir la config AVANT de charger le script (le loader lit window.DiscutAIWidget.config à l'exécution)
-    (window as any).DiscutAIWidget = { config: runtimeConfig };
+    const loadWidget = (attempt: number) => {
+      if (cancelled) return;
 
-    // Charger loader.js (lui-même charge widget.js)
-    const script = document.createElement('script');
-    script.id = 'discutai-widget-loader';
-    script.async = true;
-    script.src = `https://v2.discutai.com/widget/loader.js?t=${Date.now()}`;
-    document.body.appendChild(script);
+      // Nettoyer tout vestige d'une instance précédente
+      cleanupDiscutAI();
+
+      // Définir la config AVANT de charger le script
+      (window as any).DiscutAIWidget = { config: runtimeConfig };
+
+      const script = document.createElement('script');
+      script.id = 'discutai-widget-loader';
+      script.async = true;
+      script.src = `https://v2.discutai.com/widget/loader.js?t=${Date.now()}-${attempt}`;
+
+      script.onload = () => {
+        if (cancelled) return;
+        if (visibilityCheckTimer) clearTimeout(visibilityCheckTimer);
+
+        // Vérifie que le widget est réellement rendu après chargement.
+        visibilityCheckTimer = setTimeout(() => {
+          if (cancelled) return;
+          if (!hasWidgetMounted() && attempt < 2) {
+            loadWidget(attempt + 1);
+          }
+        }, 1500);
+      };
+
+      script.onerror = () => {
+        if (cancelled) return;
+        if (attempt < 2) {
+          loadWidget(attempt + 1);
+        }
+      };
+
+      document.body.appendChild(script);
+    };
+
+    loadWidget(1);
 
     // Cleanup au démontage
     return () => {
+      cancelled = true;
+      if (visibilityCheckTimer) clearTimeout(visibilityCheckTimer);
       cleanupDiscutAI();
     };
   }, [theme.id]);
