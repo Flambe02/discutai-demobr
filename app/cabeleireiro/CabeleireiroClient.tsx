@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Scissors, Clock, MapPin, Phone, Star, ArrowLeft, Calendar } from 'lucide-react';
 import Link from 'next/link';
@@ -18,46 +17,9 @@ const staggerContainer = {
   },
 };
 
-function cleanupDiscutAI() {
-  // Supprime loader.js ET widget.js (chargé dynamiquement par loader.js)
-  document.querySelectorAll('script[src*="discutai"]').forEach(el => el.remove());
-  // Supprime les éléments UI du widget
-  document.querySelectorAll('[id*="discutai"], [class*="discutai"]').forEach(el => el.remove());
-  delete (window as any).DiscutAIWidget;
-}
-
+// Le chargement du widget Jessica est géré dans page.tsx via next/script (server component)
+// → pas de useEffect, pas d'interférence React Strict Mode
 export default function CabeleireiroClient() {
-  useEffect(() => {
-    // Nettoyer tout vestige d'une instance précédente (loader.js + widget.js + UI)
-    cleanupDiscutAI();
-
-    // Config Jessica – Barbaria do Rei
-    // Doit être défini AVANT que loader.js s'exécute (il lit window.DiscutAIWidget.config au démarrage)
-    (window as any).DiscutAIWidget = {
-      config: {
-        assistantWorkspaceId: "8fd31883-b679-4bbd-a5cd-f159c26aba06",
-        assistantName: "Jessica",
-        themeColor: "#ff3100",
-        position: "bottom-right",
-        welcomeMessage: "Ola bom dia",
-        showAvatar: true,
-        width: 350,
-        height: 500,
-        logoUrl: "https://veztjskcirpqzdwizxxn.supabase.co/storage/v1/object/public/assistants-avatars/103833e0-68ad-42e3-bf06-add3d4c5bb10.jpg",
-        baseUrl: "https://v2.discutai.com",
-      }
-    };
-
-    const script = document.createElement('script');
-    script.id = 'discutai-widget-loader';
-    script.async = true;
-    script.src = `https://v2.discutai.com/widget/loader.js?t=${Date.now()}`;
-    document.body.appendChild(script);
-
-    return () => {
-      cleanupDiscutAI();
-    };
-  }, []);
 
   const services = [
     { name: 'Corte masculino', price: 'R$ 45' },
