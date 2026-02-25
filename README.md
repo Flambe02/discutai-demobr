@@ -1,15 +1,17 @@
-# Discutai Demo BR - Landing Page de Demonstração
+# Discutai Demo BR - Landing Page de Demonstracao
 
-Landing page de demonstração para integração de chatbot em sites de clientes. Permite alternar entre 5 temas diferentes (Cabeleireiro, Restaurante, Imobiliária, Dentista, Genérico) com conteúdo personalizado em português brasileiro.
+Landing page de demonstração para integração de chatbot em sites de clientes. O projeto combina uma homepage institucional da TPRC com 5 temas demo (Cabeleireiro, Restaurante, Imobiliária, Dentista e Genérico), todos com conteúdo em português brasileiro.
 
-## 🚀 Tecnologias
+## Tecnologias
 
-- **Next.js 14+** (App Router)
-- **TypeScript**
-- **TailwindCSS**
-- **React**
+- **Next.js 16.1.6** (App Router + Turbopack)
+- **React 18.3.0**
+- **TypeScript 5.x**
+- **Tailwind CSS 3.4.1**
+- **Framer Motion**
+- **Lucide React**
 
-## 📦 Instalação
+## Instalação
 
 ### 1. Clonar ou baixar o projeto
 
@@ -25,16 +27,14 @@ npm install
 
 ### 3. Configurar variáveis de ambiente (opcional)
 
-Copie o arquivo `.env.example` para `.env.local`:
+Copie o arquivo `.env.example` para `.env.local` e ajuste os valores necessários:
 
 ```bash
 cp .env.example .env.local
 ```
 
-Edite `.env.local` e configure as variáveis conforme necessário:
-
 ```env
-# Modo de embed do bot: "placeholder" | "iframe" | "script"
+# Modo de embed do bot de fallback: "placeholder" | "iframe" | "script"
 NEXT_PUBLIC_BOT_EMBED_MODE=placeholder
 
 # Se usar modo "iframe", defina a URL do iframe
@@ -50,7 +50,7 @@ NEXT_PUBLIC_BOT_SCRIPT_SRC=
 npm run dev
 ```
 
-O site estará disponível em [http://localhost:3000](http://localhost:3000)
+O site estará disponível em [http://localhost:3000](http://localhost:3000).
 
 ### 5. Build para produção
 
@@ -59,25 +59,22 @@ npm run build
 npm start
 ```
 
-## 🎨 Temas Disponíveis
+## Temas Disponíveis
 
-A landing page inclui 7 temas pré-configurados:
+A aplicação possui **6 temas ativos** (1 homepage + 5 demos):
 
-0. **TPRC** ⭐ (Homepage) - Landing page premium da agência TPRC (Dark Mode, Framer Motion, estilo Limova.ai)
-1. **Cabeleireiro** - Barbaria do Rei (inspirado em [César Reis Barbeiro](https://www.facebook.com/cesarreis.barbeiro/) / [Instagram](https://www.instagram.com/p/DQpqigpicwA/))
-2. **Restaurante** - La Bouchon Brasserie (inspirado em [Le Jazz](https://www.lejazz.com.br/))
-3. **Imobiliária** - NovaChave Imóveis (inspirado em [Seisa](https://seisa.com.br/))
-4. **Dentista** - Clínica Sorriso Prime (inspirado em [Benatti Odontologia](https://benattiodontologia.com.br/))
-5. **Genérico** - Empresa Modelo
-6. **Lucy** - LUCY — Marketing Inteligente para vender mais (réplique de [mylucy.ai](https://mylucy.ai/site/mylucy/), avec autorisation)
+1. **TPRC** (homepage padrão)
+2. **Cabeleireiro** - Barbaria do Rei
+3. **Restaurante** - La Bouchon Brasserie
+4. **Imobiliária** - NovaChave Imóveis
+5. **Dentista** - Clínica Sorriso Prime
+6. **Genérico** - Nexa Soluções
 
-### Como usar os temas
+### Como acessar
 
-#### Via URL (Query Parameter)
+#### Via URL (`?theme=`)
 
-Adicione `?theme=` na URL seguido do ID do tema:
-
-```
+```txt
 http://localhost:3000/                     # Homepage TPRC (padrão)
 http://localhost:3000/?theme=tprc          # Homepage TPRC
 http://localhost:3000/?theme=cabeleireiro
@@ -85,132 +82,99 @@ http://localhost:3000/?theme=restaurante
 http://localhost:3000/?theme=imobiliaria
 http://localhost:3000/?theme=dentista
 http://localhost:3000/?theme=generico
-http://localhost:3000/?theme=lucy
 ```
 
-#### Via Footer
+#### Via rota dedicada
 
-Clique em um dos botões no footer para alternar entre os temas. O tema selecionado será:
-- Destacado visualmente
-- Salvo no `localStorage`
-- Refletido na URL
-
-#### Via LocalStorage
-
-O tema selecionado é automaticamente salvo no navegador e restaurado na próxima visita.
-
-## 🤖 Integração do Bot
-
-### Modos de Operação
-
-#### 1. Modo Placeholder (Padrão)
-
-Exibe uma área de placeholder com instruções para integração:
-
-```env
-NEXT_PUBLIC_BOT_EMBED_MODE=placeholder
+```txt
+http://localhost:3000/cabeleireiro
 ```
 
-#### 2. Modo Iframe
+A rota dedicada `/cabeleireiro` usa layout próprio e integra o widget DiscutAI diretamente nessa página.
 
-Embute o chatbot via iframe:
+#### Via Footer (layout demo)
 
-```env
-NEXT_PUBLIC_BOT_EMBED_MODE=iframe
-NEXT_PUBLIC_BOT_IFRAME_URL=https://seu-chatbot.com/embed
-```
+No layout `/?theme=...`, o footer permite trocar entre os temas demo (exclui `tprc`). A troca atualiza a URL e salva o tema no `localStorage`.
 
-#### 3. Modo Script
+#### Sobre localStorage
 
-Carrega o chatbot via script externo:
+O `localStorage` é usado para persistência de UX, mas o tema carregado sem query string continua sendo `tprc` por padrão.
 
-```env
-NEXT_PUBLIC_BOT_EMBED_MODE=script
-NEXT_PUBLIC_BOT_SCRIPT_SRC=https://seu-chatbot.com/widget.js
-```
+## Integração de Bot/Widget
 
-### Modo Demo vs Modo Live
+### Comportamento atual por tema
 
-O widget do bot inclui um toggle para alternar entre:
+- `generico` e `cabeleireiro` (via `/?theme=`): `DiscutAIWidget`
+- Rota dedicada `/cabeleireiro`: `DiscutAIWidget`
+- `restaurante`: `WhatsAppWidget`
+- `imobiliaria` e `dentista`: `BotWidget` (fallback demo/live)
 
-- **Modo Demo** 📱: Respostas simuladas (para demonstração)
-- **Modo Live** 🔴: Bot real integrado (requer configuração)
+### Modos do BotWidget (fallback)
 
-## 📁 Estrutura do Projeto
+O `BotWidget` suporta:
 
-```
+- **Modo Demo**: respostas simuladas
+- **Modo Live**: integração por `iframe` ou `script` externo via variáveis de ambiente
+
+## Estrutura do Projeto (resumo)
+
+```txt
 Demo_Site_DiscutaiBR/
-├── app/
-│   ├── layout.tsx          # Layout principal com metadata
-│   ├── page.tsx            # Página principal com toda a UI
-│   └── globals.css         # Estilos globais e Tailwind
-├── components/
-│   ├── Hero.tsx            # Componente Hero section
-│   ├── BotWidget.tsx       # Widget do chatbot
-│   └── FooterThemeSwitcher.tsx  # Seletor de temas no footer
-├── lib/
-│   ├── themes.ts           # Definição de todos os temas
-│   └── themeUtils.ts       # Utilitários para gerenciar temas
-├── .env.example            # Exemplo de variáveis de ambiente
-├── tailwind.config.ts      # Configuração do Tailwind
-├── postcss.config.mjs      # Configuração do PostCSS
-└── README.md               # Este arquivo
++-- app/
+¦   +-- layout.tsx
+¦   +-- page.tsx
+¦   +-- globals.css
+¦   +-- discutai-widget-fix.css
+¦   +-- cabeleireiro/
+¦   ¦   +-- page.tsx
+¦   ¦   +-- CabeleireiroClient.tsx
+¦   +-- advisory/
+¦   +-- musica/
+¦   +-- formacao/
+¦   +-- api/calendar/
++-- components/
+¦   +-- HomePageClient.tsx
+¦   +-- DiscutAIWidget.tsx
+¦   +-- BotWidget.tsx
+¦   +-- WhatsAppWidget.tsx
+¦   +-- FooterThemeSwitcher.tsx
+¦   +-- TPRCLanding.tsx
++-- lib/
+¦   +-- themes.ts
+¦   +-- themeUtils.ts
++-- scripts/
++-- package.json
++-- README.md
 ```
 
-## 🎯 Funcionalidades
+## Funcionalidades Principais
 
-### Header Sticky
-- Logo dinâmico com primeira letra do nome
-- Nome e tagline do negócio
-- Badges: endereço, horários, avaliações
-- CTA principal adaptado ao tema
+- Homepage TPRC com identidade institucional e animações.
+- Shell demo com troca de temas por query string.
+- Página dedicada de barbearia em `/cabeleireiro`.
+- Integração de widget DiscutAI com cleanup e retry de carregamento.
+- API backend para disponibilidade/agendamento (`/api/calendar/availability`, `/api/calendar/book`).
 
-### Hero Section
-- Título e subtítulo personalizados
-- KPIs em formato de chips
-- Imagem com gradiente dinâmico
-- Badges flutuantes com avaliação
-
-### Cards de Conteúdo
-- **Serviços**: Lista de serviços oferecidos
-- **Informações Úteis**: Detalhes operacionais
-- **Por que escolher**: Texto descritivo
-- **Peça ao Bot**: Exemplos de perguntas
-- **Contato**: Telefone, WhatsApp, email, endereço
-
-### Footer com Seletor de Temas
-- Botões para alternar entre temas
-- Destaque do tema ativo
-- Botão "Copiar link" para compartilhar demo
-- Fixed no bottom da página
-
-### Bot Widget
-- Botão flutuante com ícone
-- Expansível em modal
-- Header com gradiente do tema
-- Toggle Demo/Live
-- Suporta múltiplos modos de integração
-
-## 🚢 Deploy
+## ðŸš¢ Deploy
 
 ### Vercel (Recomendado)
 
 1. Crie uma conta em [Vercel](https://vercel.com)
-2. Conecte seu repositório
-3. Configure as variáveis de ambiente
-4. Deploy automático!
+2. Conecte seu repositÃ³rio
+3. Configure as variÃ¡veis de ambiente
+4. Deploy automÃ¡tico!
 
 ### Netlify
 
 1. Crie uma conta em [Netlify](https://netlify.com)
-2. Conecte seu repositório
+2. Conecte seu repositÃ³rio
 3. Build command: `npm run build`
 4. Publish directory: `.next`
-5. Configure as variáveis de ambiente
+5. Configure as variÃ¡veis de ambiente
 
 ### GitHub Pages
 
-Para GitHub Pages, você precisará usar `next export` (modo estático):
+Para GitHub Pages, vocÃª precisarÃ¡ usar `next export` (modo estÃ¡tico):
 
 1. Adicione no `package.json`:
 ```json
@@ -232,7 +196,7 @@ module.exports = {
 npm run export
 ```
 
-## 🎨 Personalização
+## ðŸŽ¨ PersonalizaÃ§Ã£o
 
 ### Adicionar novos temas
 
@@ -243,7 +207,7 @@ export const themes: Record<ThemeId, Theme> = {
   // ... temas existentes
   novoTema: {
     id: 'novoTema',
-    brandName: 'Nome do Negócio',
+    brandName: 'Nome do NegÃ³cio',
     tagline: 'Slogan',
     accentColor: '#FF5733',
     gradientSecondary: '#C70039',
@@ -252,17 +216,17 @@ export const themes: Record<ThemeId, Theme> = {
 };
 ```
 
-Não esqueça de adicionar o ID na lista `themeIds` e no `themeLabels`.
+NÃ£o esqueÃ§a de adicionar o ID na lista `themeIds` e no `themeLabels`.
 
 ### Modificar estilos
 
-Os estilos são baseados em Tailwind CSS. Para customizações globais, edite:
-- `tailwind.config.ts` - Configuração do Tailwind
+Os estilos sÃ£o baseados em Tailwind CSS. Para customizaÃ§Ãµes globais, edite:
+- `tailwind.config.ts` - ConfiguraÃ§Ã£o do Tailwind
 - `app/globals.css` - Estilos globais
 
-### Alterar transições
+### Alterar transiÃ§Ãµes
 
-As transições de tema são definidas em `app/globals.css`. Ajuste a duração em:
+As transiÃ§Ãµes de tema sÃ£o definidas em `app/globals.css`. Ajuste a duraÃ§Ã£o em:
 
 ```css
 * {
@@ -270,190 +234,206 @@ As transições de tema são definidas em `app/globals.css`. Ajuste a duração 
 }
 ```
 
-## 📝 Licença
+## ðŸ“ LicenÃ§a
 
-Este projeto é um template de demonstração e pode ser usado livremente.
+Este projeto Ã© um template de demonstraÃ§Ã£o e pode ser usado livremente.
 
-## 🤝 Suporte
+## ðŸ¤ Suporte
 
-Para dúvidas ou problemas, abra uma issue no repositório.
+Para dÃºvidas ou problemas, abra uma issue no repositÃ³rio.
 
 ---
 
-## 📖 Journal de Développement (Dev Log)
+## Journal de Desenvolvimento (Dev Log)
 
-### [Session] Page Lucy – Réplique MyLucy (mylucy.ai)
+> Nota: entradas sobre o tema `lucy` neste Dev Log sao historicas (tema removido da versao ativa atual).
 
-#### 🎯 Objectif
-Remplacer la page du thème **Lucy Marketing** par une réplique de la page principale de [MyLucy](https://mylucy.ai/site/mylucy/) (« Marketing Inteligente para vender mais »), avec autorisation de Lucy. Utiliser les images du dossier `Lucy/` et les liens officiels (login, WhatsApp, política, termos, redes sociais).
+### 2026-02-25 - Page `/cabeleireiro` : chargement du widget DiscutAI
 
-#### ✅ Modifications effectuées
+#### Objectif
+Éliminer les cas où le widget DiscutAI ne s'affichait pas immédiatement sur la page dédiée `/cabeleireiro`.
 
-**1. Thème `lucy` (`lib/themes.ts`)**
-- **Marque** : LUCY — tagline « Marketing Inteligente para vender mais »
-- **Hero** : « Marketing que cabe no seu bolso, no seu dia a dia e no seu negócio. » + texte Lucy braço/cabeça/ombro
-- **CTA** : « Chama a Lucy! »
-- **Nouveau champ** `lucyLanding` : `loginUrl`, `whatsappUrl`, `challenges` (6 cartes avec titre, description, preço, CTA, image), `moreVisibilityText`/`moreVisibilityCta`, `missionTitle`/`missionText`, `pillarsTitle`/`pillars` (4 piliers), `policyUrl`, `termsUrl`, `social` (WhatsApp, Facebook, Instagram, LinkedIn). Liens officiels : login.mylucy.ai, api.whatsapp.com/send/?phone=5511995899176, mylucy.ai/site/mylucy-antigo/politica-de-privacidade/, termos-de-uso, facebook.com/mylucy.co, instagram.com/mylucy.ai, linkedin.com/company/mylucy.
+#### Modifications
+- Suppression de l'initialisation manuelle du loader dans `app/cabeleireiro/CabeleireiroClient.tsx`.
+- Réutilisation du composant central `components/DiscutAIWidget.tsx` pour unifier la logique de config, cleanup et retry.
+- Conservation de la configuration `assistantWorkspaceId` du thème `cabeleireiro` déjà présente dans `DiscutAIWidget`.
+
+#### Fichier modifié
+- `app/cabeleireiro/CabeleireiroClient.tsx`
+
+---
+### [Session] Page Lucy â€“ RÃ©plique MyLucy (mylucy.ai)
+
+#### ðŸŽ¯ Objectif
+Remplacer la page du thÃ¨me **Lucy Marketing** par une rÃ©plique de la page principale de [MyLucy](https://mylucy.ai/site/mylucy/) (Â« Marketing Inteligente para vender mais Â»), avec autorisation de Lucy. Utiliser les images du dossier `Lucy/` et les liens officiels (login, WhatsApp, polÃ­tica, termos, redes sociais).
+
+#### âœ… Modifications effectuÃ©es
+
+**1. ThÃ¨me `lucy` (`lib/themes.ts`)**
+- **Marque** : LUCY â€” tagline Â« Marketing Inteligente para vender mais Â»
+- **Hero** : Â« Marketing que cabe no seu bolso, no seu dia a dia e no seu negÃ³cio. Â» + texte Lucy braÃ§o/cabeÃ§a/ombro
+- **CTA** : Â« Chama a Lucy! Â»
+- **Nouveau champ** `lucyLanding` : `loginUrl`, `whatsappUrl`, `challenges` (6 cartes avec titre, description, preÃ§o, CTA, image), `moreVisibilityText`/`moreVisibilityCta`, `missionTitle`/`missionText`, `pillarsTitle`/`pillars` (4 piliers), `policyUrl`, `termsUrl`, `social` (WhatsApp, Facebook, Instagram, LinkedIn). Liens officiels : login.mylucy.ai, api.whatsapp.com/send/?phone=5511995899176, mylucy.ai/site/mylucy-antigo/politica-de-privacidade/, termos-de-uso, facebook.com/mylucy.co, instagram.com/mylucy.ai, linkedin.com/company/mylucy.
 
 **2. Composant `components/LucyLanding.tsx`**
-- Header : logo LUCY (SVG), « Fazer login », « Fale com Especialistas » (WhatsApp)
-- Hero : titre, sous-titre, bouton « Chama a Lucy! » (ouvre le widget DiscutAI)
-- Section « Qual o seu desafio hoje? » : 6 cartes (image, titre, description, preço, CTA « Comece Agora! » ou « Chama a Lucy! »)
-- Section « /MAIS VISIBILIDADE. /MAIS CLIENTES… » + CTA « Comece Agora! » (lien login)
-- Section « Nossa Missão É Transformadora » + texte + CTA
-- Section « Tem um desafio aí? » : 4 piliers (Criação, Planejamento, Performance, Comunicação Integrada)
-- Footer : Institucional (Home, Política de Privacidade, Termos de Uso), Siga a Lucy (redes), copyright Lucy ©
+- Header : logo LUCY (SVG), Â« Fazer login Â», Â« Fale com Especialistas Â» (WhatsApp)
+- Hero : titre, sous-titre, bouton Â« Chama a Lucy! Â» (ouvre le widget DiscutAI)
+- Section Â« Qual o seu desafio hoje? Â» : 6 cartes (image, titre, description, preÃ§o, CTA Â« Comece Agora! Â» ou Â« Chama a Lucy! Â»)
+- Section Â« /MAIS VISIBILIDADE. /MAIS CLIENTESâ€¦ Â» + CTA Â« Comece Agora! Â» (lien login)
+- Section Â« Nossa MissÃ£o Ã‰ Transformadora Â» + texte + CTA
+- Section Â« Tem um desafio aÃ­? Â» : 4 piliers (CriaÃ§Ã£o, Planejamento, Performance, ComunicaÃ§Ã£o Integrada)
+- Footer : Institucional (Home, PolÃ­tica de Privacidade, Termos de Uso), Siga a Lucy (redes), copyright Lucy Â©
 
 **3. Page (`app/page.tsx`)**
-- Si `currentThemeId === 'lucy'` et `theme.lucyLanding` → rendu de `<LucyLanding theme={theme} openBot={openBot} />` + `<FooterThemeSwitcher />` à la place du layout générique.
+- Si `currentThemeId === 'lucy'` et `theme.lucyLanding` â†’ rendu de `<LucyLanding theme={theme} openBot={openBot} />` + `<FooterThemeSwitcher />` Ã  la place du layout gÃ©nÃ©rique.
 
 **4. Images**
-- `public/lucy/` : logo `lucy-logo-header.svg`, images iStock (avif, jpg) copiées depuis le dossier `Lucy/` pour les 6 défis et la galerie.
+- `public/lucy/` : logo `lucy-logo-header.svg`, images iStock (avif, jpg) copiÃ©es depuis le dossier `Lucy/` pour les 6 dÃ©fis et la galerie.
 
-#### 📁 Fichiers modifiés / créés
+#### ðŸ“ Fichiers modifiÃ©s / crÃ©Ã©s
 
 | Fichier | Description |
 |---------|-------------|
-| `lib/themes.ts` | Thème `lucy` + type `lucyLanding` avec contenu MyLucy et liens officiels |
-| `components/LucyLanding.tsx` | Nouveau – page type MyLucy |
-| `app/page.tsx` | Import LucyLanding, rendu conditionnel pour thème lucy |
+| `lib/themes.ts` | ThÃ¨me `lucy` + type `lucyLanding` avec contenu MyLucy et liens officiels |
+| `components/LucyLanding.tsx` | Nouveau â€“ page type MyLucy |
+| `app/page.tsx` | Import LucyLanding, rendu conditionnel pour thÃ¨me lucy |
 | `public/lucy/` | Logo SVG + images (avif, jpg) depuis Lucy/ |
-| `README.md` | Liste des thèmes + entrée dev log |
+| `README.md` | Liste des thÃ¨mes + entrÃ©e dev log |
 
 ---
 
 ### [Session] Widget DiscutAI persistant sur la page Generico / Lucy
 
-#### 🎯 Objectif
-Corriger la disparition du widget DiscutAI sur la page Generico (et Lucy) : au retour sur cette page après avoir changé de thème, le widget doit toujours être présent.
+#### ðŸŽ¯ Objectif
+Corriger la disparition du widget DiscutAI sur la page Generico (et Lucy) : au retour sur cette page aprÃ¨s avoir changÃ© de thÃ¨me, le widget doit toujours Ãªtre prÃ©sent.
 
-#### ✅ Modifications effectuées
+#### âœ… Modifications effectuÃ©es
 
 **Fichier `components/DiscutAIWidget.tsx`** :
 
 1. **Cache-busting du script au montage**
    - Avant : `script.src = 'https://v2.discutai.com/widget/loader.js'`
-   - Après : `script.src = \`https://v2.discutai.com/widget/loader.js?v=${Date.now()}\`` (cache-bust)
-   - À chaque montage (y compris au retour sur generico/lucy), le script est rechargé avec une URL différente, ce qui force le navigateur à l’exécuter à nouveau (au lieu de servir une version en cache sans exécution).
+   - AprÃ¨s : `script.src = \`https://v2.discutai.com/widget/loader.js?v=${Date.now()}\`` (cache-bust)
+   - Ã€ chaque montage (y compris au retour sur generico/lucy), le script est rechargÃ© avec une URL diffÃ©rente, ce qui force le navigateur Ã  lâ€™exÃ©cuter Ã  nouveau (au lieu de servir une version en cache sans exÃ©cution).
 
-2. **Dépendance du `useEffect` sur `theme.id`**
-   - `useEffect(..., [])` → `useEffect(..., [theme.id])`
-   - Au changement generico ↔ lucy, l’effet se relance (cleanup puis ré-init avec la bonne config).
-   - Au retour depuis un autre thème, le composant remonte, l’effet s’exécute et injecte le script avec cache-bust → le widget réapparaît.
+2. **DÃ©pendance du `useEffect` sur `theme.id`**
+   - `useEffect(..., [])` â†’ `useEffect(..., [theme.id])`
+   - Au changement generico â†” lucy, lâ€™effet se relance (cleanup puis rÃ©-init avec la bonne config).
+   - Au retour depuis un autre thÃ¨me, le composant remonte, lâ€™effet sâ€™exÃ©cute et injecte le script avec cache-bust â†’ le widget rÃ©apparaÃ®t.
 
-Le cleanup existant (suppression du script par `id="discutai-widget-loader"` et des nœuds DOM du widget) reste inchangé, donc le widget ne s’affiche que sur les thèmes generico et lucy.
+Le cleanup existant (suppression du script par `id="discutai-widget-loader"` et des nÅ“uds DOM du widget) reste inchangÃ©, donc le widget ne sâ€™affiche que sur les thÃ¨mes generico et lucy.
 
-#### 📁 Fichiers modifiés
+#### ðŸ“ Fichiers modifiÃ©s
 
 | Fichier | Description |
 |---------|-------------|
 | `components/DiscutAIWidget.tsx` | Cache-busting `loader.js?v=${Date.now()}`, deps `[theme.id]` |
-| `README.md` | Journal de développement mis à jour, problème "widget ne réapparaît pas" marqué résolu |
+| `README.md` | Journal de dÃ©veloppement mis Ã  jour, problÃ¨me "widget ne rÃ©apparaÃ®t pas" marquÃ© rÃ©solu |
 
-#### 📝 Mémoire pour la suite
+#### ðŸ“ MÃ©moire pour la suite
 
-- **Pourquoi le cache-busting ici ne fait pas apparaître le widget partout** : le cleanup retire toujours le script par son `id` fixe et tous les éléments discutai ; seuls les thèmes generico/lucy rendent `<DiscutAIWidget />`, donc le script n’est présent que sur ces pages.
-- **Pourquoi il faut recharger le script** : après suppression du nœud `<script>`, le ré-injecter avec la même `src` peut être servi depuis le cache sans ré-exécution (comportement navigateur). Un `?v=timestamp` force un nouveau chargement et une nouvelle exécution.
+- **Pourquoi le cache-busting ici ne fait pas apparaÃ®tre le widget partout** : le cleanup retire toujours le script par son `id` fixe et tous les Ã©lÃ©ments discutai ; seuls les thÃ¨mes generico/lucy rendent `<DiscutAIWidget />`, donc le script nâ€™est prÃ©sent que sur ces pages.
+- **Pourquoi il faut recharger le script** : aprÃ¨s suppression du nÅ“ud `<script>`, le rÃ©-injecter avec la mÃªme `src` peut Ãªtre servi depuis le cache sans rÃ©-exÃ©cution (comportement navigateur). Un `?v=timestamp` force un nouveau chargement et une nouvelle exÃ©cution.
 
 ---
 
-### [Session] Thème Restaurante – Inspiration Le Jazz Brasserie
+### [Session] ThÃ¨me Restaurante â€“ Inspiration Le Jazz Brasserie
 
-#### 🎯 Objectif
-Rendre la page du thème **restaurante** plus réaliste en s’inspirant du site [Le Jazz](https://www.lejazz.com.br/) : ton brasserie parisienne, jazz, horaires et services typiques.
+#### ðŸŽ¯ Objectif
+Rendre la page du thÃ¨me **restaurante** plus rÃ©aliste en sâ€™inspirant du site [Le Jazz](https://www.lejazz.com.br/) : ton brasserie parisienne, jazz, horaires et services typiques.
 
-#### ✅ Modifications effectuées
+#### âœ… Modifications effectuÃ©es
 
-**Fichier `lib/themes.ts` – thème `restaurante`** :
+**Fichier `lib/themes.ts` â€“ thÃ¨me `restaurante`** :
 
-| Élément | Avant | Après |
+| Ã‰lÃ©ment | Avant | AprÃ¨s |
 |--------|--------|--------|
-| **Marque** | Bistrô Vila Nova | **La Bouchon Brasserie** |
-| **Slogan** | Sabor, clima e boa mesa | Clima aconchegante. Bistrô parisiense em São Paulo. |
+| **Marque** | BistrÃ´ Vila Nova | **La Bouchon Brasserie** |
+| **Slogan** | Sabor, clima e boa mesa | Clima aconchegante. BistrÃ´ parisiense em SÃ£o Paulo. |
 | **Monogramme** | BV | LB |
-| **Adresse** | Av. Paulista… | Rua dos Pinheiros, 254 - Pinheiros |
-| **Horaires** | Seg-Dom 11h30-23h… | Dom-Qui: 12h às 24h \| Sex-Sáb: 12h à 1h |
-| **Téléphone / WhatsApp** | (11) 3234-5678 | (11) 2359-8141 / +55 11 95311-5884 |
-| **Hero** | Uma experiência gastronômica… | Pratos clássicos, simples e saborosos + inspiração bistrô parisiense, jazz |
-| **Services** | Almoço executivo, jantar… | Brunch (sáb/dom 8h-11h30), Buffet almoço (seg-sex 12h-15h), Eventos, Delivery, Cocktails e petit plats |
-| **Bot** | Bistrô Vila Nova | Assistente La Bouchon, reservas/cardápios/delivery |
+| **Adresse** | Av. Paulistaâ€¦ | Rua dos Pinheiros, 254 - Pinheiros |
+| **Horaires** | Seg-Dom 11h30-23hâ€¦ | Dom-Qui: 12h Ã s 24h \| Sex-SÃ¡b: 12h Ã  1h |
+| **TÃ©lÃ©phone / WhatsApp** | (11) 3234-5678 | (11) 2359-8141 / +55 11 95311-5884 |
+| **Hero** | Uma experiÃªncia gastronÃ´micaâ€¦ | Pratos clÃ¡ssicos, simples e saborosos + inspiraÃ§Ã£o bistrÃ´ parisiense, jazz |
+| **Services** | AlmoÃ§o executivo, jantarâ€¦ | Brunch (sÃ¡b/dom 8h-11h30), Buffet almoÃ§o (seg-sex 12h-15h), Eventos, Delivery, Cocktails e petit plats |
+| **Bot** | BistrÃ´ Vila Nova | Assistente La Bouchon, reservas/cardÃ¡pios/delivery |
 
-Référence : [Le Jazz – nossa história, endereços, horários, cardápios](https://www.lejazz.com.br/).
+RÃ©fÃ©rence : [Le Jazz â€“ nossa histÃ³ria, endereÃ§os, horÃ¡rios, cardÃ¡pios](https://www.lejazz.com.br/).
 
 ---
 
-### [Session] Thème Cabeleireiro – Personnalisation César Reis Barbearia
+### [Session] ThÃ¨me Cabeleireiro â€“ Personnalisation CÃ©sar Reis Barbearia
 
-#### 🎯 Objectif
-Personnaliser la page du thème **cabeleireiro** en s’inspirant du contenu des pages [César Reis Barbeiro (Facebook)](https://www.facebook.com/cesarreis.barbeiro/) et [Instagram](https://www.instagram.com/p/DQpqigpicwA/) pour un rendu type barbearia (barbier) plutôt que salão de beleza.
+#### ðŸŽ¯ Objectif
+Personnaliser la page du thÃ¨me **cabeleireiro** en sâ€™inspirant du contenu des pages [CÃ©sar Reis Barbeiro (Facebook)](https://www.facebook.com/cesarreis.barbeiro/) et [Instagram](https://www.instagram.com/p/DQpqigpicwA/) pour un rendu type barbearia (barbier) plutÃ´t que salÃ£o de beleza.
 
-#### ✅ Modifications effectuées
+#### âœ… Modifications effectuÃ©es
 
-**Fichier `lib/themes.ts` – thème `cabeleireiro`** :
+**Fichier `lib/themes.ts` â€“ thÃ¨me `cabeleireiro`** :
 
-| Élément | Avant | Après |
+| Ã‰lÃ©ment | Avant | AprÃ¨s |
 |--------|--------|--------|
 | **Marque** | Studio BelaForma | **Barbaria do Rei** |
 | **Slogan** | Cortes, cor e cuidado premium | Corte, barba e estilo. Atendimento exclusivo. |
 | **Monogramme** | SB | CR |
-| **Couleurs** | Rose/violet (#EC4899, #8B5CF6) | Tons marron/âmbar (#B45309, #78350F) |
-| **Hero** | Transforme seu visual… | Barba e cabelo no lugar. Você em destaque. |
-| **Services** | Corte feminino/masculino, escova, coloração… | Corte masculino, barba com navalha e toalha quente, degradê, combo corte+barba… |
-| **Bot** | Assistente do Studio BelaForma | Assistente Barbaria do Rei, ton plus direct (« Fala! ») |
-| **Images** | Salão de beleza (Unsplash) | Barbearia (cadeira, navalha, corte masculino) |
+| **Couleurs** | Rose/violet (#EC4899, #8B5CF6) | Tons marron/Ã¢mbar (#B45309, #78350F) |
+| **Hero** | Transforme seu visualâ€¦ | Barba e cabelo no lugar. VocÃª em destaque. |
+| **Services** | Corte feminino/masculino, escova, coloraÃ§Ã£oâ€¦ | Corte masculino, barba com navalha e toalha quente, degradÃª, combo corte+barbaâ€¦ |
+| **Bot** | Assistente do Studio BelaForma | Assistente Barbaria do Rei, ton plus direct (Â« Fala! Â») |
+| **Images** | SalÃ£o de beleza (Unsplash) | Barbearia (cadeira, navalha, corte masculino) |
 
-**Contenu inspiré des pages barbeiro** : focus corte + barba, agendamento pelo WhatsApp, atendimento exclusivo, horários tipo “Ter–Sáb” / “sob agendamento”, frases curtas et professionnelles.
+**Contenu inspirÃ© des pages barbeiro** : focus corte + barba, agendamento pelo WhatsApp, atendimento exclusivo, horÃ¡rios tipo â€œTerâ€“SÃ¡bâ€ / â€œsob agendamentoâ€, frases curtas et professionnelles.
 
-#### 📁 Fichiers modifiés
+#### ðŸ“ Fichiers modifiÃ©s
 
 | Fichier | Description |
 |---------|-------------|
-| `lib/themes.ts` | Thème `cabeleireiro` remplacé par Barbaria do Rei (texte, services, couleurs, images) |
-| `README.md` | Liste des thèmes mise à jour + entrée dev log |
+| `lib/themes.ts` | ThÃ¨me `cabeleireiro` remplacÃ© par Barbaria do Rei (texte, services, couleurs, images) |
+| `README.md` | Liste des thÃ¨mes mise Ã  jour + entrÃ©e dev log |
 
 ---
 
-### 2026-02-02 - Intégration Widget DiscutAI et Corrections
+### 2026-02-02 - IntÃ©gration Widget DiscutAI et Corrections
 
-#### 🎯 Objectif
-Intégrer le widget DiscutAI officiel sur le thème "generico" et corriger les problèmes de visibilité/persistance.
+#### ðŸŽ¯ Objectif
+IntÃ©grer le widget DiscutAI officiel sur le thÃ¨me "generico" et corriger les problÃ¨mes de visibilitÃ©/persistance.
 
-#### ✅ Problèmes Résolus
+#### âœ… ProblÃ¨mes RÃ©solus
 
-**1. Visibilité du texte dans le widget DiscutAI**
-- **Symptôme**: Texte saisi en gris très clair, presque invisible
-- **Cause**: Styles CSS par défaut du widget
-- **Solution**: Création de `app/discutai-widget-fix.css` avec règles `!important` pour forcer le texte en noir
+**1. VisibilitÃ© du texte dans le widget DiscutAI**
+- **SymptÃ´me**: Texte saisi en gris trÃ¨s clair, presque invisible
+- **Cause**: Styles CSS par dÃ©faut du widget
+- **Solution**: CrÃ©ation de `app/discutai-widget-fix.css` avec rÃ¨gles `!important` pour forcer le texte en noir
 - **Fichiers**: `app/discutai-widget-fix.css`, `app/layout.tsx`
 - **Commit**: "fix: Improve DiscutAI widget text visibility with aggressive CSS overrides"
 
-**2. Footer - Mise à jour du disclaimer**
-- **Modification**: `"Marca e imagens ilustrativas (demo)"` → `"Para TPRC (2026) Demo site - DiscutaiBR"`
+**2. Footer - Mise Ã  jour du disclaimer**
+- **Modification**: `"Marca e imagens ilustrativas (demo)"` â†’ `"Para TPRC (2026) Demo site - DiscutaiBR"`
 - **Fichier**: `components/FooterThemeSwitcher.tsx` (ligne 90)
 - **Commit**: "fix: Update footer disclaimer text"
 
-**3. Ordre de définition des fonctions**
+**3. Ordre de dÃ©finition des fonctions**
 - **Erreur**: "Application error: a client-side exception has occurred"
-- **Cause**: `openBot` référencée dans `useEffect` avant sa définition
-- **Solution**: Déplacement de la définition avant le `useEffect`
+- **Cause**: `openBot` rÃ©fÃ©rencÃ©e dans `useEffect` avant sa dÃ©finition
+- **Solution**: DÃ©placement de la dÃ©finition avant le `useEffect`
 - **Fichier**: `app/page.tsx`
 
 **4. Widget apparaissant sur toutes les pages**
-- **Symptôme**: Widget DiscutAI visible sur tous les thèmes au lieu de seulement "generico"
-- **Cause**: Script restait en DOM après changement de thème
-- **Solution**: Cleanup complet du script et des éléments DOM dans le `return` du `useEffect`
+- **SymptÃ´me**: Widget DiscutAI visible sur tous les thÃ¨mes au lieu de seulement "generico"
+- **Cause**: Script restait en DOM aprÃ¨s changement de thÃ¨me
+- **Solution**: Cleanup complet du script et des Ã©lÃ©ments DOM dans le `return` du `useEffect`
 - **Fichier**: `components/DiscutAIWidget.tsx`
 
-**5. Widget DiscutAI ne réapparaissait pas au retour sur "generico" / "lucy"** ✅ (résolu plus bas)
+**5. Widget DiscutAI ne rÃ©apparaissait pas au retour sur "generico" / "lucy"** âœ… (rÃ©solu plus bas)
 
-**Cause du bug "widget ne réapparaît pas"**:
-- Au retour sur generico/lucy, le composant remonte et réinjecte le script avec la même `src`.
-- Le navigateur peut servir le script depuis le cache **sans le ré-exécuter**, donc le widget ne se réaffiche pas.
+**Cause du bug "widget ne rÃ©apparaÃ®t pas"**:
+- Au retour sur generico/lucy, le composant remonte et rÃ©injecte le script avec la mÃªme `src`.
+- Le navigateur peut servir le script depuis le cache **sans le rÃ©-exÃ©cuter**, donc le widget ne se rÃ©affiche pas.
 
-**Solution appliquée** (voir entrée dev log ci-dessous "Widget DiscutAI persistant") :
-- Cache-busting sur la `src` du script : `loader.js?v=${Date.now()}` à chaque montage, pour forcer un nouveau chargement et une nouvelle exécution.
-- Le cleanup supprime toujours le script par `id="discutai-widget-loader"`, donc le widget n’apparaît que sur generico/lucy.
-- Dépendance `[theme.id]` dans le `useEffect` pour mettre à jour la config quand on alterne generico ↔ lucy.
+**Solution appliquÃ©e** (voir entrÃ©e dev log ci-dessous "Widget DiscutAI persistant") :
+- Cache-busting sur la `src` du script : `loader.js?v=${Date.now()}` Ã  chaque montage, pour forcer un nouveau chargement et une nouvelle exÃ©cution.
+- Le cleanup supprime toujours le script par `id="discutai-widget-loader"`, donc le widget nâ€™apparaÃ®t que sur generico/lucy.
+- DÃ©pendance `[theme.id]` dans le `useEffect` pour mettre Ã  jour la config quand on alterne generico â†” lucy.
 
 **Configuration Widget**:
 ```typescript
@@ -464,23 +444,23 @@ baseUrl: "https://v2.discutai.com"
 ```
 
 **Logs de diagnostic**:
-- 🔧 Initialisation DiscutAI Widget
-- 📦 Chargement du script DiscutAI / ℹ️ Script déjà présent
-- ✅ Script DiscutAI chargé / ❌ Erreur de chargement
-- 🧹 Cleanup DiscutAI Widget
-- ✓ Script supprimé / ✓ Config nettoyée
+- ðŸ”§ Initialisation DiscutAI Widget
+- ðŸ“¦ Chargement du script DiscutAI / â„¹ï¸ Script dÃ©jÃ  prÃ©sent
+- âœ… Script DiscutAI chargÃ© / âŒ Erreur de chargement
+- ðŸ§¹ Cleanup DiscutAI Widget
+- âœ“ Script supprimÃ© / âœ“ Config nettoyÃ©e
 
-#### 📁 Fichiers Modifiés (Session 2026-02-02)
+#### ðŸ“ Fichiers ModifiÃ©s (Session 2026-02-02)
 
 | Fichier | Type | Description |
 |---------|------|-------------|
-| `app/discutai-widget-fix.css` | Nouveau | Surcharges CSS pour visibilité texte |
-| `components/DiscutAIWidget.tsx` | Modifié | Composant wrapper pour script tiers + délai init |
-| `components/FooterThemeSwitcher.tsx` | Modifié | Mise à jour disclaimer |
-| `app/page.tsx` | Modifié | Correction ordre définition fonctions |
-| `app/layout.tsx` | Modifié | Import du CSS fix |
+| `app/discutai-widget-fix.css` | Nouveau | Surcharges CSS pour visibilitÃ© texte |
+| `components/DiscutAIWidget.tsx` | ModifiÃ© | Composant wrapper pour script tiers + dÃ©lai init |
+| `components/FooterThemeSwitcher.tsx` | ModifiÃ© | Mise Ã  jour disclaimer |
+| `app/page.tsx` | ModifiÃ© | Correction ordre dÃ©finition fonctions |
+| `app/layout.tsx` | ModifiÃ© | Import du CSS fix |
 
-#### 🧠 Leçons Apprises
+#### ðŸ§  LeÃ§ons Apprises
 
 **Pattern pour Scripts Tiers en React**:
 ```typescript
@@ -488,9 +468,9 @@ useEffect(() => {
   // 1. Configuration globale
   window.ThirdPartyWidget = { config };
 
-  // 2. Timeout optionnel pour éviter race conditions
+  // 2. Timeout optionnel pour Ã©viter race conditions
   const timer = setTimeout(() => {
-    // 3. Création et injection du script
+    // 3. CrÃ©ation et injection du script
     const script = document.createElement('script');
     script.id = 'unique-id';
     script.src = 'url';
@@ -501,69 +481,69 @@ useEffect(() => {
   return () => {
     clearTimeout(timer);
     document.getElementById('unique-id')?.remove();
-    // Supprimer TOUS les éléments DOM injectés
+    // Supprimer TOUS les Ã©lÃ©ments DOM injectÃ©s
     delete window.ThirdPartyWidget;
   };
-}, []); // Dépendances vides = mount/unmount only
+}, []); // DÃ©pendances vides = mount/unmount only
 ```
 
-**Pièges à éviter**:
-- ❌ Oublier le cleanup → Widget apparaît partout
-- ❌ Cleanup incomplet → Éléments orphelins dans le DOM
-- ❌ Dépendances dans useEffect → Boucles infinies
-- ❌ Cache-busting agressif → Rechargements inutiles
+**PiÃ¨ges Ã  Ã©viter**:
+- âŒ Oublier le cleanup â†’ Widget apparaÃ®t partout
+- âŒ Cleanup incomplet â†’ Ã‰lÃ©ments orphelins dans le DOM
+- âŒ DÃ©pendances dans useEffect â†’ Boucles infinies
+- âŒ Cache-busting agressif â†’ Rechargements inutiles
 
-#### 🔮 Prochaines Étapes
+#### ðŸ”® Prochaines Ã‰tapes
 
-1. **Optimisation**: Considérer React.StrictMode impact en dev vs prod
-2. Tests de non-régression sur les thèmes generico / lucy (changement de thème et retour)
+1. **Optimisation**: ConsidÃ©rer React.StrictMode impact en dev vs prod
+2. Tests de non-rÃ©gression sur les thÃ¨mes generico / lucy (changement de thÃ¨me et retour)
 
-#### 🛠️ Stack Technique (Mise à jour)
+#### ðŸ› ï¸ Stack Technique (Mise Ã  jour)
 
 - **Next.js**: 16.1.6 (App Router + Turbopack)
-- **React**: 19.0.0
+- **React**: 18.3.0
 - **TypeScript**: 5.x
-- **Tailwind CSS**: 3.4.17
+- **Tailwind CSS**: 3.4.1
 - **Deployment**: Vercel (2 remotes: origin, vercel)
 
 ---
 
-### 2026-02-02 (Suite) - Ajout du Thème Lucy Marketing
+### 2026-02-02 (Suite) - Ajout du ThÃ¨me Lucy Marketing
 
-#### 🎯 Objectif
-Créer un nouveau thème inspiré de MyLucy.ai pour représenter une agence de marketing digital.
+#### ðŸŽ¯ Objectif
+CrÃ©er un nouveau thÃ¨me inspirÃ© de MyLucy.ai pour reprÃ©senter une agence de marketing digital.
 
-#### ✅ Implémentation
+#### âœ… ImplÃ©mentation
 
-**Nouveau Thème "Lucy Marketing"**
+**Nouveau ThÃ¨me "Lucy Marketing"**
 - **Secteur**: Agence de marketing digital
 - **Couleur**: #FF6B9D (Rose professionnel)
 - **Services**:
-  - Création de contenu (posts, stories)
-  - Gestion de réseaux sociaux
-  - Publicité payante (Facebook, Instagram, Google)
-  - Stratégie de contenu et calendrier éditorial
+  - CrÃ©ation de contenu (posts, stories)
+  - Gestion de rÃ©seaux sociaux
+  - PublicitÃ© payante (Facebook, Instagram, Google)
+  - StratÃ©gie de contenu et calendrier Ã©ditorial
   - Design graphique et copywriting
   - Analyse de performance
 
 **Configuration**:
 - Widget: DiscutAIWidget (comme generico)
-- Images: Stock professionnel d'Unsplash (équipes marketing, analytics, collaboration)
-- Palette inspirée de MyLucy.ai tout en restant original
-- Intégration complète avec le système de thèmes existant
+- Images: Stock professionnel d'Unsplash (Ã©quipes marketing, analytics, collaboration)
+- Palette inspirÃ©e de MyLucy.ai tout en restant original
+- IntÃ©gration complÃ¨te avec le systÃ¨me de thÃ¨mes existant
 
-**Note importante**: Pour respecter les droits d'auteur, ce thème est **inspiré** de MyLucy.ai mais utilise du contenu original et des images de stock libres. Si vous avez l'autorisation d'utiliser les images exactes de MyLucy.ai, vous pouvez les remplacer dans `lib/themes.ts`.
+**Note importante**: Pour respecter les droits d'auteur, ce thÃ¨me est **inspirÃ©** de MyLucy.ai mais utilise du contenu original et des images de stock libres. Si vous avez l'autorisation d'utiliser les images exactes de MyLucy.ai, vous pouvez les remplacer dans `lib/themes.ts`.
 
-#### 📁 Fichiers Modifiés
+#### ðŸ“ Fichiers ModifiÃ©s
 
 | Fichier | Modifications |
 |---------|--------------|
-| `lib/themes.ts` | Ajout du thème 'lucy' avec configuration complète |
+| `lib/themes.ts` | Ajout du thÃ¨me 'lucy' avec configuration complÃ¨te |
 | `components/DiscutAIWidget.tsx` | Ajout config widget pour Lucy |
-| `app/page.tsx` | Mise à jour logique widget pour inclure Lucy |
-| `README.md` | Documentation du nouveau thème |
+| `app/page.tsx` | Mise Ã  jour logique widget pour inclure Lucy |
+| `README.md` | Documentation du nouveau thÃ¨me |
 
-#### 🔗 Accès au Thème
+#### ðŸ”— AccÃ¨s au ThÃ¨me
 
 URL: `?theme=lucy`
 - Exemple: `https://votre-site.vercel.app/?theme=lucy`
@@ -574,37 +554,37 @@ URL: `?theme=lucy`
 
 ### 2026-02-03 - Correction Images Cards Lucy (Correspondance MyLucy.ai)
 
-#### 🎯 Objectif
+#### ðŸŽ¯ Objectif
 Corriger l'attribution des images dans les cards de la page Lucy pour correspondre exactement au site original [MyLucy.ai](https://mylucy.ai/site/mylucy/).
 
-#### ✅ Problème Identifié
-Les images iStock étaient présentes dans `public/lucy/` mais assignées aux mauvais cards:
-- **Card 2**: utilisait `iStock-2188524624` (fond quadrillé blanc) au lieu de `iStock-1480053259` (illustration colorée)
+#### âœ… ProblÃ¨me IdentifiÃ©
+Les images iStock Ã©taient prÃ©sentes dans `public/lucy/` mais assignÃ©es aux mauvais cards:
+- **Card 2**: utilisait `iStock-2188524624` (fond quadrillÃ© blanc) au lieu de `iStock-1480053259` (illustration colorÃ©e)
 - **Card 3**: utilisait `iStock-2230066494` au lieu de `iStock-2194842670`
 
-#### ✅ Corrections Effectuées
+#### âœ… Corrections EffectuÃ©es
 
 **Fichier `components/LucyLanding.tsx`**:
 
-| Card | Avant | Après |
+| Card | Avant | AprÃ¨s |
 |------|-------|-------|
-| Card 1 | iStock-2222205938 ✓ | iStock-2222205938 ✓ |
-| Card 2 | iStock-2188524624 ❌ | **iStock-1480053259.avif** ✓ |
-| Card 3 | iStock-2230066494 ❌ | **iStock-2194842670.avif** ✓ |
-| Card 4 | iStock-2168015374 ✓ | iStock-2168015374 ✓ |
-| Card 5 | iStock-2188524624 ✓ | iStock-2188524624 ✓ |
-| Card 6 | iStock-2230066494 ✓ | iStock-2230066494 ✓ |
+| Card 1 | iStock-2222205938 âœ“ | iStock-2222205938 âœ“ |
+| Card 2 | iStock-2188524624 âŒ | **iStock-1480053259.avif** âœ“ |
+| Card 3 | iStock-2230066494 âŒ | **iStock-2194842670.avif** âœ“ |
+| Card 4 | iStock-2168015374 âœ“ | iStock-2168015374 âœ“ |
+| Card 5 | iStock-2188524624 âœ“ | iStock-2188524624 âœ“ |
+| Card 6 | iStock-2230066494 âœ“ | iStock-2230066494 âœ“ |
 
-#### 📁 Fichiers Modifiés
+#### ðŸ“ Fichiers ModifiÃ©s
 
 | Fichier | Description |
 |---------|-------------|
 | `components/LucyLanding.tsx` | Correction src des images Card 2 et Card 3 |
-| `README.md` | Journal de développement mis à jour |
+| `README.md` | Journal de dÃ©veloppement mis Ã  jour |
 
 ---
 
-## 📅 Calendar Booking API (Phase 1)
+## ðŸ“… Calendar Booking API (Phase 1)
 
 Secure backend API for calendar availability and booking, designed for DiscutAI tool integration.
 
@@ -618,7 +598,7 @@ DISCUTAI_TOOL_SECRET=your-secret-key-here
 ```
 
 **On Vercel:**
-1. Go to your project → Settings → Environment Variables
+1. Go to your project â†’ Settings â†’ Environment Variables
 2. Add `DISCUTAI_TOOL_SECRET` with a strong secret value
 3. Apply to Production, Preview, and Development environments
 
@@ -730,24 +710,24 @@ Phase 2 will integrate with Google Calendar API for real availability and event 
 
 ### 2026-02-04 - Landing Page TPRC (Homepage Premium Dark Mode)
 
-#### 🎯 Objectif
-Créer une nouvelle homepage pour l'agence TPRC avec un rendu professionnel style Limova.ai / Dark Mode Premium.
+#### ðŸŽ¯ Objectif
+CrÃ©er une nouvelle homepage pour l'agence TPRC avec un rendu professionnel style Limova.ai / Dark Mode Premium.
 
-#### ✅ Implémentation
+#### âœ… ImplÃ©mentation
 
-**Nouvelles dépendances installées:**
+**Nouvelles dÃ©pendances installÃ©es:**
 - `framer-motion` - Animations fluides et transitions
-- `lucide-react` - Icônes modernes et légères
+- `lucide-react` - IcÃ´nes modernes et lÃ©gÃ¨res
 
 **Structure de la page:**
-1. **Navigation** - Logo TPRC, liens (Home, Soluções, Demo, Contato), CTA glassmorphism
-2. **Hero Section** - Background noir avec effet réseau de neurones, titre gradient, badge "Agência de IA"
-3. **Bento Grid (Soluções)** - 3 cartes avec bordures gradient irisées:
+1. **Navigation** - Logo TPRC, liens (Home, SoluÃ§Ãµes, Demo, Contato), CTA glassmorphism
+2. **Hero Section** - Background noir avec effet rÃ©seau de neurones, titre gradient, badge "AgÃªncia de IA"
+3. **Bento Grid (SoluÃ§Ãµes)** - 3 cartes avec bordures gradient irisÃ©es:
    - IA Conversacional (DiscutAI)
-   - Creative Tech & Música
+   - Creative Tech & MÃºsica
    - Payments & Benefits
-4. **Section Demo** - Texte à gauche, mockup smartphone flottant à droite avec chat example
-5. **Demos Grid** - 6 boutons vers les thèmes de demo (Barbearia, Restaurante, etc.)
+4. **Section Demo** - Texte Ã  gauche, mockup smartphone flottant Ã  droite avec chat example
+5. **Demos Grid** - 6 boutons vers les thÃ¨mes de demo (Barbearia, Restaurante, etc.)
 6. **Contact CTA** - Section finale avec bouton WhatsApp
 7. **Footer** - Logo, liens, tagline
 
@@ -755,30 +735,30 @@ Créer une nouvelle homepage pour l'agence TPRC avec un rendu professionnel styl
 - Design Dark Mode profond (#050505)
 - Animations Framer Motion (fade-in up, stagger)
 - Effet Glassmorphism sur les boutons CTA
-- Gradient borders animés
+- Gradient borders animÃ©s
 - Responsive Mobile-First
 - Smooth scroll
 - Menu mobile hamburger
 
-#### 📁 Fichiers Créés/Modifiés
+#### ðŸ“ Fichiers CrÃ©Ã©s/ModifiÃ©s
 
 | Fichier | Description |
 |---------|-------------|
-| `components/TPRCLanding.tsx` | Nouveau - Landing page complète TPRC |
-| `lib/themes.ts` | Ajout du thème 'tprc' avec données minimales |
-| `lib/themeUtils.ts` | Default theme changé de 'cabeleireiro' à 'tprc' |
+| `components/TPRCLanding.tsx` | Nouveau - Landing page complÃ¨te TPRC |
+| `lib/themes.ts` | Ajout du thÃ¨me 'tprc' avec donnÃ©es minimales |
+| `lib/themeUtils.ts` | Default theme changÃ© de 'cabeleireiro' Ã  'tprc' |
 | `app/page.tsx` | Import TPRCLanding, rendu conditionnel |
 | `app/globals.css` | Animations gradient-x, bg-gradient-radial, glass effect |
-| `package.json` | framer-motion, lucide-react ajoutés |
+| `package.json` | framer-motion, lucide-react ajoutÃ©s |
 
-#### 🔗 Accès
+#### ðŸ”— AccÃ¨s
 
-- **Homepage par défaut**: `http://localhost:3000/`
+- **Homepage par dÃ©faut**: `http://localhost:3000/`
 - **URL explicite**: `http://localhost:3000/?theme=tprc`
 
-#### 🎨 Palette de Couleurs
+#### ðŸŽ¨ Palette de Couleurs
 
-| Élément | Couleur |
+| Ã‰lÃ©ment | Couleur |
 |---------|---------|
 | Background | #050505 |
 | Accent Blue | #3B82F6 |
@@ -790,7 +770,7 @@ Créer une nouvelle homepage pour l'agence TPRC avec un rendu professionnel styl
 
 ---
 
-Développé avec ❤️ pour démonstrations Discutai
-#   d i s c u t a i - d e m o b r 
- 
- 
+DÃ©veloppÃ© avec â¤ï¸ pour dÃ©monstrations Discutai
+
+
+

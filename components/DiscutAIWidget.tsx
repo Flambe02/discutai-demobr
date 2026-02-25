@@ -71,9 +71,23 @@ export default function DiscutAIWidget({ theme }: DiscutAIWidgetProps) {
     const config = getWidgetConfig(theme.id);
     if (!config) return;
     const runtimeConfig = { ...config };
+    const desiredInputPlaceholder = runtimeConfig.inputPlaceholder?.trim();
+    const localizedLabels = {
+      toggleOpen: 'Abrir o chat',
+      close: 'Fechar o chat',
+      send: 'Enviar mensagem',
+    };
+    const textOverrides: Record<string, string> = {
+      "Je n'ai pas pu générer une réponse. Veuillez réessayer.": 'Nao consegui gerar uma resposta. Tente novamente.',
+      "Erreur d'authentification. Veuillez vérifier votre configuration.": 'Erro de autenticacao. Verifique sua configuracao.',
+      'Assistant non trouvé. Veuillez vérifier votre configuration.': 'Assistente nao encontrado. Verifique sua configuracao.',
+      'Désolé, une erreur est survenue. Veuillez réessayer plus tard.': 'Desculpe, ocorreu um erro. Tente novamente mais tarde.',
+    };
     const isMobile = window.matchMedia('(max-width: 768px)').matches;
     let cancelled = false;
     let visibilityCheckTimer: ReturnType<typeof setTimeout> | null = null;
+    let placeholderSyncTimer: ReturnType<typeof setInterval> | null = null;
+    let placeholderObserver: MutationObserver | null = null;
 
     // Mobile: laisser le widget appliquer sa taille par défaut.
     if (isMobile) {
@@ -88,6 +102,73 @@ export default function DiscutAIWidget({ theme }: DiscutAIWidgetProps) {
           document.querySelector('[class*="discutai-widget"]') ||
           document.querySelector('iframe[src*="discutai"]')
       );
+    };
+
+    const applyWidgetLocalization = () => {
+      const widgetContainer = document.querySelector('.discutai-widget-container');
+      if (!widgetContainer) return false;
+
+      const toggleButton = widgetContainer.querySelector<HTMLButtonElement>('.discutai-widget-toggle');
+      if (toggleButton && toggleButton.getAttribute('aria-label') !== localizedLabels.toggleOpen) {
+        toggleButton.setAttribute('aria-label', localizedLabels.toggleOpen);
+      }
+
+      const closeButton = widgetContainer.querySelector<HTMLButtonElement>('.discutai-widget-close');
+      if (closeButton && closeButton.getAttribute('aria-label') !== localizedLabels.close) {
+        closeButton.setAttribute('aria-label', localizedLabels.close);
+      }
+
+      const sendButton = widgetContainer.querySelector<HTMLButtonElement>('.discutai-widget-send');
+      if (sendButton && sendButton.getAttribute('aria-label') !== localizedLabels.send) {
+        sendButton.setAttribute('aria-label', localizedLabels.send);
+      }
+
+      if (desiredInputPlaceholder) {
+        const messageInputs = widgetContainer.querySelectorAll<HTMLTextAreaElement>(
+          '.discutai-widget-input, textarea'
+        );
+        messageInputs.forEach(input => {
+          if (input.placeholder !== desiredInputPlaceholder) {
+            input.placeholder = desiredInputPlaceholder;
+            input.setAttribute('placeholder', desiredInputPlaceholder);
+          }
+        });
+      }
+
+      const assistantMessages = widgetContainer.querySelectorAll<HTMLElement>('.discutai-widget-message.assistant');
+      assistantMessages.forEach(messageNode => {
+        const messageText = messageNode.textContent?.trim();
+        if (!messageText) return;
+
+        const localizedText = textOverrides[messageText];
+        if (localizedText && messageText !== localizedText) {
+          messageNode.textContent = localizedText;
+        }
+      });
+
+      return true;
+    };
+
+    const startPlaceholderSync = () => {
+      if (!placeholderSyncTimer) {
+        let attempts = 0;
+        placeholderSyncTimer = setInterval(() => {
+          if (cancelled) return;
+          const applied = applyWidgetLocalization();
+          attempts += 1;
+          if (applied || attempts >= 30) {
+            if (placeholderSyncTimer) clearInterval(placeholderSyncTimer);
+            placeholderSyncTimer = null;
+          }
+        }, 250);
+      }
+
+      if (!placeholderObserver) {
+        placeholderObserver = new MutationObserver(() => {
+          applyWidgetLocalization();
+        });
+        placeholderObserver.observe(document.body, { childList: true, subtree: true });
+      }
     };
 
     const loadWidget = (attempt: number) => {
@@ -111,6 +192,7 @@ export default function DiscutAIWidget({ theme }: DiscutAIWidgetProps) {
         // Vérifie que le widget est réellement rendu après chargement.
         visibilityCheckTimer = setTimeout(() => {
           if (cancelled) return;
+          applyWidgetLocalization();
           if (!hasWidgetMounted() && attempt < 2) {
             loadWidget(attempt + 1);
           }
@@ -127,12 +209,15 @@ export default function DiscutAIWidget({ theme }: DiscutAIWidgetProps) {
       document.body.appendChild(script);
     };
 
+    startPlaceholderSync();
     loadWidget(1);
 
     // Cleanup au démontage
     return () => {
       cancelled = true;
       if (visibilityCheckTimer) clearTimeout(visibilityCheckTimer);
+      if (placeholderSyncTimer) clearInterval(placeholderSyncTimer);
+      if (placeholderObserver) placeholderObserver.disconnect();
       cleanupDiscutAI();
     };
   }, [theme.id]);

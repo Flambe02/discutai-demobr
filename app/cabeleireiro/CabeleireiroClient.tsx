@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Scissors, Clock, MapPin, Phone, Star, ArrowLeft, Calendar } from 'lucide-react';
 import Link from 'next/link';
+import DiscutAIWidget from '@/components/DiscutAIWidget';
+import { getTheme } from '@/lib/themeUtils';
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -18,59 +19,9 @@ const staggerContainer = {
   },
 };
 
-function cleanupDiscutAI() {
-  document.querySelectorAll('script[src*="discutai.com/widget"]').forEach(el => el.remove());
-  document.querySelectorAll('[id*="discutai"], [class*="discutai"]').forEach(el => el.remove());
-  delete (window as any).DiscutAIWidget;
-  delete (window as any).DiscutAIWidgetLoaded; // ← flag anti-double-init de loader.js — doit être reset
-}
+const cabeleireiroTheme = getTheme('cabeleireiro');
 
 export default function CabeleireiroClient() {
-  useEffect(() => {
-    // Active le widget sur mobile pour cette page (override du hide global)
-    document.body.classList.add('cabeleireiro-page');
-
-    // 1. Supprimer tout vestige d'une instance précédente
-    cleanupDiscutAI();
-
-    // 2. Injecter loader.js EN PREMIER — ordre identique au script officiel DiscutAI
-    const script = document.createElement('script');
-    script.id = 'discutai-widget-loader';
-    script.src = 'https://v2.discutai.com/widget/loader.js';
-    document.body.appendChild(script);
-
-    // 3. Définir la config Jessica immédiatement après (synchrone, loader.js charge encore)
-    (window as any).DiscutAIWidget = {
-      config: {
-        assistantWorkspaceId: '8fd31883-b679-4bbd-a5cd-f159c26aba06',
-        assistantName: 'Jessica',
-        themeColor: '#ff3100',
-        position: 'bottom-right',
-        welcomeMessage: 'Ola bom dia',
-        showAvatar: true,
-        width: 350,
-        height: 500,
-        logoUrl: 'https://veztjskcirpqzdwizxxn.supabase.co/storage/v1/object/public/assistants-avatars/103833e0-68ad-42e3-bf06-add3d4c5bb10.jpg',
-        baseUrl: 'https://v2.discutai.com',
-      },
-    };
-
-    // 4. Après chargement de widget.js : forcer la visibilité sur mobile
-    //    widget.js peut injecter display:none via style inline → JS seul peut l'annuler
-    const forceVisibleTimer = setTimeout(() => {
-      document.querySelectorAll<HTMLElement>('[id*="discutai"], [class*="discutai"]').forEach(el => {
-        if (el.style.display === 'none') el.style.removeProperty('display');
-        if (el.style.visibility === 'hidden') el.style.removeProperty('visibility');
-      });
-    }, 1500);
-
-    return () => {
-      clearTimeout(forceVisibleTimer);
-      document.body.classList.remove('cabeleireiro-page');
-      cleanupDiscutAI();
-    };
-  }, []);
-
   const services = [
     { name: 'Corte masculino', price: 'R$ 45' },
     { name: 'Barba com navalha', price: 'R$ 35' },
@@ -305,6 +256,9 @@ export default function CabeleireiroClient() {
           </Link>
         </div>
       </footer>
+
+      <DiscutAIWidget theme={cabeleireiroTheme} />
     </div>
   );
 }
+
