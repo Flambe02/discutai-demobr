@@ -1,0 +1,1698 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DiscutAI — Onboarding do Funcionário Virtual</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #050505;
+  --surface: #0a0a0a;
+  --card: rgba(255,255,255,0.035);
+  --border: rgba(255,255,255,0.08);
+  --border-active: rgba(59,130,246,0.5);
+  --accent: #3B82F6;
+  --accent2: #93C5FD;
+  --gold: #F59E0B;
+  --text: #FFFFFF;
+  --muted: rgba(255,255,255,0.3);
+  --muted2: rgba(255,255,255,0.52);
+  --green: #10B981;
+  --red: #EF4444;
+  --orange: #F97316;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── NOISE OVERLAY ─── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.025'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─── AMBIENT GRADIENT ─── */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse at 15% 0%, rgba(59,130,246,0.09) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 100%, rgba(168,85,247,0.06) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ══════════════════════════════════════════
+   TOP NAV
+══════════════════════════════════════════ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  background: rgba(5,5,5,0.8);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 0 2rem;
+  height: 62px;
+  display: flex; align-items: center; justify-content: space-between;
+  z-index: 100;
+}
+
+.nav-brand img {
+  height: 36px;
+  width: auto;
+  display: block;
+}
+
+.nav-actions {
+  display: flex; align-items: center; gap: 0.4rem;
+}
+.nav-back {
+  font-size: 0.79rem;
+  color: var(--muted2);
+  text-decoration: none;
+  padding: 0.38rem 0.85rem;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  transition: all 0.2s;
+  letter-spacing: 0.01em;
+}
+.nav-back:hover {
+  color: var(--text);
+  background: rgba(255,255,255,0.05);
+  border-color: var(--border);
+}
+.btn-nav-action {
+  font-size: 0.79rem;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  color: var(--muted2);
+  padding: 0.38rem 0.85rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  letter-spacing: 0.01em;
+}
+.btn-nav-action:hover {
+  background: rgba(59,130,246,0.1);
+  border-color: rgba(59,130,246,0.35);
+  color: var(--accent2);
+}
+
+/* ══════════════════════════════════════════
+   STEP RAIL
+══════════════════════════════════════════ */
+.step-rail {
+  position: fixed; top: 62px; left: 0; right: 0;
+  background: rgba(5,5,5,0.8);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  padding: 0 2rem;
+  height: 50px;
+  display: flex; align-items: center;
+  z-index: 99;
+  overflow-x: auto;
+  scrollbar-width: none;
+  gap: 0;
+}
+.step-rail::-webkit-scrollbar { display: none; }
+
+.step-dot {
+  display: flex; align-items: center; gap: 0.45rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.71rem;
+  font-weight: 500;
+  color: var(--muted);
+  white-space: nowrap;
+  transition: all 0.3s;
+  cursor: default;
+  letter-spacing: 0.01em;
+}
+.step-dot .dot {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.6rem;
+  font-weight: 700;
+  transition: all 0.3s;
+  flex-shrink: 0;
+}
+.step-dot.active { color: rgba(255,255,255,0.9); }
+.step-dot.active .dot {
+  background: linear-gradient(135deg, #3B82F6, #6366F1);
+  border-color: transparent;
+  color: white;
+  box-shadow: 0 0 12px rgba(59,130,246,0.5);
+}
+.step-dot.done { color: var(--green); }
+.step-dot.done .dot {
+  background: rgba(16,185,129,0.2);
+  border-color: rgba(16,185,129,0.4);
+  color: var(--green);
+}
+.step-sep {
+  color: rgba(255,255,255,0.1);
+  margin: 0 0.1rem;
+  font-size: 0.7rem;
+}
+
+/* ══════════════════════════════════════════
+   MAIN LAYOUT
+══════════════════════════════════════════ */
+main {
+  margin-top: 112px;
+  min-height: calc(100vh - 112px);
+  display: flex; flex-direction: column; align-items: center;
+  padding: 3rem 1.5rem 8rem;
+  position: relative; z-index: 1;
+}
+
+/* ─── STEP PANEL ─── */
+.step-panel {
+  display: none;
+  width: 100%; max-width: 780px;
+  animation: fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.step-panel.active { display: block; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ══════════════════════════════════════════
+   STEP HEADER
+══════════════════════════════════════════ */
+.step-hd { margin-bottom: 2rem; }
+
+.step-hd .eyebrow {
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent2);
+  margin-bottom: 0.6rem;
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  opacity: 0.8;
+}
+.step-hd .eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 20px; height: 1.5px;
+  background: linear-gradient(90deg, #3B82F6, #6366F1);
+  border-radius: 2px;
+}
+.step-hd h2 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 2.2rem;
+  line-height: 1.1;
+  color: var(--text);
+  margin-bottom: 0.7rem;
+  letter-spacing: -0.01em;
+}
+.step-hd p {
+  color: var(--muted2);
+  font-size: 0.9rem;
+  line-height: 1.65;
+  max-width: 520px;
+}
+
+/* ══════════════════════════════════════════
+   CARDS (glassmorphism)
+══════════════════════════════════════════ */
+.card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 18px;
+  padding: 1.8rem;
+  margin-bottom: 1rem;
+  transition: border-color 0.25s, background 0.25s;
+  backdrop-filter: blur(4px);
+}
+.card:hover {
+  border-color: rgba(255,255,255,0.13);
+  background: rgba(255,255,255,0.045);
+}
+
+.card-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent2);
+  margin-bottom: 1.3rem;
+  display: flex; align-items: center; gap: 0.6rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.card-title::before {
+  content: '';
+  display: inline-block;
+  width: 3px; height: 14px;
+  background: linear-gradient(180deg, #3B82F6, #6366F1);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.card-title span { color: var(--muted); font-weight: 400; }
+
+/* ══════════════════════════════════════════
+   GRIDS
+══════════════════════════════════════════ */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.1rem; }
+.grid-1 { display: grid; grid-template-columns: 1fr; gap: 1.1rem; }
+
+/* ══════════════════════════════════════════
+   FIELDS & INPUTS
+══════════════════════════════════════════ */
+.field { display: flex; flex-direction: column; gap: 0.4rem; }
+
+label.lbl {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+}
+label.lbl .req { color: var(--accent2); margin-left: 2px; }
+label.lbl .opt {
+  color: var(--muted);
+  font-size: 0.66rem;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  margin-left: 4px;
+}
+
+input[type="text"], input[type="email"], input[type="tel"],
+input[type="number"], input[type="url"], textarea, select {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 0.78rem 1.1rem;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.92rem;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  width: 100%;
+}
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: rgba(59,130,246,0.6);
+  background: rgba(59,130,246,0.06);
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+}
+input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.2); }
+textarea { resize: vertical; min-height: 90px; line-height: 1.65; }
+select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%23666' d='M5 7L0 2h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1.1rem center;
+}
+
+/* ══════════════════════════════════════════
+   CHIP SELECTORS
+══════════════════════════════════════════ */
+.chips { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 0.4rem; }
+.chip {
+  padding: 0.42rem 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.1);
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.18s;
+  color: var(--muted2);
+  user-select: none;
+  display: flex; align-items: center; gap: 0.35rem;
+  background: rgba(255,255,255,0.03);
+}
+.chip:hover {
+  border-color: rgba(59,130,246,0.4);
+  color: white;
+  background: rgba(59,130,246,0.07);
+}
+.chip.sel {
+  background: rgba(59,130,246,0.15);
+  border-color: rgba(59,130,246,0.5);
+  color: var(--accent2);
+  font-weight: 500;
+}
+.chip.sel-gold {
+  background: rgba(245,158,11,0.12);
+  border-color: rgba(245,158,11,0.45);
+  color: var(--gold);
+  font-weight: 500;
+}
+
+/* ══════════════════════════════════════════
+   TOGGLE CARDS
+══════════════════════════════════════════ */
+.toggle-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 0.7rem;
+}
+.tc {
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  padding: 1.1rem 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+  background: rgba(255,255,255,0.02);
+}
+.tc:hover {
+  border-color: rgba(59,130,246,0.35);
+  background: rgba(59,130,246,0.05);
+  transform: translateY(-1px);
+}
+.tc.sel {
+  background: rgba(59,130,246,0.1);
+  border-color: rgba(59,130,246,0.45);
+  box-shadow: 0 0 14px rgba(59,130,246,0.12);
+}
+.tc .tc-icon { font-size: 1.6rem; margin-bottom: 0.5rem; }
+.tc .tc-label { font-size: 0.78rem; font-weight: 500; color: var(--muted2); line-height: 1.3; }
+.tc.sel .tc-label { color: var(--accent2); }
+
+/* ══════════════════════════════════════════
+   PRIORITY LIST
+══════════════════════════════════════════ */
+.prio-list { display: flex; flex-direction: column; gap: 0.5rem; }
+.prio-item {
+  display: flex; align-items: center; gap: 0.8rem;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 12px;
+  padding: 0.7rem 1rem;
+  transition: border-color 0.2s;
+}
+.prio-item:focus-within {
+  border-color: rgba(59,130,246,0.4);
+}
+.prio-item .prio-num {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(59,130,246,0.2), rgba(99,102,241,0.2));
+  border: 1px solid rgba(59,130,246,0.25);
+  color: var(--accent2);
+  font-size: 0.68rem;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.prio-item input {
+  border: none;
+  background: transparent;
+  padding: 0;
+  font-size: 0.9rem;
+}
+.prio-item input:focus { box-shadow: none; }
+
+/* ══════════════════════════════════════════
+   SCALE TRACK
+══════════════════════════════════════════ */
+.scale-wrap { margin-top: 0.4rem; }
+.scale-track { display: flex; gap: 0.35rem; align-items: center; }
+.scale-opt {
+  flex: 1;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: all 0.18s;
+  color: var(--muted);
+}
+.scale-opt:hover {
+  border-color: rgba(59,130,246,0.35);
+  color: white;
+  background: rgba(59,130,246,0.06);
+}
+.scale-opt.sel {
+  background: linear-gradient(135deg, #3B82F6, #6366F1);
+  border-color: transparent;
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 2px 10px rgba(59,130,246,0.3);
+}
+
+/* ══════════════════════════════════════════
+   INFO & WARN BOXES
+══════════════════════════════════════════ */
+.info-box {
+  background: rgba(59,130,246,0.07);
+  border: 1px solid rgba(59,130,246,0.18);
+  border-radius: 12px;
+  padding: 0.9rem 1.1rem;
+  font-size: 0.83rem;
+  color: var(--accent2);
+  margin-bottom: 1.2rem;
+  line-height: 1.55;
+  display: flex; gap: 0.6rem; align-items: flex-start;
+}
+.info-box::before { content: 'ℹ'; font-size: 0.9rem; flex-shrink: 0; margin-top: 0.05rem; }
+.warn-box {
+  background: rgba(249,115,22,0.07);
+  border: 1px solid rgba(249,115,22,0.2);
+  border-radius: 12px;
+  padding: 0.9rem 1.1rem;
+  font-size: 0.83rem;
+  color: var(--orange);
+  margin-bottom: 1.2rem;
+  line-height: 1.55;
+}
+
+/* ─── DIVIDER ─── */
+.div { border: none; border-top: 1px solid rgba(255,255,255,0.06); margin: 1.4rem 0; }
+
+/* ══════════════════════════════════════════
+   BOTTOM NAV
+══════════════════════════════════════════ */
+.bottom-nav {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: rgba(5,5,5,0.88);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 0.9rem 2rem;
+  display: flex; justify-content: space-between; align-items: center;
+  z-index: 100;
+}
+.step-counter { font-size: 0.79rem; color: var(--muted); }
+.step-counter strong { color: rgba(255,255,255,0.85); font-weight: 600; }
+.nav-btns { display: flex; gap: 0.7rem; align-items: center; }
+
+.btn-back {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--muted2);
+  padding: 0.65rem 1.4rem;
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-back:hover {
+  border-color: rgba(255,255,255,0.2);
+  color: var(--text);
+  background: rgba(255,255,255,0.04);
+}
+
+.btn-next {
+  background: linear-gradient(135deg, #3B82F6 0%, #6366F1 100%);
+  border: none;
+  color: white;
+  padding: 0.7rem 1.8rem;
+  border-radius: 10px;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex; align-items: center; gap: 0.4rem;
+  letter-spacing: 0.02em;
+  box-shadow: 0 2px 18px rgba(59,130,246,0.28);
+}
+.btn-next:hover {
+  background: linear-gradient(135deg, #2563EB 0%, #4F46E5 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 24px rgba(59,130,246,0.4);
+}
+.btn-next:active { transform: translateY(0); }
+.btn-next.gold {
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+  color: #fff;
+  box-shadow: 0 2px 18px rgba(245,158,11,0.28);
+}
+.btn-next.gold:hover {
+  background: linear-gradient(135deg, #D97706 0%, #B45309 100%);
+  box-shadow: 0 4px 24px rgba(245,158,11,0.4);
+}
+
+/* ══════════════════════════════════════════
+   PROGRESS BAR
+══════════════════════════════════════════ */
+.progress-bar {
+  height: 2px;
+  background: rgba(255,255,255,0.05);
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 101;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3B82F6, #8B5CF6, #EC4899);
+  transition: width 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 6px rgba(139,92,246,0.6);
+}
+
+/* ══════════════════════════════════════════
+   SUMMARY
+══════════════════════════════════════════ */
+.summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+.summary-block {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 1.3rem;
+  transition: border-color 0.2s;
+}
+.summary-block:hover { border-color: rgba(255,255,255,0.13); }
+.summary-block h4 {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.69rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent2);
+  margin-bottom: 0.9rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  opacity: 0.85;
+}
+.summary-row {
+  display: flex; justify-content: space-between;
+  padding: 0.38rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-size: 0.82rem;
+  gap: 1rem;
+}
+.summary-row:last-child { border-bottom: none; }
+.summary-row .sk { color: var(--muted); }
+.summary-row .sv { color: rgba(255,255,255,0.9); font-weight: 500; text-align: right; }
+
+/* ══════════════════════════════════════════
+   SUCCESS SCREEN
+══════════════════════════════════════════ */
+.success-screen { text-align: center; padding: 4rem 2rem; }
+.success-screen .check {
+  width: 80px; height: 80px;
+  background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(16,185,129,0.05));
+  border: 1.5px solid rgba(16,185,129,0.4);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2.2rem;
+  margin: 0 auto 1.8rem;
+  animation: pop 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 30px rgba(16,185,129,0.15);
+}
+@keyframes pop {
+  0%   { transform: scale(0); opacity: 0; }
+  60%  { transform: scale(1.08); }
+  100% { transform: scale(1); opacity: 1; }
+}
+.success-screen h2 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 2.4rem;
+  margin-bottom: 0.8rem;
+  letter-spacing: -0.01em;
+}
+.success-screen p {
+  color: var(--muted2);
+  max-width: 420px;
+  margin: 0 auto 2rem;
+  line-height: 1.65;
+}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+@media (max-width: 640px) {
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .summary-grid { grid-template-columns: 1fr; }
+  nav { padding: 0 1rem; }
+  .bottom-nav { padding: 0.8rem 1rem; }
+  main { padding: 2rem 1rem 7rem; }
+  .step-rail { padding: 0 1rem; }
+  .toggle-cards { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+  .step-hd h2 { font-size: 1.8rem; }
+  .card { padding: 1.3rem; border-radius: 14px; }
+  .btn-next { padding: 0.65rem 1.3rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">
+    <img src="/images/discutai-logo.png" alt="DiscutAI" />
+  </div>
+  <div class="nav-actions">
+    <a href="/onboarding" class="nav-back">← Menu</a>
+    <button onclick="loadProgress()" class="btn-nav-action" title="Carregar sessão salva">📂 Retomar</button>
+    <button onclick="saveProgress()" class="btn-nav-action" title="Salvar progresso no PC">💾 Salvar</button>
+  </div>
+</nav>
+
+<!-- STEP RAIL -->
+<div class="step-rail" id="stepRail">
+  <div class="step-dot active" data-step="0"><div class="dot">1</div> Empresa</div>
+  <span class="step-sep">›</span>
+  <div class="step-dot" data-step="1"><div class="dot">2</div> Agente</div>
+  <span class="step-sep">›</span>
+  <div class="step-dot" data-step="2"><div class="dot">3</div> Personalidade</div>
+  <span class="step-sep">›</span>
+  <div class="step-dot" data-step="3"><div class="dot">4</div> Conhecimentos</div>
+  <span class="step-sep">›</span>
+  <div class="step-dot" data-step="4"><div class="dot">5</div> Ações</div>
+  <span class="step-sep">›</span>
+  <div class="step-dot" data-step="5"><div class="dot">6</div> Piloto</div>
+  <span class="step-sep">›</span>
+  <div class="step-dot" data-step="6"><div class="dot">✓</div> Resumo</div>
+</div>
+
+<main>
+
+<!-- ══════════════════════════════════════════
+     STEP 1 — EMPRESA & CONTEXTO
+══════════════════════════════════════════ -->
+<div class="step-panel active" id="step-0">
+  <div class="step-hd">
+    <div class="eyebrow">Etapa 1 de 6</div>
+    <h2>Sua empresa & objetivos</h2>
+    <p>Vamos entender quem você é, o que você faz e o que espera do Funcionário Virtual.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🏢 Informações Gerais</div>
+    <div class="grid-2">
+      <div class="field">
+        <label class="lbl">Nome Fantasia <span class="req">*</span></label>
+        <input type="text" id="nome_fantasia" placeholder="Como o cliente conhece sua marca">
+      </div>
+      <div class="field">
+        <label class="lbl">Razão Social <span class="opt">(opcional)</span></label>
+        <input type="text" id="razao_social" placeholder="Nome jurídico da empresa">
+      </div>
+      <div class="field">
+        <label class="lbl">CNPJ <span class="req">*</span></label>
+        <input type="text" id="cnpj" placeholder="00.000.000/0000-00">
+      </div>
+      <div class="field">
+        <label class="lbl">Responsável Operacional <span class="req">*</span></label>
+        <input type="text" id="responsavel" placeholder="Nome completo">
+      </div>
+      <div class="field">
+        <label class="lbl">WhatsApp do Responsável <span class="req">*</span></label>
+        <input type="tel" id="wpp_resp" placeholder="(11) 9 0000-0000">
+      </div>
+      <div class="field">
+        <label class="lbl">E-mail de Contato <span class="req">*</span></label>
+        <input type="email" id="email_contato" placeholder="voce@empresa.com.br">
+      </div>
+      <div class="field">
+        <label class="lbl">Site <span class="opt">(se tiver)</span></label>
+        <input type="url" id="site" placeholder="https://suaempresa.com.br">
+      </div>
+      <div class="field">
+        <label class="lbl">Instagram</label>
+        <input type="text" id="instagram" placeholder="@suaempresa">
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🏪 Tipo de Estabelecimento <span>escolha o principal</span></div>
+    <div class="toggle-cards" id="tipo_biz">
+      <div class="tc" onclick="selectTC(this,'tipo_biz')"><div class="tc-icon">🍽️</div><div class="tc-label">Restaurante & Delivery</div></div>
+      <div class="tc" onclick="selectTC(this,'tipo_biz')"><div class="tc-icon">🥐</div><div class="tc-label">Padaria / Confeitaria</div></div>
+      <div class="tc" onclick="selectTC(this,'tipo_biz')"><div class="tc-icon">✂️</div><div class="tc-label">Barbearia / Cabeleireiro</div></div>
+      <div class="tc" onclick="selectTC(this,'tipo_biz')"><div class="tc-icon">🏥</div><div class="tc-label">Clínica / Hospital / Dentista / Psicólogo</div></div>
+      <div class="tc" onclick="selectTC(this,'tipo_biz')"><div class="tc-icon">💅</div><div class="tc-label">Salão de Beleza</div></div>
+      <div class="tc" onclick="selectTC(this,'tipo_biz')"><div class="tc-icon">🏠</div><div class="tc-label">Imobiliária</div></div>
+      <div class="tc" onclick="selectTC(this,'tipo_biz')"><div class="tc-icon">💊</div><div class="tc-label">Farmácia</div></div>
+      <div class="tc" onclick="selectTC(this,'tipo_biz')"><div class="tc-icon">🎓</div><div class="tc-label">Escola / Curso / Colégio</div></div>
+      <div class="tc" onclick="selectTC(this,'tipo_biz')"><div class="tc-icon">🛍️</div><div class="tc-label">Varejo & Loja</div></div>
+      <div class="tc" onclick="selectTC(this,'tipo_biz')"><div class="tc-icon">🏨</div><div class="tc-label">Hotel / Pousada</div></div>
+      <div class="tc" onclick="selectTC(this,'tipo_biz')"><div class="tc-icon">⛪</div><div class="tc-label">Igreja / Ministério</div></div>
+      <div class="tc" onclick="selectTC(this,'tipo_biz')"><div class="tc-icon">🚗</div><div class="tc-label">Concessionária / Revenda de Veículos</div></div>
+      <div class="tc" onclick="selectTC(this,'tipo_biz')"><div class="tc-icon">📦</div><div class="tc-label">E-Commerce</div></div>
+      <div class="tc" onclick="selectTC(this,'tipo_biz')"><div class="tc-icon">🏊</div><div class="tc-label">Clube / Associação</div></div>
+      <div class="tc" onclick="selectTC(this,'tipo_biz')"><div class="tc-icon">⚖️</div><div class="tc-label">Advogado / Escritório</div></div>
+      <div class="tc" onclick="selectTC(this,'tipo_biz')"><div class="tc-icon">🐾</div><div class="tc-label">Veterinária / Pet Shop</div></div>
+      <div class="tc" onclick="selectTC(this,'tipo_biz')"><div class="tc-icon">🛡️</div><div class="tc-label">Seguradora / Corretor</div></div>
+      <div class="tc" onclick="selectTC(this,'tipo_biz')"><div class="tc-icon">⚙️</div><div class="tc-label">Outro</div></div>
+    </div>
+    <div class="field" style="margin-top:0.9rem;">
+      <label class="lbl">Outro tipo / complemento</label>
+      <input type="text" id="tipo_outro" placeholder="Descreva se necessário">
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🎯 Modelo de Operação <span>marque todos que se aplicam</span></div>
+    <div class="chips" id="modelos">
+      <div class="chip" onclick="toggleChip(this)">Atendimento local</div>
+      <div class="chip" onclick="toggleChip(this)">Delivery / Entrega</div>
+      <div class="chip" onclick="toggleChip(this)">Reserva de mesa</div>
+      <div class="chip" onclick="toggleChip(this)">Reserva de espaço</div>
+      <div class="chip" onclick="toggleChip(this)">Encomendas</div>
+      <div class="chip" onclick="toggleChip(this)">Venda direta</div>
+      <div class="chip" onclick="toggleChip(this)">Agendamento de serviços</div>
+      <div class="chip" onclick="toggleChip(this)">Consulta / Orçamento</div>
+      <div class="chip" onclick="toggleChip(this)">Suporte pós-venda</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🚀 Objetivo Principal do Agente <span>escolha o mais importante</span></div>
+    <div class="toggle-cards" id="objetivo">
+      <div class="tc" onclick="selectTC(this,'objetivo')"><div class="tc-icon">💰</div><div class="tc-label">Converter em venda</div></div>
+      <div class="tc" onclick="selectTC(this,'objetivo')"><div class="tc-icon">📅</div><div class="tc-label">Agendar serviços</div></div>
+      <div class="tc" onclick="selectTC(this,'objetivo')"><div class="tc-icon">🔄</div><div class="tc-label">Reduzir perguntas repetidas</div></div>
+      <div class="tc" onclick="selectTC(this,'objetivo')"><div class="tc-icon">⭐</div><div class="tc-label">Melhorar experiência</div></div>
+      <div class="tc" onclick="selectTC(this,'objetivo')"><div class="tc-icon">🎯</div><div class="tc-label">Filtrar / Qualificar leads</div></div>
+      <div class="tc" onclick="selectTC(this,'objetivo')"><div class="tc-icon">🛎️</div><div class="tc-label">Suporte pós-venda</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📡 Canais a Ativar <span>marque todos os canais desejados</span></div>
+    <div class="chips" id="canais">
+      <div class="chip" onclick="toggleChip(this)">📱 WhatsApp Business</div>
+      <div class="chip" onclick="toggleChip(this)">🔗 WhatsApp API</div>
+      <div class="chip" onclick="toggleChip(this)">📸 Instagram Direct</div>
+      <div class="chip" onclick="toggleChip(this)">💬 Facebook Messenger</div>
+      <div class="chip" onclick="toggleChip(this)">🌐 Chat no Site</div>
+      <div class="chip" onclick="toggleChip(this)">📞 Telefone</div>
+    </div>
+    <div class="grid-2" style="margin-top:1rem;">
+      <div class="field">
+        <label class="lbl">Número WhatsApp Business</label>
+        <input type="tel" id="wpp_biz" placeholder="(11) 9 0000-0000">
+      </div>
+      <div class="field">
+        <label class="lbl">Número WhatsApp Teste (sandbox)</label>
+        <input type="tel" id="wpp_test" placeholder="Número para testes">
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📊 Volume de Atendimento Atual</div>
+    <div class="field">
+      <label class="lbl">Mensagens recebidas por dia (estimativa)</label>
+      <div class="chips" id="volume">
+        <div class="chip" onclick="toggleChipRadio(this,'volume')">0 – 20 / dia</div>
+        <div class="chip" onclick="toggleChipRadio(this,'volume')">20 – 50 / dia</div>
+        <div class="chip" onclick="toggleChipRadio(this,'volume')">50 – 100 / dia</div>
+        <div class="chip" onclick="toggleChipRadio(this,'volume')">100+ / dia</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     STEP 2 — IDENTIDADE DO AGENTE
+══════════════════════════════════════════ -->
+<div class="step-panel" id="step-1">
+  <div class="step-hd">
+    <div class="eyebrow">Etapa 2 de 6</div>
+    <h2>Identidade do Agente</h2>
+    <p>Vamos criar o crachá oficial do seu Funcionário Virtual — nome, perfil e foco de atuação.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🪪 Nome & Apresentação</div>
+    <div class="info-box">💡 Escolha um nome que combine com sua marca, soe natural no WhatsApp e passe confiança.</div>
+    <div class="grid-2">
+      <div class="field">
+        <label class="lbl">Nome do Agente <span class="req">*</span></label>
+        <input type="text" id="nome_agente" placeholder="Ex: Marie, João, Luna, Max...">
+      </div>
+      <div class="field">
+        <label class="lbl">Gênero</label>
+        <div class="chips" id="genero" style="margin-top:0.3rem;">
+          <div class="chip" onclick="toggleChipRadio(this,'genero')">Feminino</div>
+          <div class="chip" onclick="toggleChipRadio(this,'genero')">Masculino</div>
+          <div class="chip" onclick="toggleChipRadio(this,'genero')">Neutro</div>
+        </div>
+      </div>
+    </div>
+    <div class="field" style="margin-top:1rem;">
+      <label class="lbl">Mensagem de Saudação <span class="req">*</span></label>
+      <textarea id="saudacao" placeholder="Ex: Oi! Aqui é a Marie do Le Jazz. Como posso ajudar hoje? 😊" style="min-height:70px;"></textarea>
+    </div>
+    <div class="field" style="margin-top:0.8rem;">
+      <label class="lbl">Idiomas Suportados</label>
+      <div class="chips" id="idiomas">
+        <div class="chip sel" onclick="toggleChip(this)">🇧🇷 Português</div>
+        <div class="chip" onclick="toggleChip(this)">🇺🇸 English</div>
+        <div class="chip" onclick="toggleChip(this)">🇫🇷 Français</div>
+        <div class="chip" onclick="toggleChip(this)">🇪🇸 Español</div>
+        <div class="chip" onclick="toggleChip(this)">🇮🇹 Italiano</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🎭 Perfil de Atuação <span>define o foco principal do agente</span></div>
+    <div class="toggle-cards" id="perfil">
+      <div class="tc" onclick="selectTC(this,'perfil')">
+        <div class="tc-icon">📈</div>
+        <div class="tc-label">SALES</div>
+        <div style="font-size:0.7rem;color:var(--muted);margin-top:0.3rem;">Converter, qualificar, encaminhar</div>
+      </div>
+      <div class="tc" onclick="selectTC(this,'perfil')">
+        <div class="tc-icon">💛</div>
+        <div class="tc-label">CUSTOMER CARE</div>
+        <div style="font-size:0.7rem;color:var(--muted);margin-top:0.3rem;">Atendimento diário, suporte</div>
+      </div>
+      <div class="tc" onclick="selectTC(this,'perfil')">
+        <div class="tc-icon">⚙️</div>
+        <div class="tc-label">OPERACIONAL</div>
+        <div style="font-size:0.7rem;color:var(--muted);margin-top:0.3rem;">Agendas, reservas, dados</div>
+      </div>
+      <div class="tc" onclick="selectTC(this,'perfil')">
+        <div class="tc-icon">💰</div>
+        <div class="tc-label">FINANCEIRO</div>
+        <div style="font-size:0.7rem;color:var(--muted);margin-top:0.3rem;">Pagamentos, cobranças</div>
+      </div>
+      <div class="tc" onclick="selectTC(this,'perfil')">
+        <div class="tc-icon">🌐</div>
+        <div class="tc-label">GENERAL</div>
+        <div style="font-size:0.7rem;color:var(--muted);margin-top:0.3rem;">Atendimento amplo</div>
+      </div>
+      <div class="tc" onclick="selectTC(this,'perfil')">
+        <div class="tc-icon">✏️</div>
+        <div class="tc-label">PERSONALIZADO</div>
+        <div style="font-size:0.7rem;color:var(--muted);margin-top:0.3rem;">Defino abaixo</div>
+      </div>
+    </div>
+    <div class="field" style="margin-top:0.9rem;">
+      <label class="lbl">Descrição adicional do perfil <span class="opt">(se personalizado)</span></label>
+      <textarea id="perfil_desc" placeholder="Descreva o foco específico do agente..."></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     STEP 3 — PERSONALIDADE
+══════════════════════════════════════════ -->
+<div class="step-panel" id="step-2">
+  <div class="step-hd">
+    <div class="eyebrow">Etapa 3 de 6</div>
+    <h2>Personalidade & Tom</h2>
+    <p>Como seu agente fala, se comporta e se expressa — deve refletir a identidade da sua marca.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🎙️ Estilo de Comunicação <span>escolha o predominante</span></div>
+    <div class="toggle-cards" id="estilo">
+      <div class="tc" onclick="selectTC(this,'estilo')"><div class="tc-icon">⚡</div><div class="tc-label">Direto e objetivo</div></div>
+      <div class="tc" onclick="selectTC(this,'estilo')"><div class="tc-icon">🤗</div><div class="tc-label">Amigável e acolhedor</div></div>
+      <div class="tc" onclick="selectTC(this,'estilo')"><div class="tc-icon">👔</div><div class="tc-label">Profissional e formal</div></div>
+      <div class="tc" onclick="selectTC(this,'estilo')"><div class="tc-icon">✨</div><div class="tc-label">Moderno e descontraído</div></div>
+      <div class="tc" onclick="selectTC(this,'estilo')"><div class="tc-icon">⚖️</div><div class="tc-label">Neutro e equilibrado</div></div>
+      <div class="tc" onclick="selectTC(this,'estilo')"><div class="tc-icon">👑</div><div class="tc-label">Premium e sofisticado</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">😊 Uso de Emojis</div>
+    <div class="chips" id="emojis">
+      <div class="chip" onclick="toggleChipRadio(this,'emojis')">🚫 Não usar</div>
+      <div class="chip" onclick="toggleChipRadio(this,'emojis')">🙂 Moderado (1-2 por mensagem)</div>
+      <div class="chip" onclick="toggleChipRadio(this,'emojis')">😄 Frequente</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">💬 Estilo das Respostas</div>
+    <div class="chips" id="resp_estilo">
+      <div class="chip" onclick="toggleChipRadio(this,'resp_estilo')">Curtas e diretas</div>
+      <div class="chip" onclick="toggleChipRadio(this,'resp_estilo')">Explicativas e detalhadas</div>
+      <div class="chip" onclick="toggleChipRadio(this,'resp_estilo')">Simples e acessíveis</div>
+      <div class="chip" onclick="toggleChipRadio(this,'resp_estilo')">Técnicas e especializadas</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">✍️ Regras de Tom Específicas</div>
+    <div class="grid-1">
+      <div class="field">
+        <label class="lbl">Palavras ou expressões a EVITAR</label>
+        <textarea id="evitar" placeholder="Ex: Não usar 'probleminha', evitar 'tô te mandando', nunca dizer 'não sei'..."></textarea>
+      </div>
+      <div class="field">
+        <label class="lbl">Expressões ou frases que a marca usa muito</label>
+        <textarea id="usar" placeholder="Ex: 'Feito com carinho', 'Estamos aqui para você', termos do setor..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📋 Top 10 Perguntas Mais Frequentes</div>
+    <div class="info-box">Essas perguntas terão prioridade no treinamento — o agente responderá com mais precisão.</div>
+    <div class="prio-list">
+      <div class="prio-item"><div class="prio-num">1</div><input type="text" placeholder="Qual o horário de funcionamento?"></div>
+      <div class="prio-item"><div class="prio-num">2</div><input type="text" placeholder="Como fazer uma reserva / agendamento?"></div>
+      <div class="prio-item"><div class="prio-num">3</div><input type="text" placeholder="Quais os preços / tabela de valores?"></div>
+      <div class="prio-item"><div class="prio-num">4</div><input type="text" placeholder="Qual o endereço / como chegar?"></div>
+      <div class="prio-item"><div class="prio-num">5</div><input type="text" id="faq5" placeholder="Pergunta frequente 5..."></div>
+      <div class="prio-item"><div class="prio-num">6</div><input type="text" id="faq6" placeholder="Pergunta frequente 6..."></div>
+      <div class="prio-item"><div class="prio-num">7</div><input type="text" id="faq7" placeholder="Pergunta frequente 7..."></div>
+      <div class="prio-item"><div class="prio-num">8</div><input type="text" id="faq8" placeholder="Pergunta frequente 8..."></div>
+      <div class="prio-item"><div class="prio-num">9</div><input type="text" id="faq9" placeholder="Pergunta frequente 9..."></div>
+      <div class="prio-item"><div class="prio-num">10</div><input type="text" id="faq10" placeholder="Pergunta frequente 10..."></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     STEP 4 — CONHECIMENTOS (O CÉREBRO)
+══════════════════════════════════════════ -->
+<div class="step-panel" id="step-3">
+  <div class="step-hd">
+    <div class="eyebrow">Etapa 4 de 6</div>
+    <h2>Base de Conhecimento</h2>
+    <p>Tudo o que o agente precisa saber para responder bem. Quanto mais completo, melhor o atendimento.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🏢 Sobre a Empresa</div>
+    <div class="grid-1">
+      <div class="field">
+        <label class="lbl">Descrição do negócio <span class="req">*</span></label>
+        <textarea id="desc_negocio" placeholder="O que você faz, para quem, o que torna seu negócio único..." style="min-height:100px;"></textarea>
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label class="lbl">Endereço completo</label>
+          <input type="text" id="endereco" placeholder="Rua, número, bairro, cidade, CEP">
+        </div>
+        <div class="field">
+          <label class="lbl">Área de atendimento / entrega</label>
+          <input type="text" id="area_atend" placeholder="Ex: Toda São Paulo / Zona Sul / 5km">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🕐 Horários de Funcionamento</div>
+    <div class="grid-3">
+      <div class="field">
+        <label class="lbl">Segunda a Sexta</label>
+        <input type="text" id="h_semana" placeholder="07h00 – 19h00">
+      </div>
+      <div class="field">
+        <label class="lbl">Sábado</label>
+        <input type="text" id="h_sabado" placeholder="08h00 – 17h00">
+      </div>
+      <div class="field">
+        <label class="lbl">Domingo / Feriado</label>
+        <input type="text" id="h_domingo" placeholder="Fechado / 08h–13h">
+      </div>
+    </div>
+    <div class="field" style="margin-top:0.8rem;">
+      <label class="lbl">Exceções e horários especiais</label>
+      <textarea id="h_excecoes" placeholder="Feriados nacionais, datas especiais, temporada alta..."></textarea>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📦 Serviços & Produtos</div>
+    <div class="field">
+      <label class="lbl">Lista de serviços / produtos com preços <span class="req">*</span></label>
+      <textarea id="servicos" placeholder="Liste seus serviços ou produtos com descrição e preço. Ex:&#10;• Corte masculino — R$50,00 (45 min)&#10;• Barba completa — R$35,00 (30 min)&#10;• Combo corte + barba — R$75,00" style="min-height:160px;"></textarea>
+    </div>
+    <div class="field" style="margin-top:0.8rem;">
+      <label class="lbl">Promoções vigentes <span class="opt">(se houver)</span></label>
+      <textarea id="promos" placeholder="Ex: Segunda-feira 20% off, happy hour 16h-18h..."></textarea>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📅 Regras de Agendamento & Reservas</div>
+    <div class="grid-2">
+      <div class="field">
+        <label class="lbl">Antecedência mínima para agendamento</label>
+        <input type="text" id="antecedencia" placeholder="Ex: 24h / 48h / 1 semana">
+      </div>
+      <div class="field">
+        <label class="lbl">Política de cancelamento</label>
+        <input type="text" id="cancelamento" placeholder="Ex: Até 24h antes sem custo">
+      </div>
+      <div class="field">
+        <label class="lbl">Política de atraso / no-show</label>
+        <input type="text" id="noshow" placeholder="Ex: Tolerância de 15 min">
+      </div>
+      <div class="field">
+        <label class="lbl">Capacidade máxima</label>
+        <input type="text" id="capacidade" placeholder="Ex: 40 pessoas / 8 mesas">
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">💳 Pagamentos</div>
+    <div class="field">
+      <label class="lbl">Formas aceitas</label>
+      <div class="chips" id="pagamentos">
+        <div class="chip" onclick="toggleChip(this)">Pix</div>
+        <div class="chip" onclick="toggleChip(this)">Débito</div>
+        <div class="chip" onclick="toggleChip(this)">Crédito</div>
+        <div class="chip" onclick="toggleChip(this)">Dinheiro</div>
+        <div class="chip" onclick="toggleChip(this)">Transferência</div>
+        <div class="chip" onclick="toggleChip(this)">Boleto</div>
+        <div class="chip" onclick="toggleChip(this)">Parcelamento</div>
+        <div class="chip" onclick="toggleChip(this)">Faturado</div>
+      </div>
+    </div>
+    <div class="grid-2" style="margin-top:1rem;">
+      <div class="field">
+        <label class="lbl">Chave Pix</label>
+        <input type="text" id="pix" placeholder="CPF / CNPJ / e-mail / telefone">
+      </div>
+      <div class="field">
+        <label class="lbl">Regra de pagamento antecipado</label>
+        <input type="text" id="pag_antecipado" placeholder="Ex: 50% na reserva + 50% 2 dias antes">
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔗 Plataformas Externas</div>
+    <div class="chips" id="plataformas">
+      <div class="chip" onclick="toggleChip(this)">iFood</div>
+      <div class="chip" onclick="toggleChip(this)">Rappi</div>
+      <div class="chip" onclick="toggleChip(this)">Uber Eats</div>
+      <div class="chip" onclick="toggleChip(this)">Doctoralia</div>
+      <div class="chip" onclick="toggleChip(this)">Calendly</div>
+      <div class="chip" onclick="toggleChip(this)">OpenTable</div>
+      <div class="chip" onclick="toggleChip(this)">Sympla</div>
+      <div class="chip" onclick="toggleChip(this)">Loja própria</div>
+    </div>
+    <div class="field" style="margin-top:0.8rem;">
+      <label class="lbl">Links e observações das plataformas</label>
+      <textarea id="links_plataformas" placeholder="Ex: iFood — link: ifood.com.br/... — horário: 11h às 22h"></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     STEP 5 — AÇÕES E LIMITES
+══════════════════════════════════════════ -->
+<div class="step-panel" id="step-4">
+  <div class="step-hd">
+    <div class="eyebrow">Etapa 5 de 6</div>
+    <h2>Ações & Limites</h2>
+    <p>O que o agente pode fazer de forma autônoma — e quando deve parar e chamar um humano.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">✅ Ações Autorizadas <span>marque todas que se aplicam</span></div>
+    <div class="chips" id="acoes_ok" style="gap:0.6rem;">
+      <div class="chip" onclick="toggleChip(this)">Responder dúvidas gerais</div>
+      <div class="chip" onclick="toggleChip(this)">Informar horários e endereço</div>
+      <div class="chip" onclick="toggleChip(this)">Explicar serviços e preços</div>
+      <div class="chip" onclick="toggleChip(this)">Coletar dados do cliente</div>
+      <div class="chip" onclick="toggleChip(this)">Criar agendamento</div>
+      <div class="chip" onclick="toggleChip(this)">Alterar / cancelar horário</div>
+      <div class="chip" onclick="toggleChip(this)">Registrar reserva no calendário</div>
+      <div class="chip" onclick="toggleChip(this)">Registrar pedido / encomenda</div>
+      <div class="chip" onclick="toggleChip(this)">Enviar link de pagamento</div>
+      <div class="chip" onclick="toggleChip(this)">Informar status de pagamento</div>
+      <div class="chip" onclick="toggleChip(this)">Enviar confirmação / lembrete</div>
+      <div class="chip" onclick="toggleChip(this)">Qualificar o cliente</div>
+      <div class="chip" onclick="toggleChip(this)">Informar disponibilidade</div>
+      <div class="chip" onclick="toggleChip(this)">Encaminhar para vendedor</div>
+    </div>
+    <div class="field" style="margin-top:0.8rem;">
+      <label class="lbl">Outras ações específicas do seu negócio</label>
+      <textarea id="outras_acoes" placeholder="Descreva ações específicas não listadas acima..."></textarea>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🚫 Ações que Exigem Validação Humana <span>marque todas que se aplicam</span></div>
+    <div class="chips" id="acoes_validar">
+      <div class="chip" onclick="toggleChip(this)">Alteração manual de preços</div>
+      <div class="chip" onclick="toggleChip(this)">Concessão de descontos</div>
+      <div class="chip" onclick="toggleChip(this)">Reagendamentos fora das regras</div>
+      <div class="chip" onclick="toggleChip(this)">Exceções operacionais</div>
+      <div class="chip" onclick="toggleChip(this)">Confirmação final de reserva</div>
+      <div class="chip" onclick="toggleChip(this)">Decisões financeiras especiais</div>
+      <div class="chip" onclick="toggleChip(this)">Aprovação de orçamento</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔴 Situações que Transferem para Humano</div>
+    <div class="chips" id="transferir">
+      <div class="chip" onclick="toggleChip(this)">Reclamações ou insatisfação</div>
+      <div class="chip" onclick="toggleChip(this)">Conflito ou negociação sensível</div>
+      <div class="chip" onclick="toggleChip(this)">Solicitação jurídica / contratual</div>
+      <div class="chip" onclick="toggleChip(this)">Cliente agressivo ou hostil</div>
+      <div class="chip" onclick="toggleChip(this)">Demanda fora do escopo</div>
+      <div class="chip" onclick="toggleChip(this)">Problema técnico grave</div>
+      <div class="chip" onclick="toggleChip(this)">Cliente VIP</div>
+    </div>
+    <div class="grid-2" style="margin-top:1rem;">
+      <div class="field">
+        <label class="lbl">Para quem transferir? <span class="req">*</span></label>
+        <input type="text" id="transferir_quem" placeholder="Ex: Fulano — (11) 9 0000-0000">
+      </div>
+      <div class="field">
+        <label class="lbl">Horário em que há humano disponível</label>
+        <input type="text" id="transferir_horario" placeholder="Ex: Seg-Sex 9h-18h">
+      </div>
+    </div>
+    <div class="field" style="margin-top:0.8rem;">
+      <label class="lbl">O que o agente diz ao transferir?</label>
+      <textarea id="msg_transferir" placeholder="Ex: Vou chamar um especialista para ajudar. Aguarda um instante! 🙏"></textarea>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">⚙️ Ferramentas & Integrações</div>
+    <div class="grid-2">
+      <div class="field">
+        <label class="lbl">Agenda / Agendamento</label>
+        <div class="chips" id="agenda_tool">
+          <div class="chip" onclick="toggleChipRadio(this,'agenda_tool')">Google Agenda</div>
+          <div class="chip" onclick="toggleChipRadio(this,'agenda_tool')">Calendly</div>
+          <div class="chip" onclick="toggleChipRadio(this,'agenda_tool')">Sistema interno</div>
+          <div class="chip" onclick="toggleChipRadio(this,'agenda_tool')">Manual</div>
+          <div class="chip" onclick="toggleChipRadio(this,'agenda_tool')">Não usa</div>
+        </div>
+      </div>
+      <div class="field">
+        <label class="lbl">CRM / Base de Clientes</label>
+        <div class="chips" id="crm_tool">
+          <div class="chip" onclick="toggleChipRadio(this,'crm_tool')">Planilha</div>
+          <div class="chip" onclick="toggleChipRadio(this,'crm_tool')">CRM próprio</div>
+          <div class="chip" onclick="toggleChipRadio(this,'crm_tool')">Sistema do setor</div>
+          <div class="chip" onclick="toggleChipRadio(this,'crm_tool')">Não possui</div>
+        </div>
+      </div>
+    </div>
+    <div class="field" style="margin-top:0.8rem;">
+      <label class="lbl">E-mail da conta Google Agenda</label>
+      <input type="email" id="google_email" placeholder="agenda@suaempresa.com.br">
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     STEP 6 — PROCESSO DE VALIDAÇÃO DO PILOTO
+══════════════════════════════════════════ -->
+<div class="step-panel" id="step-5">
+  <div class="step-hd">
+    <div class="eyebrow">Etapa 6 de 6</div>
+    <h2>Piloto & Validação</h2>
+    <p>Como vamos testar, aprovar e lançar seu Funcionário Virtual com segurança.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🧪 Ambiente de Teste</div>
+    <div class="info-box">Todo o processo de configuração começa em ambiente sandbox. A ativação nos canais oficiais acontece apenas após validação completa.</div>
+    <div class="grid-2">
+      <div class="field">
+        <label class="lbl">Número WhatsApp Teste (sandbox) <span class="req">*</span></label>
+        <input type="tel" id="wpp_sandbox" placeholder="(11) 9 0000-0000">
+      </div>
+      <div class="field">
+        <label class="lbl">Responsável pelos testes</label>
+        <input type="text" id="resp_teste" placeholder="Nome — cargo">
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">✅ Critérios de Aprovação (Go-live)</div>
+    <div class="warn-box">⚠️ O agente só será lançado nos canais oficiais após todos os critérios abaixo serem validados.</div>
+    <div class="chips" id="criterios">
+      <div class="chip sel" onclick="toggleChip(this)">Top 10 perguntas respondidas corretamente</div>
+      <div class="chip sel" onclick="toggleChip(this)">Cenários críticos testados</div>
+      <div class="chip sel" onclick="toggleChip(this)">Transferência para humano funcionando</div>
+      <div class="chip sel" onclick="toggleChip(this)">Base de conhecimento completa</div>
+      <div class="chip sel" onclick="toggleChip(this)">Canais conectados e testados</div>
+    </div>
+    <div class="field" style="margin-top:0.8rem;">
+      <label class="lbl">Outros critérios específicos do seu negócio</label>
+      <textarea id="outros_criterios" placeholder="Ex: Reserva de espaço deve bloquear o calendário automaticamente..."></textarea>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📊 Cenários Críticos a Testar</div>
+    <div class="chips" id="cenarios">
+      <div class="chip sel" onclick="toggleChip(this)">Pedido urgente</div>
+      <div class="chip sel" onclick="toggleChip(this)">Reclamação de cliente</div>
+      <div class="chip sel" onclick="toggleChip(this)">Cancelamento</div>
+      <div class="chip sel" onclick="toggleChip(this)">Problema com pagamento</div>
+      <div class="chip sel" onclick="toggleChip(this)">Cliente insatisfeito</div>
+      <div class="chip" onclick="toggleChip(this)">Solicitação fora do padrão</div>
+      <div class="chip" onclick="toggleChip(this)">Pergunta em outro idioma</div>
+      <div class="chip" onclick="toggleChip(this)">Tentativa de manipulação</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📅 Expectativa de Lançamento</div>
+    <div class="grid-2">
+      <div class="field">
+        <label class="lbl">Data desejada para o Go-live</label>
+        <input type="text" id="data_golive" placeholder="Ex: 15/03/2026 / o mais breve possível">
+      </div>
+      <div class="field">
+        <label class="lbl">Urgência</label>
+        <div class="scale-wrap">
+          <div class="scale-track" id="urgencia">
+            <div class="scale-opt" onclick="selectScale(this,'urgencia')">Baixa</div>
+            <div class="scale-opt" onclick="selectScale(this,'urgencia')">Média</div>
+            <div class="scale-opt" onclick="selectScale(this,'urgencia')">Alta</div>
+            <div class="scale-opt" onclick="selectScale(this,'urgencia')">Urgente</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📝 Observações Finais</div>
+    <div class="field">
+      <label class="lbl">Informações adicionais ou contexto importante</label>
+      <textarea id="obs_finais" placeholder="Algo importante que não foi abordado nas seções anteriores. Regras específicas do negócio, contexto de mercado, histórico relevante..." style="min-height:120px;"></textarea>
+    </div>
+    <div class="field" style="margin-top:0.8rem;">
+      <label class="lbl">Maiores dores operacionais hoje</label>
+      <textarea id="dores" placeholder="Ex: Perco muito tempo respondendo as mesmas perguntas. Clientes mandam mensagem fora do horário. Esquecem de pagar..."></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     STEP 7 — RESUMO & ENVIO
+══════════════════════════════════════════ -->
+<div class="step-panel" id="step-6">
+  <div class="step-hd">
+    <div class="eyebrow">Revisão Final</div>
+    <h2>Tudo pronto para lançar?</h2>
+    <p>Revise as informações abaixo antes de enviar para a equipe DiscutAI.</p>
+  </div>
+
+  <div class="summary-grid" id="summaryContent"></div>
+
+  <div class="card" style="margin-top:1.2rem; text-align:center; padding:2rem;">
+    <div style="font-family:'Instrument Serif',serif; font-size:1.5rem; margin-bottom:0.5rem;">Pronto para enviar?</div>
+    <p style="color:var(--muted2); font-size:0.85rem; margin-bottom:1.5rem; max-width:420px; margin-left:auto; margin-right:auto;">Após o envio, Florent Lambert e a equipe DiscutAI entrarão em contato em até 24h úteis para iniciar a configuração do agente.</p>
+    <button class="btn-next gold" style="font-size:1rem; padding:0.9rem 2.5rem; margin:0 auto;" onclick="finalSubmit()">
+      🚀 Enviar Onboarding
+    </button>
+    <div style="margin-top:1rem; font-size:0.75rem; color:var(--muted);">
+      📧 <a href="mailto:florent.lambert@pimentaorouge.com">florent.lambert@pimentaorouge.com</a> · 📱 11 97645-8933
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS -->
+<div class="step-panel" id="step-success">
+  <div class="success-screen">
+    <div class="check">✓</div>
+    <h2>Onboarding Enviado!</h2>
+    <p>Seu formulário foi recebido com sucesso. A equipe DiscutAI entrará em contato em até 24h úteis para iniciar a configuração do seu Funcionário Virtual.</p>
+    <div style="background:var(--card); border:1px solid var(--border); border-radius:10px; padding:1.2rem; display:inline-block; margin-top:1rem;">
+      <div style="font-size:0.78rem; color:var(--muted); margin-bottom:0.5rem;">CONTATO DiscutAI</div>
+      <div style="font-size:0.9rem;">📧 <a href="mailto:florent.lambert@pimentaorouge.com">florent.lambert@pimentaorouge.com</a></div>
+      <div style="font-size:0.9rem; margin-top:0.3rem;">📱 11 97645-8933</div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav" id="bottomNav">
+  <div class="step-counter">Etapa <strong id="stepNum">1</strong> de <strong>6</strong></div>
+  <div class="nav-btns">
+    <button class="btn-back" id="btnBack" onclick="prevStep()" style="display:none;">← Voltar</button>
+    <button class="btn-next" id="btnNext" onclick="nextStep()">Continuar →</button>
+  </div>
+</div>
+
+<div class="progress-bar">
+  <div class="progress-fill" id="progressFill" style="width:16.6%;"></div>
+</div>
+
+<script>
+let currentStep = 0;
+const totalSteps = 7; // 0-5 = form steps, 6 = summary, success = extra
+
+function toggleChip(el) { el.classList.toggle('sel'); }
+function toggleChip_gold(el) { el.classList.toggle('sel-gold'); }
+
+function toggleChipRadio(el, group) {
+  document.querySelectorAll(`#${group} .chip`).forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+function selectTC(el, group) {
+  document.querySelectorAll(`#${group} .tc`).forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+function selectScale(el, group) {
+  document.querySelectorAll(`#${group} .scale-opt`).forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+function getChips(groupId) {
+  return Array.from(document.querySelectorAll(`#${groupId} .chip.sel`)).map(c => c.textContent.trim()).join(', ');
+}
+function getTC(groupId) {
+  const sel = document.querySelector(`#${groupId} .tc.sel`);
+  return sel ? sel.querySelector('.tc-label').textContent.trim() : '—';
+}
+
+function updateUI() {
+  // Update step dots
+  document.querySelectorAll('.step-dot').forEach((dot, i) => {
+    dot.classList.remove('active','done');
+    if (i === currentStep) dot.classList.add('active');
+    else if (i < currentStep) dot.classList.add('done');
+  });
+  // Progress
+  const pct = ((currentStep + 1) / totalSteps) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  // Step num
+  document.getElementById('stepNum').textContent = Math.min(currentStep + 1, 6);
+  // Back button
+  document.getElementById('btnBack').style.display = currentStep > 0 ? 'block' : 'none';
+  // Next button
+  const btn = document.getElementById('btnNext');
+  if (currentStep === 5) {
+    btn.textContent = 'Ver Resumo →';
+    btn.className = 'btn-next gold';
+  } else if (currentStep === 6) {
+    document.getElementById('bottomNav').style.display = 'none';
+    return;
+  } else {
+    btn.textContent = 'Continuar →';
+    btn.className = 'btn-next';
+  }
+  document.getElementById('bottomNav').style.display = 'flex';
+}
+
+function nextStep() {
+  if (currentStep === 5) buildSummary();
+  document.getElementById(`step-${currentStep}`).classList.remove('active');
+  currentStep++;
+  if (currentStep === 7) { showSuccess(); return; }
+  const next = document.getElementById(`step-${currentStep}`);
+  next.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  updateUI();
+}
+
+function prevStep() {
+  document.getElementById(`step-${currentStep}`).classList.remove('active');
+  currentStep--;
+  document.getElementById(`step-${currentStep}`).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  updateUI();
+}
+
+function buildSummary() {
+  const blocks = [
+    {
+      title: '🏢 Empresa',
+      rows: [
+        ['Nome Fantasia', v('nome_fantasia')],
+        ['CNPJ', v('cnpj')],
+        ['Responsável', v('responsavel')],
+        ['WhatsApp', v('wpp_resp')],
+        ['E-mail', v('email_contato')],
+        ['Tipo de negócio', getTC('tipo_biz')],
+        ['Objetivo', getTC('objetivo')],
+        ['Volume/dia', getChips('volume')],
+      ]
+    },
+    {
+      title: '🤖 Agente',
+      rows: [
+        ['Nome', v('nome_agente')],
+        ['Perfil', getTC('perfil')],
+        ['Canais', getChips('canais')],
+        ['WhatsApp Business', v('wpp_biz')],
+        ['Idiomas', getChips('idiomas')],
+        ['Saudação', v('saudacao') || '—'],
+      ]
+    },
+    {
+      title: '🎙️ Personalidade',
+      rows: [
+        ['Estilo', getTC('estilo')],
+        ['Emojis', getChips('emojis')],
+        ['Respostas', getChips('resp_estilo')],
+      ]
+    },
+    {
+      title: '💳 Pagamentos',
+      rows: [
+        ['Formas aceitas', getChips('pagamentos')],
+        ['Chave Pix', v('pix')],
+        ['Antecipado', v('pag_antecipado')],
+      ]
+    },
+    {
+      title: '📅 Agendamento',
+      rows: [
+        ['Antecedência mínima', v('antecedencia')],
+        ['Cancelamento', v('cancelamento')],
+        ['Ferramenta', getChips('agenda_tool')],
+        ['Google Agenda e-mail', v('google_email')],
+      ]
+    },
+    {
+      title: '🚀 Piloto',
+      rows: [
+        ['WhatsApp Sandbox', v('wpp_sandbox')],
+        ['Data Go-live', v('data_golive')],
+        ['Transferir para', v('transferir_quem')],
+        ['Ações OK', getChips('acoes_ok').substring(0,80) + (getChips('acoes_ok').length > 80 ? '...' : '')],
+      ]
+    },
+  ];
+
+  const html = blocks.map(b => `
+    <div class="summary-block">
+      <h4>${b.title}</h4>
+      ${b.rows.map(r => `<div class="summary-row"><span class="sk">${r[0]}</span><span class="sv">${r[1] || '—'}</span></div>`).join('')}
+    </div>
+  `).join('');
+
+  document.getElementById('summaryContent').innerHTML = html;
+}
+
+function v(id) {
+  const el = document.getElementById(id);
+  return el ? el.value.trim() : '';
+}
+
+function finalSubmit() {
+  buildSummary();
+  const lines = [];
+  lines.push('=== ONBOARDING DISCUTAI ===');
+  lines.push('');
+  lines.push('EMPRESA');
+  lines.push('Nome Fantasia: ' + (v('nome_fantasia') || '—'));
+  lines.push('CNPJ: ' + (v('cnpj') || '—'));
+  lines.push('Responsável: ' + (v('responsavel') || '—'));
+  lines.push('WhatsApp: ' + (v('wpp_resp') || '—'));
+  lines.push('E-mail: ' + (v('email_contato') || '—'));
+  lines.push('Tipo de negócio: ' + getTC('tipo_biz'));
+  lines.push('Objetivo: ' + getTC('objetivo'));
+  lines.push('Volume/dia: ' + (getChips('volume') || '—'));
+  lines.push('');
+  lines.push('AGENTE');
+  lines.push('Nome: ' + (v('nome_agente') || '—'));
+  lines.push('Perfil: ' + getTC('perfil'));
+  lines.push('Canais: ' + (getChips('canais') || '—'));
+  lines.push('WhatsApp Business: ' + (v('wpp_biz') || '—'));
+  lines.push('Idiomas: ' + (getChips('idiomas') || '—'));
+  lines.push('Saudação: ' + (v('saudacao') || '—'));
+  lines.push('');
+  lines.push('PERSONALIDADE');
+  lines.push('Estilo: ' + getTC('estilo'));
+  lines.push('Emojis: ' + (getChips('emojis') || '—'));
+  lines.push('Respostas: ' + (getChips('resp_estilo') || '—'));
+  lines.push('');
+  lines.push('PAGAMENTOS');
+  lines.push('Formas aceitas: ' + (getChips('pagamentos') || '—'));
+  lines.push('Chave Pix: ' + (v('pix') || '—'));
+  lines.push('Antecipado: ' + (v('pag_antecipado') || '—'));
+  lines.push('');
+  lines.push('AGENDAMENTO');
+  lines.push('Antecedência mínima: ' + (v('antecedencia') || '—'));
+  lines.push('Cancelamento: ' + (v('cancelamento') || '—'));
+  lines.push('Ferramenta: ' + (getChips('agenda_tool') || '—'));
+  lines.push('Google Agenda e-mail: ' + (v('google_email') || '—'));
+  lines.push('');
+  lines.push('PILOTO');
+  lines.push('WhatsApp Sandbox: ' + (v('wpp_sandbox') || '—'));
+  lines.push('Data Go-live: ' + (v('data_golive') || '—'));
+  lines.push('Transferir para: ' + (v('transferir_quem') || '—'));
+  lines.push('Ações OK: ' + (getChips('acoes_ok') || '—'));
+  const empresa = v('nome_fantasia') || 'Novo Cliente';
+  const subject = encodeURIComponent('Onboarding DiscutAI — ' + empresa);
+  const body = encodeURIComponent(lines.join('\n'));
+  window.open('mailto:florent.lambert@pimentaorouge.com?subject=' + subject + '&body=' + body);
+  showSuccess();
+}
+
+function showSuccess() {
+  document.getElementById('step-6').classList.remove('active');
+  document.getElementById('step-success').classList.add('active');
+  document.getElementById('bottomNav').style.display = 'none';
+  document.getElementById('progressFill').style.width = '100%';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ─── SAVE / LOAD PROGRESS ───
+
+function saveProgress() {
+  const state = { step: currentStep, inputs: {}, chips: {}, tcs: {}, scales: {} };
+
+  // Inputs and textareas
+  document.querySelectorAll('input[id], textarea[id]').forEach(el => {
+    state.inputs[el.id] = el.value;
+  });
+
+  // Chips: index by parent element id + chip text
+  document.querySelectorAll('.chip').forEach(el => {
+    const parent = el.closest('[id]');
+    if (!parent) return;
+    const gid = parent.id;
+    if (!state.chips[gid]) state.chips[gid] = [];
+    if (el.classList.contains('sel') || el.classList.contains('sel-gold')) {
+      state.chips[gid].push(el.textContent.trim());
+    }
+  });
+
+  // TCs (toggle cards)
+  document.querySelectorAll('.tc.sel').forEach(el => {
+    const parent = el.closest('[id]');
+    if (!parent) return;
+    const label = el.querySelector('.tc-label');
+    state.tcs[parent.id] = label ? label.textContent.trim() : el.textContent.trim();
+  });
+
+  // Scale options
+  document.querySelectorAll('.scale-opt.sel').forEach(el => {
+    const parent = el.closest('[id]');
+    if (!parent) return;
+    state.scales[parent.id] = el.textContent.trim();
+  });
+
+  const json = JSON.stringify(state, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'onboarding-discutai-' + (v('nome_fantasia').replace(/\s+/g, '-').toLowerCase() || 'rascunho') + '.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function loadProgress() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json,application/json';
+  input.onchange = function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      try {
+        const state = JSON.parse(ev.target.result);
+
+        // Restore inputs
+        Object.entries(state.inputs || {}).forEach(function([id, val]) {
+          const el = document.getElementById(id);
+          if (el) el.value = val;
+        });
+
+        // Restore chips
+        Object.entries(state.chips || {}).forEach(function([gid, selectedTexts]) {
+          const parent = document.getElementById(gid);
+          if (!parent) return;
+          parent.querySelectorAll('.chip').forEach(function(chip) {
+            const txt = chip.textContent.trim();
+            if (selectedTexts.includes(txt)) {
+              chip.classList.add(chip.classList.contains('sel-gold') || chip.dataset.gold ? 'sel-gold' : 'sel');
+            }
+          });
+        });
+
+        // Restore TCs
+        Object.entries(state.tcs || {}).forEach(function([gid, selectedLabel]) {
+          const parent = document.getElementById(gid);
+          if (!parent) return;
+          parent.querySelectorAll('.tc').forEach(function(tc) {
+            const label = tc.querySelector('.tc-label');
+            const txt = label ? label.textContent.trim() : tc.textContent.trim();
+            if (txt === selectedLabel) tc.classList.add('sel');
+          });
+        });
+
+        // Restore scale-opts
+        Object.entries(state.scales || {}).forEach(function([gid, selectedText]) {
+          const parent = document.getElementById(gid);
+          if (!parent) return;
+          parent.querySelectorAll('.scale-opt').forEach(function(opt) {
+            if (opt.textContent.trim() === selectedText) opt.classList.add('sel');
+          });
+        });
+
+        // Navigate to saved step
+        document.querySelectorAll('.step-panel').forEach(function(panel) {
+          panel.classList.remove('active');
+        });
+        const savedStep = typeof state.step === 'number' ? state.step : 0;
+        const targetPanel = document.getElementById('step-' + savedStep);
+        if (targetPanel) targetPanel.classList.add('active');
+        currentStep = savedStep;
+        if (savedStep === 6) buildSummary();
+        updateUI();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        alert('Sessão restaurada com sucesso! Etapa ' + (savedStep + 1) + ' carregada.');
+      } catch(err) {
+        alert('Arquivo inválido ou corrompido. Verifique e tente novamente.');
+      }
+    };
+    reader.readAsText(file);
+  };
+  input.click();
+}
+
+</script>
+</body>
+</html>

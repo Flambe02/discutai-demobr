@@ -175,6 +175,9 @@ export default function TPRCLanding() {
               <a href="mailto:florent.lambert@pimentaorouge.com" className="block text-gray-400 hover:text-white" onClick={() => setMobileMenuOpen(false)}>
                 Contato
               </a>
+              <Link href="/onboarding" className="block text-blue-400 hover:text-blue-300 font-medium" onClick={() => setMobileMenuOpen(false)}>
+                Onboarding DiscutAI
+              </Link>
             </div>
           </motion.div>
         )}
@@ -623,6 +626,9 @@ export default function TPRCLanding() {
               <a href="#solucoes" className="hover:text-white transition-colors">Soluções</a>
               <a href="/?theme=generico" className="hover:text-white transition-colors">Demo</a>
               <a href="mailto:florent.lambert@pimentaorouge.com" className="hover:text-white transition-colors">Contato</a>
+              <Link href="/onboarding" className="text-blue-400 hover:text-blue-300 transition-colors font-medium">
+                Onboarding
+              </Link>
             </div>
 
             {/* Tagline */}
