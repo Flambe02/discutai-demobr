@@ -1,10 +1,13 @@
 ﻿import type { Metadata } from 'next';
 import { Inter, Poppins } from 'next/font/google';
+import Script from 'next/script';
+import { ClarityInit } from '@/components/ClarityInit';
 import './globals.css';
 import './discutai-widget-fix.css';
 
 const inter = Inter({ subsets: ['latin'] });
 const poppins = Poppins({ subsets: ['latin'], weight: ['400', '500', '600', '700'], variable: '--font-poppins' });
+const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || 'G-1H9X8B2EM9';
 
 const baseUrl = 'https://www.pimentaorouge.com';
 
@@ -102,6 +105,23 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" suppressHydrationWarning>
       <body className={`${inter.className} ${poppins.variable} antialiased`} suppressHydrationWarning>
+        {gaMeasurementId ? (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${gaMeasurementId}');
+              `}
+            </Script>
+          </>
+        ) : null}
+        <ClarityInit />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
