@@ -7,7 +7,7 @@ import './discutai-widget-fix.css';
 
 const inter = Inter({ subsets: ['latin'] });
 const poppins = Poppins({ subsets: ['latin'], weight: ['400', '500', '600', '700'], variable: '--font-poppins' });
-const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || 'G-1H9X8B2EM9';
+const gtmContainerId = process.env.NEXT_PUBLIC_GTM_CONTAINER_ID || 'GTM-TCF2KT3Q';
 
 const baseUrl = 'https://www.pimentaorouge.com';
 
@@ -104,22 +104,29 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR" suppressHydrationWarning>
+      <head>
+        {gtmContainerId ? (
+          <Script id="google-tag-manager" strategy="beforeInteractive">
+            {`
+              (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+              'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+              })(window,document,'script','dataLayer','${gtmContainerId}');
+            `}
+          </Script>
+        ) : null}
+      </head>
       <body className={`${inter.className} ${poppins.variable} antialiased`} suppressHydrationWarning>
-        {gaMeasurementId ? (
-          <>
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}
-              strategy="beforeInteractive"
+        {gtmContainerId ? (
+          <noscript>
+            <iframe
+              src={`https://www.googletagmanager.com/ns.html?id=${gtmContainerId}`}
+              height="0"
+              width="0"
+              style={{ display: 'none', visibility: 'hidden' }}
             />
-            <Script id="google-analytics" strategy="beforeInteractive">
-              {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '${gaMeasurementId}');
-              `}
-            </Script>
-          </>
+          </noscript>
         ) : null}
         <ClarityInit />
         <script
