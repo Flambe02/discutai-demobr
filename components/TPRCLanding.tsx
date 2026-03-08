@@ -559,7 +559,7 @@ export default function TPRCLanding() {
       </section>
 
       {/* ===== CONTACT / CTA SECTION ===== */}
-      <section id="contato" className="relative py-32 px-6">
+      <section id="contato" className="relative py-16 sm:py-32 px-6">
         {/* Top border line */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
 
@@ -600,7 +600,7 @@ export default function TPRCLanding() {
 
               <a
                 href="mailto:florent.lambert@pimentaorouge.com"
-                className="inline-flex items-center gap-2 px-6 py-4 text-gray-400 hover:text-white transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-4 text-gray-400 hover:text-white transition-colors text-sm sm:text-base break-all"
               >
                 <span>florent.lambert@pimentaorouge.com</span>
               </a>
@@ -627,15 +627,12 @@ export default function TPRCLanding() {
             </div>
 
             {/* Links */}
-            <div className="flex items-center gap-6 text-sm text-gray-400">
+            <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-gray-400">
               <a href="#home" className="hover:text-white transition-colors">Home</a>
               <a href="#solucoes" className="hover:text-white transition-colors">Soluções</a>
               <a href="/?theme=generico" className="hover:text-white transition-colors">Demo</a>
               <Link href="/formacao" className="hover:text-white transition-colors">Formação</Link>
               <a href="mailto:florent.lambert@pimentaorouge.com" className="hover:text-white transition-colors">Contato</a>
-              <Link href="/onboarding" className="text-blue-400 hover:text-blue-300 transition-colors font-medium">
-                Onboarding
-              </Link>
             </div>
 
             {/* Tagline */}
