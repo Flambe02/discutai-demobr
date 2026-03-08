@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { timingSafeEqual } from 'crypto';
 
 /**
  * GET /api/calendar/availability
@@ -26,7 +27,13 @@ function verifyAuth(request: NextRequest): boolean {
     return false;
   }
 
-  return token === secret;
+  try {
+    const a = Buffer.from(token);
+    const b = Buffer.from(secret);
+    return a.length === b.length && timingSafeEqual(a, b);
+  } catch {
+    return false;
+  }
 }
 
 export async function GET(request: NextRequest) {
