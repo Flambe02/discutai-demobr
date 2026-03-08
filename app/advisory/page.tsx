@@ -4,9 +4,9 @@ import AdvisoryClient from './AdvisoryClient';
 const baseUrl = 'https://www.pimentaorouge.com';
 
 export const metadata: Metadata = {
-  title: 'Advisory em Payments e Benefits | TPRC',
+  title: 'Advisory em Payments, Benefits e Employee Benefits com IA | TPRC',
   description:
-    'Advisory estratégico em payments e benefits no Brasil e Europa para investidores, fintechs e empresas. Diagnóstico de maturidade, análise regulatória cross-border e roadmap de implementação.',
+    'Advisory estratégico em payments, employee benefits e IA no Brasil e Europa. Consultoria para investidores, fintechs, RH e empresas: diagnóstico, análise regulatória cross-border, employee benefits com IA e roadmap de implementação.',
   alternates: {
     canonical: '/advisory',
     languages: {
@@ -61,6 +61,8 @@ const serviceJsonLd = {
     'Go-to-market e Distribuição',
     'M&A e Diligência',
     'Uso e Comportamento',
+    'Employee Benefits com IA',
+    'Otimização de Benefícios Corporativos',
   ],
 };
 
@@ -144,10 +146,11 @@ export default function AdvisoryPage() {
           Estratégia de portfólio de produtos, pricing competitivo e canais de distribuição B2B e
           B2C. Estratégia de produto, modelo de pricing, go-to-market.
         </p>
-        <h3>Empresas e RH</h3>
+        <h3>Empresas e RH — Employee Benefits com IA</h3>
         <p>
-          Desenho de pacotes de benefícios e experiência do colaborador com foco em retenção e
-          engajamento. Benchmark de mercado, otimização fiscal, employee experience.
+          Desenho de pacotes de employee benefits com IA: experiência do colaborador potencializada
+          por inteligência artificial, com foco em retenção e engajamento. Benchmark de mercado,
+          otimização fiscal, employee experience, e automação de benefícios com agentes de IA.
         </p>
 
         <h2>Áreas de Expertise</h2>

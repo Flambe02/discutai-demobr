@@ -14,7 +14,7 @@ const baseUrl = 'https://www.pimentaorouge.com';
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: 'TPRC | Agência Boutique de IA',
+    default: 'Agência Boutique de IA | TPRC',
     template: '%s | TPRC',
   },
   description:
@@ -85,6 +85,31 @@ const organizationJsonLd = {
   ],
 };
 
+const personJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': `${baseUrl}/#founder`,
+  name: 'Florent Lambert',
+  jobTitle: 'Founder & CEO',
+  worksFor: { '@id': `${baseUrl}/#organization` },
+  url: baseUrl,
+  email: 'florent.lambert@pimentaorouge.com',
+  knowsAbout: [
+    'Inteligência Artificial Generativa',
+    'Digital Employees',
+    'AI Music Branding',
+    'Payments e Benefits Brasil Europa',
+    'Employee Benefits com IA',
+    'Capacitação Corporativa em IA',
+    'DiscutAI',
+  ],
+  description:
+    'Fundador da TPRC, agência boutique de IA no Brasil. Mais de 25 anos de experiência em payments, employee benefits e fintech nos dois lados do Atlântico.',
+  sameAs: [
+    'https://www.linkedin.com/company/the-pimentao-rouge-company/',
+  ],
+};
+
 const websiteJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
@@ -131,6 +156,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
         <script
           type="application/ld+json"
