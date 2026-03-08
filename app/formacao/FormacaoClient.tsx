@@ -17,6 +17,7 @@ import {
   Calendar,
   Monitor,
   Settings,
+  Mic,
 } from 'lucide-react';
 import Link from 'next/link';
 import Script from 'next/script';
@@ -475,6 +476,61 @@ export default function FormacaoClient() {
                 <p className="text-gray-400 text-sm leading-relaxed">Desenhado para as necessidades da sua empresa. Conectado ao roadmap estratégico da consultoria para adoção real.</p>
               </motion.div>
             </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ===== PALESTRAS ===== */}
+      <section className="relative py-24 px-6">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-px bg-gradient-to-r from-transparent via-purple-500/30 to-transparent" />
+        <div className="max-w-6xl mx-auto">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-100px' }}
+            variants={staggerContainer}
+            className="space-y-12"
+          >
+            <motion.div variants={fadeInUp} className="text-center space-y-4">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-sm font-medium mb-2">
+                <Mic className="w-4 h-4" />
+                Palestras
+              </div>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold">
+                Palestras sobre <span className="text-purple-400">Inteligência Artificial</span>
+              </h2>
+              <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+                Palestras que abordam desde tendências, ética e o futuro do trabalho até aplicações práticas em negócios — adaptadas ao seu setor e público.
+              </p>
+            </motion.div>
+
+            <motion.div variants={fadeInUp} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="p-5 rounded-2xl bg-white/5 border border-white/10 hover:border-purple-500/30 transition-colors">
+                <div className="w-2 h-2 rounded-full bg-purple-400 mb-3" />
+                <h4 className="font-semibold text-white mb-2">IA no Trabalho e Negócios</h4>
+                <p className="text-gray-400 text-sm leading-relaxed">Como a IA está transformando processos, equipes e modelos de negócio na prática.</p>
+              </div>
+              <div className="p-5 rounded-2xl bg-white/5 border border-white/10 hover:border-blue-500/30 transition-colors">
+                <div className="w-2 h-2 rounded-full bg-blue-400 mb-3" />
+                <h4 className="font-semibold text-white mb-2">Tendências e Futuro da IA</h4>
+                <p className="text-gray-400 text-sm leading-relaxed">Um panorama das principais tendências globais e o que esperar nos próximos anos.</p>
+              </div>
+              <div className="p-5 rounded-2xl bg-white/5 border border-white/10 hover:border-pink-500/30 transition-colors">
+                <div className="w-2 h-2 rounded-full bg-pink-400 mb-3" />
+                <h4 className="font-semibold text-white mb-2">Ética e Criatividade</h4>
+                <p className="text-gray-400 text-sm leading-relaxed">Os dilemas éticos da IA, o papel da criatividade humana e os limites da automação.</p>
+              </div>
+              <div className="p-5 rounded-2xl bg-white/5 border border-white/10 hover:border-orange-500/30 transition-colors">
+                <div className="w-2 h-2 rounded-full bg-orange-400 mb-3" />
+                <h4 className="font-semibold text-white mb-2">IA na Prática</h4>
+                <p className="text-gray-400 text-sm leading-relaxed">Casos reais de implementação — do diagnóstico ao resultado, sem jargão técnico.</p>
+              </div>
+              <div className="p-5 rounded-2xl bg-white/5 border border-white/10 hover:border-emerald-500/30 transition-colors">
+                <div className="w-2 h-2 rounded-full bg-emerald-400 mb-3" />
+                <h4 className="font-semibold text-white mb-2">Impacto no RH</h4>
+                <p className="text-gray-400 text-sm leading-relaxed">Como a IA redefine recrutamento, desenvolvimento e o futuro das equipes nas organizações.</p>
+              </div>
+            </motion.div>
           </motion.div>
         </div>
       </section>
