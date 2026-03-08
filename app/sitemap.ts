@@ -29,12 +29,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.8,
     },
-    {
-      url: `${baseUrl}/onboarding`,
-      lastModified: new Date('2026-03-08'),
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
     // ── Pages démo produit ───────────────────────────────────────
     // Note: ces routes ont des URLs propres, sans paramètre ?theme=
     // Les URLs /?theme=xxx ne sont PAS incluses car elles ont un
