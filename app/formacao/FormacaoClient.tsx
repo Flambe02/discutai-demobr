@@ -462,19 +462,6 @@ export default function FormacaoClient() {
                 <p className="text-gray-400 text-sm leading-relaxed">Imersão intensiva e hands-on. Ideal para liderança e kick-off de projetos de IA. Exercícios práticos com ferramentas reais.</p>
               </motion.div>
 
-              <motion.div variants={fadeInUp} className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-amber-500/30 transition-colors">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
-                    <Monitor className="w-5 h-5 text-amber-400" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold">Programa Online</h4>
-                    <span className="text-xs text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full">4-8 semanas</span>
-                  </div>
-                </div>
-                <p className="text-gray-400 text-sm leading-relaxed">Módulos semanais com acompanhamento ao vivo. Exercícios entre sessões, feedback personalizado e certificado.</p>
-              </motion.div>
-
               <motion.div variants={fadeInUp} className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-yellow-500/30 transition-colors">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 rounded-full bg-yellow-500/10 border border-yellow-500/20 flex items-center justify-center">
