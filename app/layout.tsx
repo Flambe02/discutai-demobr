@@ -1,5 +1,6 @@
 ﻿import type { Metadata } from 'next';
 import { Inter, Poppins } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/next';
 import { ClarityInit } from '@/components/ClarityInit';
 import './globals.css';
 import './discutai-widget-fix.css';
@@ -137,6 +138,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         />
         {children}
+        <Analytics />
       </body>
     </html>
   );
