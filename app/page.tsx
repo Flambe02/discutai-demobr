@@ -12,7 +12,7 @@ const baseUrl = 'https://www.pimentaorouge.com';
 export const metadata: Metadata = {
   title: 'Agência Boutique de IA no Brasil | TPRC',
   description:
-    'A Pimentão Rouge (TPRC) é uma agência boutique de IA no Brasil especializada em IA conversacional, Digital Employees, AI Music Branding, employee benefits com IA e capacitação corporativa em IA generativa.',
+    'TPRC: agência boutique de IA no Brasil. IA conversacional, Digital Employees, AI Music Branding, employee benefits com IA e capacitação corporativa em IA.',
   alternates: {
     canonical: '/',
     languages: {
@@ -186,6 +186,7 @@ export default async function Home({ searchParams }: HomePageProps) {
       {initialThemeId === 'tprc' && (
         <div
           id="ssr-hero-shell"
+          aria-hidden="true"
           className="min-h-screen bg-[#050505] text-white antialiased overflow-x-hidden"
         >
           {/* Nav bar */}
@@ -232,41 +233,45 @@ export default async function Home({ searchParams }: HomePageProps) {
             </div>
           </section>
 
-          {/* Crawlable structured content (hidden visually, accessible to crawlers) */}
-          <div className="sr-only">
-            <p>
-              A TPRC — The Pimentão Rouge Company — é uma agência boutique de IA no Brasil.
-              Somos especializados em IA conversacional, Digital Employees, employee benefits com IA,
-              AI Music Branding e capacitação corporativa em IA generativa.
-            </p>
-            <h2>Nossas Soluções</h2>
-            <h3>IA Conversacional e Digital Employees</h3>
-            <p>
-              Automação de agenda e suporte com motor DiscutAI. Chatbots inteligentes que entendem
-              contexto e entregam resultados. Criação de colaboradores digitais autônomos para
-              atendimento, vendas e operações.
-            </p>
-            <h3>Creative Tech e AI Music Branding</h3>
-            <p>
-              Produção de conteúdo sonoro viral e estratégico. Jingles, trilhas e sound design que
-              marcam sua marca. Composição de identidade sonora algorítmica e música sob medida.
-            </p>
-            <h3>Advisory em Payments, Benefits e Employee Benefits com IA</h3>
-            <p>
-              Strategic Advisory: inteligência de mercado, employee benefits com IA, análise
-              regulatória cross-border Brasil-Europa para investidores, fintechs e RH.
-            </p>
-            <h3>Capacitação Corporativa em IA</h3>
-            <p>
-              Workshops práticos para liderança e equipes com foco em adoção, governança e
-              produtividade com IA generativa. Palestras sobre IA, tendências e futuro do trabalho.
-            </p>
-            <nav aria-label="Serviços">
-              <a href="/musica">Música para sua empresa com IA</a>
-              <a href="/advisory">Advisory em Payments, Benefits e Employee Benefits com IA</a>
-              <a href="/formacao">Capacitação e Treinamento em IA Generativa</a>
-            </nav>
-          </div>
+        </div>
+      )}
+
+      {/* Crawlable structured content — outside aria-hidden shell, visible to crawlers */}
+      {initialThemeId === 'tprc' && (
+        <div className="sr-only">
+          <h1>Agência Boutique de IA no Brasil — TPRC</h1>
+          <p>
+            A TPRC — The Pimentão Rouge Company — é uma agência boutique de IA no Brasil.
+            Somos especializados em IA conversacional, Digital Employees, employee benefits com IA,
+            AI Music Branding e capacitação corporativa em IA generativa.
+          </p>
+          <h2>Nossas Soluções</h2>
+          <h3>IA Conversacional e Digital Employees</h3>
+          <p>
+            Automação de agenda e suporte com motor DiscutAI. Chatbots inteligentes que entendem
+            contexto e entregam resultados. Criação de colaboradores digitais autônomos para
+            atendimento, vendas e operações.
+          </p>
+          <h3>Creative Tech e AI Music Branding</h3>
+          <p>
+            Produção de conteúdo sonoro viral e estratégico. Jingles, trilhas e sound design que
+            marcam sua marca. Composição de identidade sonora algorítmica e música sob medida.
+          </p>
+          <h3>Advisory em Payments, Benefits e Employee Benefits com IA</h3>
+          <p>
+            Strategic Advisory: inteligência de mercado, employee benefits com IA, análise
+            regulatória cross-border Brasil-Europa para investidores, fintechs e RH.
+          </p>
+          <h3>Capacitação Corporativa em IA</h3>
+          <p>
+            Workshops práticos para liderança e equipes com foco em adoção, governança e
+            produtividade com IA generativa. Palestras sobre IA, tendências e futuro do trabalho.
+          </p>
+          <nav aria-label="Serviços">
+            <a href="/musica">Música para sua empresa com IA</a>
+            <a href="/advisory">Advisory em Payments, Benefits e Employee Benefits com IA</a>
+            <a href="/formacao">Capacitação e Treinamento em IA Generativa</a>
+          </nav>
         </div>
       )}
 
