@@ -125,6 +125,9 @@ export default function TPRCLanding() {
             <a href="/?theme=generico" className="text-sm text-gray-400 hover:text-white transition-colors">
               Demo
             </a>
+            <Link href="/formacao" className="text-sm text-gray-400 hover:text-white transition-colors">
+              Formação
+            </Link>
             <a href="mailto:florent.lambert@pimentaorouge.com" className="text-sm text-gray-400 hover:text-white transition-colors">
               Contato
             </a>
@@ -172,6 +175,9 @@ export default function TPRCLanding() {
               <a href="/?theme=generico" className="block text-gray-400 hover:text-white" onClick={() => setMobileMenuOpen(false)}>
                 Demo
               </a>
+              <Link href="/formacao" className="block text-gray-400 hover:text-white" onClick={() => setMobileMenuOpen(false)}>
+                Formação
+              </Link>
               <a href="mailto:florent.lambert@pimentaorouge.com" className="block text-gray-400 hover:text-white" onClick={() => setMobileMenuOpen(false)}>
                 Contato
               </a>
@@ -625,6 +631,7 @@ export default function TPRCLanding() {
               <a href="#home" className="hover:text-white transition-colors">Home</a>
               <a href="#solucoes" className="hover:text-white transition-colors">Soluções</a>
               <a href="/?theme=generico" className="hover:text-white transition-colors">Demo</a>
+              <Link href="/formacao" className="hover:text-white transition-colors">Formação</Link>
               <a href="mailto:florent.lambert@pimentaorouge.com" className="hover:text-white transition-colors">Contato</a>
               <Link href="/onboarding" className="text-blue-400 hover:text-blue-300 transition-colors font-medium">
                 Onboarding
