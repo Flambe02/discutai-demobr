@@ -42,8 +42,7 @@ export const metadata: Metadata = {
   ],
   icons: {
     icon: [
-      { url: '/favicon.ico', type: 'image/x-icon' },
-      { url: '/images/pimentao-rouge-logo.png', type: 'image/png' },
+      { url: '/images/pimentao-rouge-logo.png', type: 'image/png', sizes: '512x512' },
     ],
     apple: '/images/pimentao-rouge-logo.png',
   },
