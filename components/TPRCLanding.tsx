@@ -631,6 +631,7 @@ export default function TPRCLanding() {
               <a href="/?theme=generico" className="hover:text-white transition-colors">Demo</a>
               <Link href="/formacao" className="hover:text-white transition-colors">Formação</Link>
               <a href="mailto:florent.lambert@pimentaorouge.com" className="hover:text-white transition-colors">Contato</a>
+              <a href="https://medium.com/@thepimentaorougecompany" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Blog</a>
             </div>
 
             {/* Tagline */}
