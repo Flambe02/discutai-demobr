@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/api/', '/_next/', '/form/', '/onboarding'],
+        disallow: ['/api/', '/_next/', '/form/', '/onboarding', '/?theme='],
       },
     ],
     sitemap: 'https://www.pimentaorouge.com/sitemap.xml',

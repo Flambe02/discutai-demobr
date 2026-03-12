@@ -29,6 +29,12 @@ const nextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      // Redirect old blog post URLs from previous site → homepage (301)
+      { source: '/post/:slug*', destination: '/', permanent: true },
+    ];
+  },
   async headers() {
     return [
       {

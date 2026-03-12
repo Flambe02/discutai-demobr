@@ -181,9 +181,7 @@ export default function TPRCLanding() {
               <a href="mailto:florent.lambert@pimentaorouge.com" className="block text-gray-400 hover:text-white" onClick={() => setMobileMenuOpen(false)}>
                 Contato
               </a>
-              <Link href="/onboarding" className="block text-blue-400 hover:text-blue-300 font-medium" onClick={() => setMobileMenuOpen(false)}>
-                Onboarding DiscutAI
-              </Link>
+
             </div>
           </motion.div>
         )}
