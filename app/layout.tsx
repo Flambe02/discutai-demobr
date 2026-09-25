@@ -40,12 +40,6 @@ export const metadata: Metadata = {
     'workshop IA executivos',
     'DiscutAI',
   ],
-  icons: {
-    icon: [
-      { url: '/images/pimentao-rouge-logo.png', type: 'image/png', sizes: '512x512' },
-    ],
-    apple: '/images/pimentao-rouge-logo.png',
-  },
 };
 
 const organizationJsonLd = {

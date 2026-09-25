@@ -11,12 +11,10 @@ export default function manifest(): MetadataRoute.Manifest {
     background_color: '#050505',
     theme_color: '#050505',
     lang: 'pt-BR',
+    // Tab/touch icons come from the app/ file conventions (favicon.ico, icon.png, apple-icon.png).
     icons: [
-      {
-        src: '/images/pimentao-rouge-logo.png',
-        sizes: '512x512',
-        type: 'image/png',
-      },
+      { src: '/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { src: '/icons/icon-512.png', sizes: '512x512', type: 'image/png' },
     ],
   };
 }
