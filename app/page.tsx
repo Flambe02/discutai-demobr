@@ -181,61 +181,6 @@ export default async function Home({ searchParams }: HomePageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
 
-      {/* SSR shell: visible above-the-fold content rendered on server for fast FCP/LCP.
-          Hidden by the client component once JS hydrates via the #ssr-hero-shell ID. */}
-      {initialThemeId === 'tprc' && (
-        <div
-          id="ssr-hero-shell"
-          aria-hidden="true"
-          className="min-h-screen bg-[#050505] text-white antialiased overflow-x-hidden"
-        >
-          {/* Nav bar */}
-          <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-[#050505]/80 border-b border-white/5">
-            <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-              <a href="/" className="flex items-center gap-3">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/images/pimentao-rouge-logo.png"
-                  alt="The Pimentão Rouge Company"
-                  width={40}
-                  height={40}
-                />
-                <span className="text-lg font-bold tracking-tight hidden sm:block">
-                  The Pimentão Rouge Company
-                </span>
-                <span className="text-lg font-bold tracking-tight sm:hidden">TPRC</span>
-              </a>
-            </div>
-          </nav>
-
-          {/* Hero */}
-          <section className="relative min-h-screen flex items-center justify-center pt-20 px-6">
-            <div className="max-w-5xl mx-auto text-center space-y-8">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-gray-400">
-                Agência de Inteligência Artificial
-              </div>
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight">
-                <span className="bg-gradient-to-r from-white via-white to-gray-400 bg-clip-text text-transparent">
-                  Inteligência Artificial
-                </span>
-                <br />
-                <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                  que gera resultados reais.
-                </span>
-              </h1>
-              <p className="text-lg sm:text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
-                TPRC: agência boutique de IA.{' '}
-                <span className="text-white font-medium">Inteligência conversacional</span>,{' '}
-                <span className="text-white font-medium">criatividade musical</span> e{' '}
-                <span className="text-white font-medium">precisão financeira</span> para escalar
-                negócios.
-              </p>
-            </div>
-          </section>
-
-        </div>
-      )}
-
       {/* Crawlable structured content — outside aria-hidden shell, visible to crawlers */}
       {initialThemeId === 'tprc' && (
         <div className="sr-only">

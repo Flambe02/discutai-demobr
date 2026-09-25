@@ -67,3 +67,29 @@ html {
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+/* ===== Home hero (server-visible entrance — no JS needed) ===== */
+@keyframes hero-fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes hero-rise {
+  from { transform: translateY(18px); }
+  to   { transform: none; }
+}
+@keyframes mascot-dash {
+  to { stroke-dashoffset: -160; }
+}
+
+.hero-enter > * {
+  animation: hero-fade-up 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.hero-enter > :nth-child(2) { animation-delay: 0.1s; }
+.hero-enter > :nth-child(3) { animation-delay: 0.2s; }
+.hero-enter > :nth-child(4) { animation-delay: 0.3s; }
+/* The headline is the LCP element: move it, but keep it opaque from the first paint. */
+.hero-enter > h1 { animation-name: hero-rise; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-enter > * { animation: none; }
+}

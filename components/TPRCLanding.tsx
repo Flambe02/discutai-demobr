@@ -16,6 +16,7 @@ import {
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import PepperMascot from './hero/PepperMascot';
 
 // Animation variants
 const fadeInUp = {
@@ -42,17 +43,6 @@ const staggerContainer = {
 export default function TPRCLanding() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [videoModalOpen, setVideoModalOpen] = useState(false);
-
-  // Hide SSR hero shell once the client component mounts.
-  // Do not remove it from the DOM manually: React owns that tree.
-  useEffect(() => {
-    const ssrShell = document.getElementById('ssr-hero-shell');
-    if (ssrShell) {
-      ssrShell.setAttribute('hidden', 'true');
-      ssrShell.setAttribute('aria-hidden', 'true');
-      (ssrShell as HTMLElement).style.display = 'none';
-    }
-  }, []);
 
   // Close video modal on ESC key
   useEffect(() => {
@@ -93,12 +83,7 @@ export default function TPRCLanding() {
       </div>
 
       {/* ===== NAVIGATION ===== */}
-      <motion.nav
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-[#050505]/80 border-b border-white/5"
-      >
+      <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-[#050505]/80 border-b border-white/5">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           {/* Logo */}
           <Link href="/?theme=tprc" className="flex items-center gap-3 group">
@@ -185,54 +170,45 @@ export default function TPRCLanding() {
             </div>
           </motion.div>
         )}
-      </motion.nav>
+      </nav>
 
       {/* ===== HERO SECTION ===== */}
-      <section id="home" className="relative min-h-screen flex items-center justify-center pt-20 px-6">
-        <div className="max-w-5xl mx-auto text-center">
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={staggerContainer}
-            className="space-y-8"
-          >
+      <section id="home" className="relative min-h-screen flex items-center pt-28 pb-24 px-6 overflow-hidden">
+        <div className="relative max-w-[1360px] mx-auto w-full grid items-center gap-10 lg:gap-4 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
+          {/* Text block — CSS entrance so it is visible in the server HTML (fast LCP, no layout shift) */}
+          <div className="hero-enter text-center space-y-8">
             {/* Badge */}
-            <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-gray-400">
-              <Sparkles className="w-4 h-4 text-blue-400" />
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-gray-400">
+              <Sparkles className="w-4 h-4 text-blue-400" aria-hidden="true" />
               <span>Agência de Inteligência Artificial</span>
-            </motion.div>
+            </div>
 
             {/* Main Title */}
-            <motion.h1
-              variants={fadeInUp}
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight"
-            >
-              <span className="bg-gradient-to-r from-white via-white to-gray-400 bg-clip-text text-transparent">
+            {/* Desktop size is fluid and capped so each line (longest ≈ 12.2em) fits the text column. */}
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[clamp(2.75rem,calc(4.5vw-4px),3.875rem)] font-extrabold leading-[1.08] tracking-tight">
+              <span className="bg-gradient-to-r from-white via-white to-gray-400 bg-clip-text text-transparent lg:whitespace-nowrap">
                 Inteligência Artificial
               </span>
               <br />
-              <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent lg:whitespace-nowrap">
                 que gera resultados reais.
               </span>
-            </motion.h1>
+            </h1>
 
             {/* Subtitle */}
-            <motion.p
-              variants={fadeInUp}
-              className="text-lg sm:text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed"
-            >
+            <p className="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
               TPRC: agência boutique de IA.{' '}
               <span className="text-white font-medium">Inteligência conversacional</span>,{' '}
               <span className="text-white font-medium">criatividade musical</span> e{' '}
               <span className="text-white font-medium">precisão financeira</span> para escalar negócios.
-            </motion.p>
+            </p>
 
             {/* CTA Buttons */}
-            <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
               {/* Primary CTA - Glassmorphism */}
               <a
                 href="#contato"
-                className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-full text-base font-semibold overflow-hidden"
+                className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-full text-base font-semibold overflow-hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-purple-400"
               >
                 {/* Animated gradient border */}
                 <div className="absolute inset-0 rounded-full p-[1px] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 animate-gradient-x">
@@ -241,7 +217,7 @@ export default function TPRCLanding() {
                 {/* Glow */}
                 <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 blur-xl opacity-50 group-hover:opacity-100 transition-opacity" />
                 <span className="relative z-10">Agendar Diagnóstico</span>
-                <ArrowRight className="relative z-10 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="relative z-10 w-5 h-5 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
               </a>
 
               {/* Secondary CTA */}
@@ -250,27 +226,25 @@ export default function TPRCLanding() {
                 className="inline-flex items-center gap-2 px-6 py-4 text-gray-400 hover:text-white transition-colors"
               >
                 <span>Ver Demo</span>
-                <ExternalLink className="w-4 h-4" />
+                <ExternalLink className="w-4 h-4" aria-hidden="true" />
               </a>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
+
+          {/* Mascot — cursor-tracking on desktop, gentle sway on touch, static if reduced motion.
+              No opacity/transform on this wrapper: it would isolate the mascot's
+              `screen` blending and reveal the footage's black background. */}
+          <div className="relative mx-auto w-full max-w-[300px] sm:max-w-[380px] lg:max-w-[560px] lg:mr-0">
+            <PepperMascot />
+          </div>
         </div>
 
         {/* Scroll indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2"
-        >
+        <div aria-hidden="true" className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden sm:block">
           <div className="w-6 h-10 rounded-full border-2 border-white/20 flex items-start justify-center p-2">
-            <motion.div
-              animate={{ y: [0, 12, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-              className="w-1 h-2 rounded-full bg-white/40"
-            />
+            <div className="w-1 h-2 rounded-full bg-white/40 motion-safe:animate-bounce" />
           </div>
-        </motion.div>
+        </div>
       </section>
 
       {/* ===== BENTO GRID - EXPERTISES ===== */}
